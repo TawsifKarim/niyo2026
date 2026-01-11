@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Niyo - Intelligent Hiring Infrastructure</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Outfit', 'sans-serif'],
+                    },
+                    colors: {
+                        slate: {
+                            850: '#151F32',
+                            900: '#0F172A',
+                            950: '#020617',
+                        },
+                        primary: {
+                            50: '#eff6ff',
+                            100: '#dbeafe',
+                            400: '#60a5fa',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                        }
+                    },
+                    animation: {
+                        'fade-in-up': 'fadeInUp 0.8s ease-out forwards',
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    },
+                    keyframes: {
+                        fadeInUp: {
+                            '0%': { opacity: '0', transform: 'translateY(20px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .text-balance {
+                text-wrap: balance;
+            }
+            .glass {
+                @apply bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border border-slate-200 dark:border-slate-800;
+            }
+            .card-hover {
+                @apply transition-all duration-300 hover:shadow-xl hover:-translate-y-1 dark:hover:shadow-slate-900/50 hover:border-primary-500/30;
+            }
+            .gradient-text {
+                @apply bg-clip-text text-transparent bg-gradient-to-r from-slate-900 to-slate-600 dark:from-white dark:to-slate-400;
+            }
+            .section-padding {
+                @apply py-20 lg:py-32;
+            }
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            @apply bg-slate-300 dark:bg-slate-700 rounded-full;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            @apply bg-slate-400 dark:bg-slate-600;
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.5, 0, 0, 1);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+
+<body
+    class="font-sans antialiased text-slate-600 dark:text-slate-400 bg-white dark:bg-slate-950 transition-colors duration-300">
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Logo -->
+                <div class="flex-shrink-0 flex items-center gap-2 cursor-pointer">
+                    <div
+                        class="w-8 h-8 rounded-lg bg-gradient-to-br from-primary-600 to-indigo-600 flex items-center justify-center text-white font-bold font-display text-xl">
+                        N</div>
+                    <span
+                        class="font-display font-bold text-xl text-slate-900 dark:text-white tracking-tight">Niyo</span>
+                </div>
+
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#how-it-works"
+                        class="text-sm font-medium text-slate-600 hover:text-primary-600 dark:text-slate-300 dark:hover:text-white transition-colors">How
+                        it Works</a>
+                    <a href="#results"
+                        class="text-sm font-medium text-slate-600 hover:text-primary-600 dark:text-slate-300 dark:hover:text-white transition-colors">Results</a>
+                    <a href="#pricing"
+                        class="text-sm font-medium text-slate-600 hover:text-primary-600 dark:text-slate-300 dark:hover:text-white transition-colors">Pricing</a>
+
+                    <div class="h-4 w-px bg-slate-200 dark:bg-slate-800"></div>
+
+                    <button id="theme-toggle"
+                        class="p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors text-slate-500 dark:text-slate-400">
+                        <svg id="theme-icon-sun" class="w-5 h-5 hidden" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                        </svg>
+                        <svg id="theme-icon-moon" class="w-5 h-5 block" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                        </svg>
+                    </button>
+
+                    <a href="#"
+                        class="inline-flex items-center justify-center px-5 py-2 border border-transparent text-sm font-medium rounded-full text-white bg-slate-900 hover:bg-slate-800 dark:bg-white dark:text-slate-900 dark:hover:bg-slate-200 transition-all shadow-lg hover:shadow-xl">
+                        Start Free
+                    </a>
+                </div>
+
+                <!-- Mobile menu button -->
+                <div class="md:hidden flex items-center gap-4">
+                    <button id="theme-toggle-mobile"
+                        class="p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors text-slate-500 dark:text-slate-400">
+                        <svg class="w-5 h-5 theme-icon-current" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                        </svg>
+                    </button>
+                    <button id="mobile-menu-btn"
+                        class="text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white">
+                        <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu Overlay -->
+        <div id="mobile-menu"
+            class="fixed inset-0 z-40 bg-white dark:bg-slate-950 transform translate-x-full transition-transform duration-300 md:hidden pt-24 px-6">
+            <div class="flex flex-col space-y-6">
+                <a href="#how-it-works" class="text-lg font-medium text-slate-900 dark:text-white mobile-link">How it
+                    Works</a>
+                <a href="#results" class="text-lg font-medium text-slate-900 dark:text-white mobile-link">Results</a>
+                <a href="#pricing" class="text-lg font-medium text-slate-900 dark:text-white mobile-link">Pricing</a>
+                <a href="#"
+                    class="w-full py-3 rounded-xl bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-bold text-center">
+                    Start Free
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden">
+        <!-- Background Gradients -->
+        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full max-w-7xl pointer-events-none">
+            <div
+                class="absolute top-0 left-1/4 w-96 h-96 bg-primary-400/20 rounded-full blur-3xl mix-blend-multiply dark:mix-blend-screen dark:bg-primary-900/20 animate-pulse-slow">
+            </div>
+            <div class="absolute top-20 right-1/4 w-96 h-96 bg-indigo-400/20 rounded-full blur-3xl mix-blend-multiply dark:mix-blend-screen dark:bg-indigo-900/20 animate-pulse-slow"
+                style="animation-delay: 2s;"></div>
+        </div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative text-center">
+
+            <div
+                class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-100 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 mb-8 animate-[fadeInUp_0.8s_ease-out]">
+                <span class="flex h-2 w-2 relative">
+                    <span
+                        class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary-400 opacity-75"></span>
+                    <span class="relative inline-flex rounded-full h-2 w-2 bg-primary-500"></span>
+                </span>
+                <span class="text-xs font-medium text-slate-600 dark:text-slate-300">Outcome-Led Hiring</span>
+            </div>
+
+            <h1
+                class="text-5xl lg:text-7xl font-display font-bold tracking-tight text-slate-900 dark:text-white mb-6 text-balance animate-[fadeInUp_0.8s_ease-out_0.2s_forwards] opacity-0">
+                Your shortlist. <br>
+                <span class="gradient-text">Ready in hours, not weeks.</span>
+            </h1>
+
+            <p
+                class="mt-6 text-xl text-slate-600 dark:text-slate-400 max-w-2xl mx-auto text-balance animate-[fadeInUp_0.8s_ease-out_0.4s_forwards] opacity-0">
+                Niyo screens every CV, scores candidates against your requirements, and delivers your top matches —
+                automatically.
+            </p>
+
+            <div
+                class="mt-10 flex flex-col sm:flex-row gap-4 justify-center items-center animate-[fadeInUp_0.8s_ease-out_0.6s_forwards] opacity-0">
+                <a href="#"
+                    class="w-full sm:w-auto px-8 py-4 rounded-full bg-primary-600 hover:bg-primary-500 text-white font-semibold text-lg transition-all shadow-lg hover:shadow-primary-500/25 ring-4 ring-transparent hover:ring-primary-500/10">
+                    Start Free — First Shortlist in Minutes
+                </a>
+                <a href="#how-it-works"
+                    class="w-full sm:w-auto px-8 py-4 rounded-full bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-700 font-medium hover:bg-slate-50 dark:hover:bg-slate-800 transition-all">
+                    See How It Works
+                </a>
+            </div>
+
+            <p
+                class="mt-6 text-sm text-slate-500 dark:text-slate-500 animate-[fadeInUp_0.8s_ease-out_0.8s_forwards] opacity-0">
+                If this doesn’t feel clearly better than your current process, you shouldn’t keep using it.
+            </p>
+
+            <!-- Hero Visual -->
+            <div class="mt-20 relative max-w-5xl mx-auto animate-[fadeInUp_1s_ease-out_1s_forwards] opacity-0">
+                <div
+                    class="relative rounded-2xl border border-slate-200 dark:border-slate-800 bg-white/50 dark:bg-slate-900/50 backdrop-blur-xl shadow-2xl overflow-hidden group">
+                    <!-- Fake Browser Chrome -->
+                    <div
+                        class="h-10 border-b border-slate-100 dark:border-slate-800 flex items-center px-4 gap-2 bg-white/80 dark:bg-slate-900/80">
+                        <div class="w-3 h-3 rounded-full bg-red-400/80"></div>
+                        <div class="w-3 h-3 rounded-full bg-amber-400/80"></div>
+                        <div class="w-3 h-3 rounded-full bg-green-400/80"></div>
+                        <div class="ml-4 h-5 w-64 bg-slate-100 dark:bg-slate-800 rounded-md"></div>
+                    </div>
+
+                    <!-- UI Mockup -->
+                    <div class="p-6 lg:p-10 text-left">
+                        <div class="flex justify-between items-end mb-8">
+                            <div>
+                                <h3 class="text-sm font-semibold uppercase tracking-wider text-slate-400 mb-1">Active
+                                    Shortlist</h3>
+                                <div class="text-2xl font-bold text-slate-900 dark:text-white">Senior Product Designer
+                                </div>
+                            </div>
+                            <div
+                                class="flex items-center gap-2 text-sm font-medium text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/20 px-3 py-1 rounded-full border border-emerald-100 dark:border-emerald-900/50">
+                                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M5 13l4 4L19 7" />
+                                </svg>
+                                Completed in 12 min
+                            </div>
+                        </div>
+
+                        <div class="space-y-3">
+                            <!-- Candidate Row 1 -->
+                            <div
+                                class="flex items-center p-4 rounded-xl border border-indigo-100 dark:border-indigo-900/30 bg-indigo-50/50 dark:bg-indigo-900/10 hover:bg-white dark:hover:bg-slate-800 transition-all cursor-pointer group/row">
+                                <div
+                                    class="w-10 h-10 rounded-full bg-slate-200 dark:bg-slate-700 flex items-center justify-center text-xs font-bold text-slate-600 dark:text-slate-300">
+                                    AS</div>
+                                <div class="ml-4 flex-1">
+                                    <div class="font-semibold text-slate-900 dark:text-white">Alex Sarah</div>
+                                    <div class="text-xs text-slate-500">Ex-Linear, 6y exp</div>
+                                </div>
+                                <div class="text-right">
+                                    <div class="text-2xl font-bold text-indigo-600 dark:text-indigo-400">94%</div>
+                                    <div class="text-[10px] uppercase font-bold text-slate-400">Match</div>
+                                </div>
+                                <div class="ml-6 opacity-0 group-hover/row:opacity-100 transition-opacity">
+                                    <svg class="w-5 h-5 text-slate-400" fill="none" viewBox="0 0 24 24"
+                                        stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M9 5l7 7-7 7" />
+                                    </svg>
+                                </div>
+                            </div>
+
+                            <!-- Candidate Row 2 -->
+                            <div
+                                class="flex items-center p-4 rounded-xl border border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-900/40 opacity-75">
+                                <div
+                                    class="w-10 h-10 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-xs font-bold text-slate-500">
+                                    JD</div>
+                                <div class="ml-4 flex-1">
+                                    <div class="font-semibold text-slate-900 dark:text-white">James Doe</div>
+                                    <div class="text-xs text-slate-500">Senior UX, 5y exp</div>
+                                </div>
+                                <div class="text-right">
+                                    <div class="text-2xl font-bold text-indigo-600/80 dark:text-indigo-400/80">91%</div>
+                                    <div class="text-[10px] uppercase font-bold text-slate-400">Match</div>
+                                </div>
+                            </div>
+
+                            <!-- Candidate Row 3 -->
+                            <div
+                                class="flex items-center p-4 rounded-xl border border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-900/40 opacity-50">
+                                <div
+                                    class="w-10 h-10 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-xs font-bold text-slate-500">
+                                    MK</div>
+                                <div class="ml-4 flex-1">
+                                    <div class="font-semibold text-slate-900 dark:text-white">Marcus King</div>
+                                    <div class="text-xs text-slate-500">Product Lead, 4y exp</div>
+                                </div>
+                                <div class="text-right">
+                                    <div class="text-2xl font-bold text-indigo-600/60 dark:text-indigo-400/60">88%</div>
+                                    <div class="text-[10px] uppercase font-bold text-slate-400">Match</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Floating Badges -->
+                <div
+                    class="absolute -right-4 top-1/2 bg-white dark:bg-slate-800 p-4 rounded-lg shadow-xl border border-slate-100 dark:border-slate-700 hidden lg:block animate-[fadeInUp_1s_ease-out_1.2s_forwards] opacity-0">
+                    <div class="flex items-start gap-3">
+                        <div
+                            class="mt-1 p-1 bg-green-100 dark:bg-green-900/30 rounded text-green-600 dark:text-green-400">
+                            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M5 13l4 4L19 7" />
+                            </svg>
+                        </div>
+                        <div>
+                            <div class="text-xs text-slate-500">Explainable AI</div>
+                            <div class="text-sm font-bold text-slate-900 dark:text-white">Every score shows its work
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Transformation Section -->
+    <section
+        class="section-padding bg-slate-50 dark:bg-slate-900/50 border-y border-slate-200 dark:border-slate-800 reveal">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <h2 class="text-3xl md:text-4xl font-display font-bold text-slate-900 dark:text-white mb-4">What changes
+                    when you stop screening manually</h2>
+                <p class="text-slate-600 dark:text-slate-400">This isn’t a small improvement. It’s a fundamentally
+                    different way to hire.</p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Card 1 -->
+                <div
+                    class="glass p-8 rounded-2xl relative overflow-hidden group hover:bg-white dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-800 transition-all">
+                    <div
+                        class="absolute top-0 left-0 w-1 h-full bg-slate-200 dark:bg-slate-700 group-hover:bg-primary-500 transition-colors">
+                    </div>
+                    <h3 class="font-display font-bold text-xl text-slate-900 dark:text-white mb-6">Time</h3>
+                    <div class="space-y-6">
+                        <div>
+                            <div class="text-xs uppercase tracking-wider font-bold text-slate-400 mb-1">Before</div>
+                            <p class="text-slate-500 dark:text-slate-400 text-sm leading-relaxed">Weeks of CV review
+                                before you interview anyone. 400 applications = 20–40 hours of skimming.</p>
+                        </div>
+                        <div class="h-px bg-slate-100 dark:bg-slate-800"></div>
+                        <div>
+                            <div
+                                class="text-xs uppercase tracking-wider font-bold text-primary-600 dark:text-primary-400 mb-1">
+                                After</div>
+                            <p class="text-slate-800 dark:text-slate-200 font-medium leading-relaxed">Top candidates
+                                surfaced in hours. Niyo parses and scores every CV for you.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 2 -->
+                <div
+                    class="glass p-8 rounded-2xl relative overflow-hidden group hover:bg-white dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-800 transition-all">
+                    <div
+                        class="absolute top-0 left-0 w-1 h-full bg-slate-200 dark:bg-slate-700 group-hover:bg-primary-500 transition-colors">
+                    </div>
+                    <h3 class="font-display font-bold text-xl text-slate-900 dark:text-white mb-6">Consistency</h3>
+                    <div class="space-y-6">
+                        <div>
+                            <div class="text-xs uppercase tracking-wider font-bold text-slate-400 mb-1">Before</div>
+                            <p class="text-slate-500 dark:text-slate-400 text-sm leading-relaxed">Every recruiter
+                                screens differently. Monday vs Friday = different results.</p>
+                        </div>
+                        <div class="h-px bg-slate-100 dark:bg-slate-800"></div>
+                        <div>
+                            <div
+                                class="text-xs uppercase tracking-wider font-bold text-primary-600 dark:text-primary-400 mb-1">
+                                After</div>
+                            <p class="text-slate-800 dark:text-slate-200 font-medium leading-relaxed">Same criteria.
+                                Every candidate. Every time. Consistent scoring across roles.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 3 -->
+                <div
+                    class="glass p-8 rounded-2xl relative overflow-hidden group hover:bg-white dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-800 transition-all">
+                    <div
+                        class="absolute top-0 left-0 w-1 h-full bg-slate-200 dark:bg-slate-700 group-hover:bg-primary-500 transition-colors">
+                    </div>
+                    <h3 class="font-display font-bold text-xl text-slate-900 dark:text-white mb-6">Confidence</h3>
+                    <div class="space-y-6">
+                        <div>
+                            <div class="text-xs uppercase tracking-wider font-bold text-slate-400 mb-1">Before</div>
+                            <p class="text-slate-500 dark:text-slate-400 text-sm leading-relaxed">Gut decisions you
+                                can’t fully explain. You hope you didn’t miss someone better.</p>
+                        </div>
+                        <div class="h-px bg-slate-100 dark:bg-slate-800"></div>
+                        <div>
+                            <div
+                                class="text-xs uppercase tracking-wider font-bold text-primary-600 dark:text-primary-400 mb-1">
+                                After</div>
+                            <p class="text-slate-800 dark:text-slate-200 font-medium leading-relaxed">Explainable
+                                scores, visible reasons. You know <em>why</em> someone ranked where they did.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- The Real Cost (Grid) -->
+    <section class="section-padding reveal">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="mb-12">
+                <h2 class="text-3xl md:text-4xl font-display font-bold text-slate-900 dark:text-white max-w-2xl">Manual
+                    screening doesn’t just take time. It takes opportunity.</h2>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-6">
+                <div class="p-6 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-800">
+                    <div class="text-indigo-600 dark:text-indigo-400 mb-4">
+                        <svg class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </div>
+                    <h4 class="text-lg font-bold text-slate-900 dark:text-white mb-2">Time Sink</h4>
+                    <p class="text-slate-600 dark:text-slate-400 text-sm mb-4">You spend 6–8 seconds per CV. At 400
+                        applications, that’s 45+ hours before your first interview.</p>
+                    <p class="text-xs font-semibold text-slate-500 uppercase tracking-wide">Time spent skimming instead
+                        of hiring.</p>
+                </div>
+
+                <div class="p-6 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-800">
+                    <div class="text-indigo-600 dark:text-indigo-400 mb-4">
+                        <svg class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+                        </svg>
+                    </div>
+                    <h4 class="text-lg font-bold text-slate-900 dark:text-white mb-2">Missed Talent</h4>
+                    <p class="text-slate-600 dark:text-slate-400 text-sm mb-4">Rushed screening means great candidates
+                        disappear in the pile. Qualified candidates are rejected due to process overload.</p>
+                    <p class="text-xs font-semibold text-slate-500 uppercase tracking-wide">Your best hire might be in
+                        your reject folder.</p>
+                </div>
+
+                <div class="p-6 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-800">
+                    <div class="text-indigo-600 dark:text-indigo-400 mb-4">
+                        <svg class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                        </svg>
+                    </div>
+                    <h4 class="text-lg font-bold text-slate-900 dark:text-white mb-2">Compounding Risk</h4>
+                    <p class="text-slate-600 dark:text-slate-400 text-sm mb-4">One bad hire can cost 6–9 months of
+                        salary. Most companies make several every year without knowing why.</p>
+                    <p class="text-xs font-semibold text-slate-500 uppercase tracking-wide">The problem compounds
+                        quietly.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Proof Point -->
+    <section class="section-padding bg-slate-900 dark:bg-black text-white relative overflow-hidden reveal">
+        <div class="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20"></div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="grid lg:grid-cols-2 gap-16 items-center">
+                <div>
+                    <h2 class="text-4xl lg:text-5xl font-display font-bold mb-6">400 applications.<br><span
+                            class="text-primary-400">12 minutes.</span><br>Your shortlist.</h2>
+                    <p class="text-slate-300 text-lg leading-relaxed mb-8">
+                        A growing SaaS company posted a single role. 400 applications came in. Niyo parsed every CV,
+                        scored each candidate against the job, and delivered a ranked shortlist — in 12 minutes.
+                    </p>
+                    <div class="pl-4 border-l-2 border-slate-700">
+                        <p class="text-slate-400 italic">"Their previous process? Three weeks. Four people. Same outcome
+                            — just much slower and more stressful."</p>
+                    </div>
+                </div>
+
+                <!-- Simple Graph Viz -->
+                <div class="bg-white/5 border border-white/10 rounded-2xl p-8 backdrop-blur-sm">
+                    <div class="space-y-6">
+                        <div>
+                            <div class="flex justify-between text-sm mb-2 text-slate-400">
+                                <span>Before Niyo</span>
+                                <span>3 weeks</span>
+                            </div>
+                            <div class="h-4 bg-white/10 rounded-full overflow-hidden">
+                                <div class="h-full w-full bg-slate-600 rounded-full"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-sm mb-2 text-white font-medium">
+                                <span>With Niyo</span>
+                                <span class="text-primary-400">12 mins</span>
+                            </div>
+                            <div class="h-4 bg-white/10 rounded-full overflow-hidden">
+                                <div
+                                    class="h-full w-[2%] bg-primary-500 rounded-full box-content border-r-2 border-white relative after:content-[''] after:absolute after:right-0 after:-top-1 after:w-2 after:h-6 after:bg-white/20 after:blur-sm">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- The System -->
+    <section id="how-it-works" class="section-padding reveal">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-display font-bold text-slate-900 dark:text-white mb-3">One platform. Complete
+                    hiring journey.</h2>
+                <p class="text-slate-600 dark:text-slate-400">Not a point tool. A hiring system that connects every
+                    step.</p>
+            </div>
+
+            <div class="relative">
+                <!-- Connecting Line (Desktop) -->
+                <div
+                    class="hidden md:block absolute top-1/2 left-0 w-full h-0.5 bg-slate-100 dark:bg-slate-800 -z-10 transform -translate-y-1/2">
+                </div>
+
+                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
+                    <!-- Step 1 -->
+                    <div
+                        class="bg-white dark:bg-slate-950 p-4 border border-slate-200 dark:border-slate-800 rounded-xl text-center hover:border-primary-500 dark:hover:border-primary-500 transition-colors">
+                        <div
+                            class="w-10 h-10 mx-auto rounded-full bg-slate-100 dark:bg-slate-900 flex items-center justify-center text-sm font-bold text-slate-600 dark:text-slate-300 mb-3">
+                            1</div>
+                        <h4 class="font-bold text-sm text-slate-900 dark:text-white mb-1">Post Jobs</h4>
+                        <p class="text-xs text-slate-500">Create & Share</p>
+                    </div>
+
+                    <!-- Step 2 -->
+                    <div
+                        class="bg-white dark:bg-slate-950 p-4 border border-slate-200 dark:border-slate-800 rounded-xl text-center hover:border-primary-500 dark:hover:border-primary-500 transition-colors">
+                        <div
+                            class="w-10 h-10 mx-auto rounded-full bg-slate-100 dark:bg-slate-900 flex items-center justify-center text-sm font-bold text-slate-600 dark:text-slate-300 mb-3">
+                            2</div>
+                        <h4 class="font-bold text-sm text-slate-900 dark:text-white mb-1">Collect</h4>
+                        <p class="text-xs text-slate-500">Auto-parse CVs</p>
+                    </div>
+
+                    <!-- Step 3 (Active) -->
+                    <div
+                        class="bg-primary-50 dark:bg-primary-900/20 p-4 border border-primary-200 dark:border-primary-800 rounded-xl text-center shadow-lg transform scale-110 z-10">
+                        <div
+                            class="w-10 h-10 mx-auto rounded-full bg-primary-100 dark:bg-primary-900 flex items-center justify-center text-sm font-bold text-primary-600 dark:text-primary-300 mb-3">
+                            3</div>
+                        <h4 class="font-bold text-sm text-primary-900 dark:text-primary-100 mb-1">Screen & Score</h4>
+                        <p class="text-xs text-primary-700 dark:text-primary-300">AI Ranking</p>
+                    </div>
+
+                    <!-- Step 4 -->
+                    <div
+                        class="bg-white dark:bg-slate-950 p-4 border border-slate-200 dark:border-slate-800 rounded-xl text-center hover:border-primary-500 dark:hover:border-primary-500 transition-colors">
+                        <div
+                            class="w-10 h-10 mx-auto rounded-full bg-slate-100 dark:bg-slate-900 flex items-center justify-center text-sm font-bold text-slate-600 dark:text-slate-300 mb-3">
+                            4</div>
+                        <h4 class="font-bold text-sm text-slate-900 dark:text-white mb-1">Manage</h4>
+                        <p class="text-xs text-slate-500">Kanban Pipeline</p>
+                    </div>
+
+                    <!-- Step 5 -->
+                    <div
+                        class="bg-white dark:bg-slate-950 p-4 border border-slate-200 dark:border-slate-800 rounded-xl text-center hover:border-primary-500 dark:hover:border-primary-500 transition-colors">
+                        <div
+                            class="w-10 h-10 mx-auto rounded-full bg-slate-100 dark:bg-slate-900 flex items-center justify-center text-sm font-bold text-slate-600 dark:text-slate-300 mb-3">
+                            5</div>
+                        <h4 class="font-bold text-sm text-slate-900 dark:text-white mb-1">Interview</h4>
+                        <p class="text-xs text-slate-500">Structured Feedback</p>
+                    </div>
+
+                    <!-- Step 6 -->
+                    <div
+                        class="bg-white dark:bg-slate-950 p-4 border border-slate-200 dark:border-slate-800 rounded-xl text-center hover:border-primary-500 dark:hover:border-primary-500 transition-colors">
+                        <div
+                            class="w-10 h-10 mx-auto rounded-full bg-slate-100 dark:bg-slate-900 flex items-center justify-center text-sm font-bold text-slate-600 dark:text-slate-300 mb-3">
+                            6</div>
+                        <h4 class="font-bold text-sm text-slate-900 dark:text-white mb-1">Hire</h4>
+                        <p class="text-xs text-slate-500">Confidently</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Comparison Section -->
+    <section class="section-padding bg-slate-50 dark:bg-slate-900/30 reveal">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="mb-12 text-center">
+                <h2 class="text-3xl font-display font-bold text-slate-900 dark:text-white">Not just an ATS. Not just an
+                    AI tool.</h2>
+            </div>
+
+            <div class="overflow-hidden rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm">
+                <div
+                    class="grid md:grid-cols-3 bg-white dark:bg-slate-950 divide-y md:divide-y-0 md:divide-x divide-slate-200 dark:divide-slate-800">
+
+                    <!-- Traditional ATS -->
+                    <div class="p-8">
+                        <h3 class="font-bold text-lg mb-4 text-slate-600 dark:text-slate-400">Traditional ATS</h3>
+                        <ul class="space-y-4 text-sm">
+                            <li class="flex gap-2">
+                                <span class="text-green-500">●</span>
+                                <span class="text-slate-600 dark:text-slate-300">Tracking applications</span>
+                            </li>
+                            <li class="flex gap-2">
+                                <span class="text-red-400">×</span>
+                                <span class="text-slate-500 dark:text-slate-500">Deciding who to interview</span>
+                            </li>
+                            <li class="flex gap-2">
+                                <span class="text-red-400">×</span>
+                                <span class="text-slate-500 dark:text-slate-500">No deep screening intelligence</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Generic AI -->
+                    <div class="p-8">
+                        <h3 class="font-bold text-lg mb-4 text-slate-600 dark:text-slate-400">Generic AI (ChatGPT etc)
+                        </h3>
+                        <ul class="space-y-4 text-sm">
+                            <li class="flex gap-2">
+                                <span class="text-green-500">●</span>
+                                <span class="text-slate-600 dark:text-slate-300">One-off analysis</span>
+                            </li>
+                            <li class="flex gap-2">
+                                <span class="text-red-400">×</span>
+                                <span class="text-slate-500 dark:text-slate-500">Inconsistent criteria</span>
+                            </li>
+                            <li class="flex gap-2">
+                                <span class="text-red-400">×</span>
+                                <span class="text-slate-500 dark:text-slate-500">No workflow context</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Niyo -->
+                    <div class="p-8 bg-primary-50/50 dark:bg-primary-900/10 relative overflow-hidden">
+                        <div class="absolute top-0 left-0 w-full h-1 bg-primary-500"></div>
+                        <h3 class="font-bold text-lg mb-4 text-indigo-600 dark:text-white">Niyo (Hiring System)</h3>
+                        <ul class="space-y-4 text-sm">
+                            <li class="flex gap-2">
+                                <svg class="w-5 h-5 text-indigo-500" fill="none" viewBox="0 0 24 24"
+                                    stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M5 13l4 4L19 7" />
+                                </svg>
+                                <span class="font-medium text-slate-900 dark:text-white">Workflow + AI Screening</span>
+                            </li>
+                            <li class="flex gap-2">
+                                <svg class="w-5 h-5 text-indigo-500" fill="none" viewBox="0 0 24 24"
+                                    stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M5 13l4 4L19 7" />
+                                </svg>
+                                <span class="font-medium text-slate-900 dark:text-white">Ranked shortlists in
+                                    hours</span>
+                            </li>
+                            <li class="flex gap-2">
+                                <svg class="w-5 h-5 text-indigo-500" fill="none" viewBox="0 0 24 24"
+                                    stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M5 13l4 4L19 7" />
+                                </svg>
+                                <span class="font-medium text-slate-900 dark:text-white">Hiring Infrastructure</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <p class="text-center mt-8 text-slate-500 dark:text-slate-400 text-sm">The real question isn’t ‘Which tool?’
+                — it’s ‘What system do we want hiring to run on?’</p>
+        </div>
+    </section>
+
+    <!-- Pricing -->
+    <section id="pricing" class="section-padding reveal">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-2xl mx-auto mb-16">
+                <h2 class="text-3xl md:text-4xl font-display font-bold text-slate-900 dark:text-white mb-4">Pricing that
+                    costs less than one bad hire</h2>
+                <p class="text-slate-600 dark:text-slate-400">A bad hire costs 6–9 months salary. Niyo costs less than a
+                    recruiter for a week.</p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+                <!-- Plan 1 -->
+                <div class="p-8 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950">
+                    <h3 class="text-lg font-semibold text-slate-900 dark:text-white">Growth</h3>
+                    <div class="my-4">
+                        <span class="text-4xl font-bold tracking-tight text-slate-900 dark:text-white">$39</span>
+                        <span class="text-slate-500">/mo</span>
+                    </div>
+                    <p class="text-sm text-slate-500 mb-6">For teams hiring occasionally.</p>
+                    <a href="#"
+                        class="block w-full py-2.5 px-4 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-900 dark:text-white text-center rounded-lg text-sm font-semibold transition-colors">Start
+                        Free</a>
+                </div>
+
+                <!-- Plan 2 -->
+                <div
+                    class="p-8 rounded-2xl border-2 border-primary-500 bg-white dark:bg-slate-900 relative shadow-2xl shadow-primary-500/10">
+                    <div
+                        class="absolute top-0 right-0 bg-primary-500 text-white text-xs font-bold px-3 py-1 rounded-bl-lg rounded-tr-lg">
+                        POPULAR</div>
+                    <h3 class="text-lg font-semibold text-slate-900 dark:text-white">Professional</h3>
+                    <div class="my-4">
+                        <span class="text-4xl font-bold tracking-tight text-slate-900 dark:text-white">$99</span>
+                        <span class="text-slate-500">/mo</span>
+                    </div>
+                    <p class="text-sm text-slate-500 mb-6">For teams hiring continuously.</p>
+                    <a href="#"
+                        class="block w-full py-2.5 px-4 bg-primary-600 hover:bg-primary-500 text-white text-center rounded-lg text-sm font-semibold transition-colors shadow-lg shadow-primary-500/25">Start
+                        Free</a>
+                </div>
+
+                <!-- Plan 3 -->
+                <div class="p-8 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950">
+                    <h3 class="text-lg font-semibold text-slate-900 dark:text-white">Enterprise</h3>
+                    <div class="my-4">
+                        <span class="text-4xl font-bold tracking-tight text-slate-900 dark:text-white">Custom</span>
+                    </div>
+                    <p class="text-sm text-slate-500 mb-6">For teams hiring at scale.</p>
+                    <a href="#"
+                        class="block w-full py-2.5 px-4 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-900 dark:text-white text-center rounded-lg text-sm font-semibold transition-colors">Contact
+                        Sales</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Final CTA -->
+    <section class="py-24 bg-white dark:bg-slate-950 border-t border-slate-100 dark:border-slate-900 reveal">
+        <div class="max-w-4xl mx-auto px-4 text-center">
+            <h2 class="text-3xl font-display font-bold text-slate-900 dark:text-white mb-6">See your shortlist appear
+            </h2>
+            <p class="text-lg text-slate-600 dark:text-slate-400 mb-8 max-w-xl mx-auto">
+                Upload your first batch of real CVs. Watch candidates rank by fit. If it’s not clearly better than what
+                you’re doing now, click stop.
+            </p>
+            <div class="flex flex-col sm:flex-row justify-center items-center gap-4">
+                <a href="#"
+                    class="w-full sm:w-auto px-8 py-4 rounded-full bg-slate-900 dark:bg-white hover:bg-slate-800 dark:hover:bg-slate-200 text-white dark:text-slate-900 font-semibold text-lg transition-all shadow-xl">
+                    Start Free — See Your Shortlist
+                </a>
+            </div>
+            <div class="mt-8 flex flex-wrap justify-center gap-4 text-sm text-slate-500 dark:text-slate-400">
+                <span class="flex items-center gap-1"><svg class="w-4 h-4" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                    </svg> No credit card</span>
+                <span class="flex items-center gap-1"><svg class="w-4 h-4" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                    </svg> Cancel anytime</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-slate-50 dark:bg-slate-950/50 py-12 border-t border-slate-200 dark:border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <h3 class="text-2xl font-display font-bold text-slate-900 dark:text-white mb-4">"Stop screening. Start
+                hiring."</h3>
+            <div class="flex justify-center gap-2 items-center mb-8 opacity-50">
+                <div
+                    class="w-6 h-6 rounded bg-slate-900 dark:bg-white flex items-center justify-center text-white dark:text-slate-900 font-bold text-xs">
+                    N</div>
+                <span class="font-bold text-slate-900 dark:text-white">Niyo</span>
+            </div>
+            <p class="text-slate-400 text-sm">&copy; 2026 Niyo. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+        // Theme Toggle Logic
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        const themeToggleBtnMobile = document.getElementById('theme-toggle-mobile');
+
+        function toggleTheme() {
+            if (document.documentElement.classList.contains('dark')) {
+                document.documentElement.classList.remove('dark');
+                localStorage.theme = 'light';
+                updateThemeIcons(false);
+            } else {
+                document.documentElement.classList.add('dark');
+                localStorage.theme = 'dark';
+                updateThemeIcons(true);
+            }
+        }
+
+        function updateThemeIcons(isDark) {
+            const sunIcon = document.getElementById('theme-icon-sun');
+            const moonIcon = document.getElementById('theme-icon-moon');
+
+            if (isDark) {
+                sunIcon.classList.remove('hidden');
+                moonIcon.classList.add('hidden');
+            } else {
+                sunIcon.classList.add('hidden');
+                moonIcon.classList.remove('hidden');
+            }
+        }
+
+        // Init Theme
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+            updateThemeIcons(true);
+        } else {
+            document.documentElement.classList.remove('dark');
+            updateThemeIcons(false);
+        }
+
+        themeToggleBtn.addEventListener('click', toggleTheme);
+        themeToggleBtnMobile.addEventListener('click', toggleTheme);
+
+        // Mobile Menu Logic
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const mobileLinks = document.querySelectorAll('.mobile-link');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('translate-x-full');
+            // Toggle icon
+            const icon = mobileMenuBtn.querySelector('svg');
+            if (mobileMenu.classList.contains('translate-x-full')) {
+                icon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />';
+            } else {
+                icon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />';
+            }
+        });
+
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('translate-x-full');
+                mobileMenuBtn.querySelector('svg').innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />';
+            });
+        });
+
+        // Scroll Reveal Animation
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+        // Navbar Scrolled State
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('navbar');
+            if (window.scrollY > 20) {
+                nav.classList.add('bg-white/80', 'dark:bg-slate-950/80', 'backdrop-blur-md', 'shadow-sm', 'border-b', 'border-slate-200', 'dark:border-slate-800');
+            } else {
+                nav.classList.remove('bg-white/80', 'dark:bg-slate-950/80', 'backdrop-blur-md', 'shadow-sm', 'border-b', 'border-slate-200', 'dark:border-slate-800');
+            }
+        });
+    </script>
+</body>
+
+</html>
