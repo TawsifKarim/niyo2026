@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Niyo - High Impact Hiring</title>
+    <!-- Fonts: Inter for UI, JetBrains Mono for numbers -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap"
+        rel="stylesheet">
+
+    <style>
+        /* 
+         * CORE STYLES 
+         * Minimalist, high-performance, dark mode by default.
+         */
+        :root {
+            --bg-color: #020408;
+            /* Very dark blue-black */
+            --text-main: #ffffff;
+            --text-muted: #94a3b8;
+            --accent-glow: rgba(56, 189, 248, 0.15);
+            /* Light blue glow (sky-400) */
+            --highlight-bad: #f87171;
+            /* Subtle red for negative */
+            --highlight-good: #38bdf8;
+            /* Blue for positive */
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body,
+        html {
+            width: 100%;
+            height: 100%;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: 'Inter', sans-serif;
+            overflow: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* Container for all motion */
+        .stage {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+        }
+
+        /* Cinema Grain - Essential for "Expensive" feel */
+        .noise {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 999;
+            opacity: 0.035;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+
+        /* Vignette */
+        .vignette {
+            position: fixed;
+            inset: 0;
+            background: radial-gradient(circle at center, transparent 40%, rgba(0, 0, 0, 0.4) 100%);
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        /* SCENE COMPONENTS */
+        .scene {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            visibility: hidden;
+        }
+
+        /* Scene 1: Financial Hook */
+        .counter-wrapper {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: clamp(3rem, 10vw, 8rem);
+            font-weight: 700;
+            letter-spacing: -0.05em;
+            display: flex;
+            align-items: baseline;
+            color: white;
+            z-index: 20;
+            /* Subtle text gradient for metallic feel */
+            background: linear-gradient(to bottom, #ffffff 30%, #a1a1aa 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.1));
+        }
+
+        .currency {
+            font-size: 0.5em;
+            margin-right: 0.2em;
+            opacity: 0.6;
+            transform: translateY(-20%);
+            -webkit-text-fill-color: #888;
+            /* Override gradient for currency symbol */
+        }
+
+        #counter-val {
+            font-variant-numeric: tabular-nums;
+        }
+
+        /* Scene 2 & 3: Typography */
+        .hero-text {
+            font-size: clamp(2.5rem, 6vw, 5rem);
+            font-weight: 800;
+            text-align: center;
+            line-height: 1.1;
+            letter-spacing: -0.03em;
+            color: white;
+            will-change: transform, opacity;
+            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Scene 4: Product Reveal */
+        /* Scene 4: Product Reveal */
+        .brand-name {
+            font-size: clamp(4rem, 12vw, 9rem);
+            font-weight: 800;
+            letter-spacing: -0.08em;
+            /* Tighter for lowercase */
+            /* Premium metallic blue gradient */
+            background: linear-gradient(135deg, #e0f2fe 0%, #7dd3fc 50%, #0284c7 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 2rem;
+            filter: drop-shadow(0 0 40px rgba(56, 189, 248, 0.3));
+            padding-right: 0.1em;
+            /* Prevent O cutoff */
+        }
+
+        .final-brand {
+            font-size: clamp(2rem, 5vw, 2.5rem);
+            margin-top: 2.5rem;
+            margin-bottom: 0;
+        }
+
+        .brand-tagline {
+            font-size: clamp(1rem, 2vw, 1.5rem);
+            color: var(--text-muted);
+            font-weight: 400;
+            letter-spacing: 0.05em;
+        }
+
+        .brand-tagline .em-accent {
+            color: var(--highlight-good);
+            font-weight: 700;
+        }
+
+        /* Scene 5: Differentiators */
+        .diff-text {
+            font-size: clamp(2rem, 5vw, 4rem);
+            font-weight: 700;
+            text-align: center;
+            background: linear-gradient(to bottom, #fff 0%, #ccc 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .diff-sub {
+            display: block;
+            font-size: clamp(1rem, 2vw, 1.5rem);
+            font-weight: 400;
+            color: var(--text-muted);
+            margin-top: 1.5rem;
+            max-width: 600px;
+            line-height: 1.5;
+            -webkit-text-fill-color: var(--text-muted);
+        }
+
+        .diff-extra-group {
+            display: block;
+            margin-top: 2rem;
+            font-weight: 600;
+            font-size: clamp(1.2rem, 3vw, 2rem);
+        }
+
+        .diff-extra-1 {
+            -webkit-text-fill-color: var(--text-main);
+        }
+
+        .diff-extra-2 {
+            font-size: 0.8em;
+            color: var(--text-muted);
+            margin-left: 0.5rem;
+            font-weight: 400;
+            -webkit-text-fill-color: var(--text-muted);
+        }
+
+        /* UTILS */
+        /* UTILS */
+        .bg-gradient {
+            /* Deep, rich blue gradient */
+            background: radial-gradient(circle at 60% 40%, #0c1221 0%, #020408 70%);
+            opacity: 0;
+            position: absolute;
+            inset: 0;
+            z-index: 1;
+        }
+
+        /* Keyword Emphasis */
+        .em-bad {
+            color: var(--highlight-bad);
+            opacity: 0.9;
+            font-weight: 700;
+            text-shadow: 0 0 15px rgba(248, 113, 113, 0.3);
+        }
+
+        .em-good {
+            color: var(--highlight-good);
+            font-weight: 700;
+            text-shadow: 0 0 15px rgba(56, 189, 248, 0.3);
+        }
+
+        .em-system {
+            color: #e2e8f0;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+        }
+
+        /* A subtle ambient glow that stays present */
+
+        /* A subtle ambient glow that stays present */
+        .ambient-glow {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100vw;
+            height: 100vh;
+            background: radial-gradient(circle at center, var(--accent-glow) 0%, transparent 50%);
+            z-index: 1;
+            pointer-events: none;
+            opacity: 0.4;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Global Texture & Lighting -->
+    <div class="noise"></div>
+    <div class="vignette"></div>
+    <div class="ambient-glow"></div>
+
+    <!-- Background Layer -->
+    <div id="gradient-bg" class="bg-gradient"></div>
+
+    <div class="stage">
+
+        <!-- Scene 1: Counter -->
+        <div id="scene-1" class="scene">
+            <div class="counter-wrapper">
+                <span class="currency">$</span>
+                <span id="counter-val">0</span>
+            </div>
+        </div>
+
+        <!-- Scene 2: Impact -->
+        <div id="scene-2" class="scene">
+            <h1 class="hero-text" id="impact-text">
+                Cost of your<br>last <span class="em-bad">bad hire</span>
+            </h1>
+        </div>
+
+        <!-- Scene 3: Reframe -->
+        <div id="scene-3" class="scene">
+            <h1 class="hero-text" id="reframe-1">That’s not bad luck.</h1>
+            <h1 class="hero-text" id="reframe-2">That’s a <span class="em-system">broken<br>hiring system.</span></h1>
+        </div>
+
+        <!-- Scene 4: Reveal -->
+        <div id="scene-4" class="scene">
+            <div class="brand-name" id="product-name">niyo</div>
+            <div class="brand-tagline" id="product-sub"><span class="em-accent">LESS</span> than your monthly <span
+                    class="em-accent">COFFEE</span> budget.</div>
+        </div>
+
+        <!-- Scene 5: Differentiators -->
+        <div id="scene-5" class="scene">
+            <h1 class="diff-text" id="diff-1">Not another ATS</h1>
+            <h1 class="diff-text" id="diff-2">Not a ChatGPT prompt</h1>
+            <h1 class="diff-text" id="diff-3">
+                A complete hiring system
+                <span class="diff-sub text-italic">That turns chaos into your next <span class="em-good">great
+                        hire</span></span>
+                <span class="diff-extra-group">
+                    <span class="diff-extra-1">Within hours</span>
+                    <span class="diff-extra-2">&mdash; Often within minutes.</span>
+                </span>
+            </h1>
+            <div class="brand-name final-brand" id="final-brand">niyo</div>
+        </div>
+
+    </div>
+
+    <!-- GSAP for complex timelines -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+
+            // Register GSAP
+            gsap.config({ nullTargetWarn: false });
+
+            // Master Timeline
+            const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
+
+            // Elements
+            const counterObj = { value: 0 };
+            const counterEl = document.getElementById("counter-val");
+            const scene1 = document.getElementById("scene-1");
+            const scene2 = document.getElementById("scene-2");
+            const scene3 = document.getElementById("scene-3");
+            const scene4 = document.getElementById("scene-4");
+            const scene5 = document.getElementById("scene-5");
+            const bg = document.getElementById("gradient-bg");
+
+            // --- SCENE 1: Financial Hook ---
+            // Rapid uneven count up
+            gsap.set(scene1, { visibility: "visible" });
+
+            tl.to(counterObj, {
+                value: 45000,
+                duration: 1.2,
+                ease: "power2.in",
+                onUpdate: updateCounter
+            })
+                .to(counterObj, {
+                    value: 89000,
+                    duration: 0.6,
+                    ease: "linear",
+                    onUpdate: updateCounter
+                })
+                // Hard stop
+                .to(counterObj, {
+                    value: 127000,
+                    duration: 0.1, // Sudden jump at end for "hard stop" feel
+                    ease: "power1.out",
+                    onUpdate: updateCounter
+                });
+
+            // Screen shake on stop
+            tl.to("body", {
+                x: -10,
+                duration: 0.05,
+                yoyo: true,
+                repeat: 5,
+                ease: "rough({ template: none.out, strength: 1, points: 20, taper: 'none', randomize: true, clamp: false})"
+            }, "<"); // sync with end of count
+
+
+            // --- SCENE 2: The Impact ---
+            // "Cost of your last bad hire" slams in
+            gsap.set(scene2, { visibility: "visible" });
+
+            // Move number UP and fade it to background
+            tl.to(scene1, {
+                y: -120, // Move up
+                scale: 0.8,
+                opacity: 0.35, // Still visible in background
+                // Removed blur as requested
+                duration: 0.6
+            }, "+=0.1");
+
+            // Text slams in slightly BELOW the center
+            tl.fromTo("#impact-text",
+                { scale: 2, opacity: 0, filter: "blur(10px)", y: 50 }, // Start lower
+                { scale: 1, opacity: 1, filter: "blur(0px)", y: 80, duration: 0.4, ease: "expo.out" } // Land at y: 80 (below number)
+                , "<");
+
+
+            // --- SCENE 3: Reframe ---
+            // Smooth transition to dark gradient
+            tl.to(bg, { opacity: 1, duration: 1.5 }, "+=1.5");
+
+            // Cleanup previous scenes opacity
+            tl.to([scene1, scene2], { opacity: 0, duration: 0.5 }, "<");
+
+            // Text sequence 1
+            gsap.set(scene3, { visibility: "visible" });
+
+            tl.from("#reframe-1", {
+                y: 30,
+                opacity: 0,
+                duration: 0.8
+            }, "-=0.2");
+
+            tl.to("#reframe-1", {
+                y: -30,
+                opacity: 0,
+                duration: 0.6,
+                delay: 1.5
+            });
+
+            // Text sequence 2
+            tl.from("#reframe-2", {
+                y: 40,
+                opacity: 0,
+                duration: 0.8
+            }, "-=0.3");
+
+
+            // --- SCENE 4: Product Reveal ---
+            tl.to("#reframe-2", { opacity: 0, scale: 0.95, duration: 0.8, delay: 2 });
+
+            gsap.set(scene4, { visibility: "visible" });
+
+            tl.from("#product-name", {
+                scale: 0.8,
+                opacity: 0,
+                duration: 1.2,
+                ease: "expo.out"
+            }, "-=0.2");
+
+            // Pause 0.5s before tagline
+            tl.from("#product-sub", {
+                y: 20,
+                opacity: 0,
+                duration: 1
+            }, "+=0.5");
+
+
+            // --- SCENE 5: Differentiation ---
+            tl.to(scene4, { opacity: 0, y: -20, duration: 0.8, delay: 2 });
+
+            gsap.set(scene5, { visibility: "visible" });
+
+            // Cycle through texts
+            const diffs = ["#diff-1", "#diff-2", "#diff-3"];
+
+            // Hide all first
+            gsap.set(diffs, { display: "none", opacity: 0 });
+
+            // 1. Not another ATS
+            tl.set("#diff-1", { display: "block" });
+            tl.fromTo("#diff-1",
+                { opacity: 0, y: 30, rotationX: -20 },
+                { opacity: 1, y: 0, rotationX: 0, duration: 0.8 }
+            );
+            tl.to("#diff-1", { opacity: 0, y: -30, filter: "blur(5px)", duration: 0.5, delay: 1.2 });
+
+            // 2. Not a ChatGPT prompt
+            tl.set("#diff-1", { display: "none" });
+            tl.set("#diff-2", { display: "block" });
+            tl.fromTo("#diff-2",
+                { opacity: 0, y: 30 },
+                { opacity: 1, y: 0, duration: 0.8 }
+            );
+            tl.to("#diff-2", { opacity: 0, y: -30, filter: "blur(5px)", duration: 0.5, delay: 1.2 });
+
+            // 3. Complete system
+            tl.set("#diff-2", { display: "none" });
+            tl.set("#diff-3", { display: "block" });
+
+            // Text split logic manually for scene 5
+            const diff3Main = document.querySelector("#diff-3");
+            const diff3Sub = document.querySelector("#diff-3 .diff-sub");
+            const diffExtra1 = document.querySelector(".diff-extra-1");
+            const diffExtra2 = document.querySelector(".diff-extra-2");
+
+            // HIDE EXTRA TEXT INITIALLY
+            gsap.set([diffExtra1, diffExtra2], { opacity: 0, display: "none" });
+
+            // Animate main text first
+            tl.fromTo(diff3Main,
+                { opacity: 0, scale: 1.1 },
+                { opacity: 1, scale: 1, duration: 1.2, ease: "circ.out" }
+            );
+
+            // Animate sub text (slide fade from left) with PAUSE
+            tl.fromTo(diff3Sub,
+                { opacity: 0, x: -50 },
+                { opacity: 1, x: 0, duration: 1.5, ease: "power2.out" },
+                "+=0.5" // 0.5s pause before showing this
+            );
+
+            // 1. "Within hours" - Slide in from right
+            tl.to(diffExtra1, {
+                display: "inline-block",
+                duration: 0
+            }, "+=0.2"); // Set display first
+
+            tl.fromTo(diffExtra1,
+                { opacity: 0, x: 50 },
+                { opacity: 1, x: 0, duration: 0.6, ease: "back.out(1.7)" }
+            );
+
+            // 2. "- Often within minutes" - Slide in from right with delay
+            tl.to(diffExtra2, {
+                display: "inline-block",
+                duration: 0
+            }, "+=0.4");
+
+            tl.fromTo(diffExtra2,
+                { opacity: 0, x: 50 },
+                { opacity: 1, x: 0, duration: 0.6, ease: "back.out(1.7)" }
+            );
+
+            // Final niyo brand fade in
+            const finalBrand = document.getElementById("final-brand");
+            gsap.set(finalBrand, { opacity: 0, display: "none" });
+
+            tl.to(finalBrand, {
+                display: "block",
+                duration: 0
+            }, "+=1");
+
+            tl.fromTo(finalBrand,
+                { opacity: 0, y: 20 },
+                { opacity: 1, y: 0, duration: 1.5, ease: "power2.out" }
+            );
+
+            // Helpers
+            function updateCounter() {
+                // Formatting helper for currency
+                counterEl.innerText = Math.floor(counterObj.value).toLocaleString();
+            }
+
+        });
+    </script>
+</body>
+
+</html>

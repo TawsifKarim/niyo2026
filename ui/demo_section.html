@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Niyo - Section Variants</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Outfit', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        niyo: { 500: '#0ea5e9' }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+
+<body class="bg-gray-100 text-zinc-900">
+
+    <!-- VARIANT 1: Minimalist Editorial -->
+    <div class="bg-white py-4 px-6 border-b border-gray-200">
+        <h2 class="text-xs font-bold uppercase tracking-widest text-gray-400">Variant 1: Minimalist Editorial</h2>
+    </div>
+    <section class="py-32 px-6 bg-zinc-50 text-zinc-900">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid lg:grid-cols-2 gap-16 mb-24">
+                <h2 class="text-5xl md:text-6xl font-serif leading-tight">
+                    Manual screening doesn't just take time.<br>
+                    <span class="italic text-zinc-400">It takes everything.</span>
+                </h2>
+                <div class="flex items-end pb-2">
+                    <p class="text-xl text-zinc-600 leading-relaxed font-light">
+                        The hidden costs of traditional hiring processes are bleeding your resources. It's time to stop
+                        paying the price.
+                    </p>
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-12 border-t border-zinc-200 pt-12">
+                <!-- item -->
+                <div class="space-y-4">
+                    <div class="text-red-600 font-serif italic text-3xl">01. Time</div>
+                    <h3 class="text-xl font-bold uppercase tracking-wide">The Hours Lost</h3>
+                    <p class="text-zinc-500 leading-relaxed">
+                        You spend 6-8 seconds per CV. At 400 applications, that's 45+ hours before you've even started
+                        interviewing.
+                    </p>
+                    <p class="text-sm font-medium border-l-2 border-red-600 pl-4 py-1 mt-4">
+                        Implication: Using high-value time on low-value work.
+                    </p>
+                </div>
+                <!-- item -->
+                <div class="space-y-4">
+                    <div class="text-orange-600 font-serif italic text-3xl">02. Quality</div>
+                    <h3 class="text-xl font-bold uppercase tracking-wide">The Talent Missed</h3>
+                    <p class="text-zinc-500 leading-relaxed">
+                        Rushed screening means great candidates get missed. 60% of qualified candidates are rejected due
+                        to fatigue.
+                    </p>
+                    <p class="text-sm font-medium border-l-2 border-orange-600 pl-4 py-1 mt-4">
+                        Implication: Your best hire is in the reject pile.
+                    </p>
+                </div>
+                <!-- item -->
+                <div class="space-y-4">
+                    <div class="text-purple-600 font-serif italic text-3xl">03. Impact</div>
+                    <h3 class="text-xl font-bold uppercase tracking-wide">The Silent Cost</h3>
+                    <p class="text-zinc-500 leading-relaxed">
+                        One bad hire costs 6-9 months of salary. Most companies make 2-3 per year without realizing it.
+                    </p>
+                    <p class="text-sm font-medium border-l-2 border-purple-600 pl-4 py-1 mt-4">
+                        Implication: The problem compounds silently.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- VARIANT 2: Deep Glassmorphism -->
+    <div class="bg-black py-4 px-6 border-b border-gray-800 mt-12">
+        <h2 class="text-xs font-bold uppercase tracking-widest text-gray-500">Variant 2: Deep Glassmorphism (Dark)</h2>
+    </div>
+    <section class="py-32 px-6 bg-[#050505] text-white relative overflow-hidden">
+        <!-- Background Orbs -->
+        <div
+            class="absolute top-0 right-0 w-[500px] h-[500px] bg-blue-600/20 rounded-full blur-[120px] -z-10 opacity-40">
+        </div>
+        <div
+            class="absolute bottom-0 left-0 w-[500px] h-[500px] bg-purple-600/20 rounded-full blur-[120px] -z-10 opacity-40">
+        </div>
+
+        <div class="max-w-7xl mx-auto relative z-10">
+            <div class="text-center mb-20">
+                <h2 class="text-4xl md:text-6xl font-display font-bold tracking-tight mb-6">
+                    Manual screening doesn't just take time. <br>
+                    <span class="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">It takes
+                        everything.</span>
+                </h2>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Card 1 -->
+                <div class="relative group">
+                    <div
+                        class="absolute inset-0 bg-gradient-to-b from-white/10 to-transparent rounded-3xl -z-10 blur-sm group-hover:blur-md transition-all">
+                    </div>
+                    <div
+                        class="h-full bg-white/5 border border-white/10 rounded-3xl p-8 hover:bg-white/10 transition-colors backdrop-blur-md">
+                        <div
+                            class="w-14 h-14 rounded-2xl bg-gradient-to-br from-red-500/20 to-red-600/10 flex items-center justify-center text-red-500 mb-6 border border-red-500/20 shadow-[0_0_15px_rgba(239,68,68,0.2)]">
+                            <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-3 tracking-tight">Time Cost</h3>
+                        <p class="text-zinc-400 leading-relaxed mb-6">You spend 6-8 seconds per CV. At 400 applications,
+                            that's 45+ hours before you've even started interviewing.</p>
+                        <div class="pt-6 border-t border-white/5 flex items-start gap-3">
+                            <div class="w-1.5 h-1.5 rounded-full bg-red-500 mt-2"></div>
+                            <p class="text-sm text-zinc-300 font-medium">Implication: Using high-value time on low-value
+                                work.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="relative group">
+                    <div
+                        class="absolute inset-0 bg-gradient-to-b from-white/10 to-transparent rounded-3xl -z-10 blur-sm group-hover:blur-md transition-all">
+                    </div>
+                    <div
+                        class="h-full bg-white/5 border border-white/10 rounded-3xl p-8 hover:bg-white/10 transition-colors backdrop-blur-md">
+                        <div
+                            class="w-14 h-14 rounded-2xl bg-gradient-to-br from-orange-500/20 to-orange-600/10 flex items-center justify-center text-orange-500 mb-6 border border-orange-500/20 shadow-[0_0_15px_rgba(249,115,22,0.2)]">
+                            <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-3 tracking-tight">Quality Cost</h3>
+                        <p class="text-zinc-400 leading-relaxed mb-6">Rushed screening means great candidates get
+                            missed. 60% of qualified candidates are rejected due to fatigue.</p>
+                        <div class="pt-6 border-t border-white/5 flex items-start gap-3">
+                            <div class="w-1.5 h-1.5 rounded-full bg-orange-500 mt-2"></div>
+                            <p class="text-sm text-zinc-300 font-medium">Implication: Your best hire is in the reject
+                                pile.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="relative group">
+                    <div
+                        class="absolute inset-0 bg-gradient-to-b from-white/10 to-transparent rounded-3xl -z-10 blur-sm group-hover:blur-md transition-all">
+                    </div>
+                    <div
+                        class="h-full bg-white/5 border border-white/10 rounded-3xl p-8 hover:bg-white/10 transition-colors backdrop-blur-md">
+                        <div
+                            class="w-14 h-14 rounded-2xl bg-gradient-to-br from-purple-500/20 to-purple-600/10 flex items-center justify-center text-purple-500 mb-6 border border-purple-500/20 shadow-[0_0_15px_rgba(168,85,247,0.2)]">
+                            <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                    d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z">
+                                </path>
+                            </svg>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-3 tracking-tight">Hidden Cost</h3>
+                        <p class="text-zinc-400 leading-relaxed mb-6">One bad hire costs 6-9 months of salary. Most
+                            companies make 2-3 per year without realizing it.</p>
+                        <div class="pt-6 border-t border-white/5 flex items-start gap-3">
+                            <div class="w-1.5 h-1.5 rounded-full bg-purple-500 mt-2"></div>
+                            <p class="text-sm text-zinc-300 font-medium">Implication: The problem compounds silently.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- VARIANT 3: Bento Grid -->
+    <div class="bg-zinc-100 py-4 px-6 border-b border-gray-300 mt-12">
+        <h2 class="text-xs font-bold uppercase tracking-widest text-gray-600">Variant 3: Bento Grid Layout</h2>
+    </div>
+    <section class="py-32 px-6 bg-zinc-100 text-zinc-900">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-5xl font-bold tracking-tight mb-4 text-zinc-900">
+                    Manual screening doesn't just take time. <br>
+                    <span class="text-zinc-500">It takes everything.</span>
+                </h2>
+            </div>
+
+            <div class="grid md:grid-cols-4 md:grid-rows-2 gap-4 h-auto md:h-[600px]">
+
+                <!-- Large Feature Card -->
+                <div
+                    class="md:col-span-2 md:row-span-2 bg-white rounded-3xl p-8 md:p-12 shadow-sm border border-zinc-200 flex flex-col justify-center relative overflow-hidden group">
+                    <div
+                        class="absolute top-0 right-0 w-64 h-64 bg-red-50 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                    </div>
+                    <div
+                        class="w-16 h-16 rounded-full bg-red-100 flex items-center justify-center text-red-600 mb-8 relative z-10">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-3xl font-bold mb-4 relative z-10">Time Cost</h3>
+                    <p class="text-xl text-zinc-500 leading-relaxed mb-6 font-medium relative z-10">
+                        You spend 6-8 seconds per CV. At 400 applications, that's 45+ hours before you've even started
+                        interviewing.
+                    </p>
+                    <div
+                        class="mt-auto inline-flex items-center gap-2 text-sm font-bold text-red-600 bg-red-50 px-4 py-2 rounded-full w-fit">
+                        <span class="w-2 h-2 rounded-full bg-red-600"></span>
+                        Implication: Using high-value time on low-value work.
+                    </div>
+                </div>
+
+                <!-- Secondary Card 1 -->
+                <div
+                    class="md:col-span-2 bg-white rounded-3xl p-8 shadow-sm border border-zinc-200 flex flex-col justify-center hover:shadow-md transition-shadow">
+                    <div class="flex items-start gap-6">
+                        <div
+                            class="w-12 h-12 rounded-full bg-orange-100 flex items-center justify-center text-orange-600 shrink-0">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold mb-2">Quality Cost</h3>
+                            <p class="text-zinc-500 text-sm leading-relaxed mb-3">
+                                Rushed screening means great candidates get missed. 60% of qualified candidates are
+                                rejected due to fatigue.
+                            </p>
+                            <p class="text-xs font-semibold text-orange-600">Implication: Your best hire is in the
+                                reject pile.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Secondary Card 2 -->
+                <div
+                    class="md:col-span-2 bg-white rounded-3xl p-8 shadow-sm border border-zinc-200 flex flex-col justify-center hover:shadow-md transition-shadow">
+                    <div class="flex items-start gap-6">
+                        <div
+                            class="w-12 h-12 rounded-full bg-purple-100 flex items-center justify-center text-purple-600 shrink-0">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z">
+                                </path>
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold mb-2">Hidden Cost</h3>
+                            <p class="text-zinc-500 text-sm leading-relaxed mb-3">
+                                One bad hire costs 6-9 months of salary. Most companies make 2-3 per year without
+                                realizing it.
+                            </p>
+                            <p class="text-xs font-semibold text-purple-600">Implication: The problem compounds
+                                silently.</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- VARIANT 4: Neon Cyber -->
+    <div class="bg-slate-900 py-4 px-6 border-b border-slate-800 mt-12">
+        <h2 class="text-xs font-bold uppercase tracking-widest text-blue-400">Variant 4: Neon / Cyber</h2>
+    </div>
+    <section class="py-32 px-6 bg-[#0B0F19] text-white">
+        <div class="max-w-7xl mx-auto">
+            <div class="mb-20">
+                <span class="font-mono text-blue-400 text-xs tracking-widest mb-4 block">// SYSTEM_ERROR_LOG</span>
+                <h2 class="text-4xl md:text-6xl font-bold tracking-tighter mb-6 font-sans">
+                    MANUAL_SCREENING <span class="text-red-500">FAILED</span><br>
+                    <span class="text-zinc-500">SYSTEM_RESOURCES_DEPLETED</span>
+                </h2>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-6">
+                <!-- Card 1 -->
+                <div class="bg-slate-900/50 border-l-2 border-red-500 p-8 hover:bg-slate-900 transition-colors">
+                    <div class="flex items-center justify-between mb-6">
+                        <h3 class="text-xl font-mono font-bold text-red-400">ERROR_01: TIME</h3>
+                        <svg class="w-5 h-5 text-red-500 opacity-50" fill="none" stroke="currentColor"
+                            viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                    </div>
+                    <p class="text-zinc-400 mb-8 font-mono text-sm leading-relaxed">
+                        > 6-8s per CV latency.<br>
+                        > 400 requests = 45h downtime.<br>
+                        > Interview pipeline blocked.
+                    </p>
+                    <div class="text-xs bg-red-900/20 text-red-400 p-3 font-mono">
+                        ! WARNING: High-value resource leak detected.
+                    </div>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="bg-slate-900/50 border-l-2 border-orange-500 p-8 hover:bg-slate-900 transition-colors">
+                    <div class="flex items-center justify-between mb-6">
+                        <h3 class="text-xl font-mono font-bold text-orange-400">ERROR_02: LOSS</h3>
+                        <svg class="w-5 h-5 text-orange-500 opacity-50" fill="none" stroke="currentColor"
+                            viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                        </svg>
+                    </div>
+                    <p class="text-zinc-400 mb-8 font-mono text-sm leading-relaxed">
+                        > False negatives detected.<br>
+                        > 60% qualified packet loss.<br>
+                        > Fatigue-induced filtering.
+                    </p>
+                    <div class="text-xs bg-orange-900/20 text-orange-400 p-3 font-mono">
+                        ! ALERT: Top talent routed to trash.
+                    </div>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="bg-slate-900/50 border-l-2 border-purple-500 p-8 hover:bg-slate-900 transition-colors">
+                    <div class="flex items-center justify-between mb-6">
+                        <h3 class="text-xl font-mono font-bold text-purple-400">ERROR_03: COST</h3>
+                        <svg class="w-5 h-5 text-purple-500 opacity-50" fill="none" stroke="currentColor"
+                            viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z">
+                            </path>
+                        </svg>
+                    </div>
+                    <p class="text-zinc-400 mb-8 font-mono text-sm leading-relaxed">
+                        > Bad_Hire event triggered.<br>
+                        > Cost: 9mo_salary * 2-3/yr.<br>
+                        > Background process failure.
+                    </p>
+                    <div class="text-xs bg-purple-900/20 text-purple-400 p-3 font-mono">
+                        ! CRITICAL: Silent compound failure.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</body>
+
+</html>
