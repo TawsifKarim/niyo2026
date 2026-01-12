@@ -1,0 +1,1428 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Niyo - Intelligent Hiring Infrastructure</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap"
+        rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class', // Enable class-based dark mode
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Outfit', 'sans-serif'],
+                    },
+                    colors: {
+                        niyo: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            500: '#0ea5e9', // Sky 500
+                            600: '#0284c7', // Sky 600
+                        },
+                        slate: {
+                            850: '#151F32',
+                            900: '#0F172A',
+                            950: '#020617',
+                        },
+                        primary: {
+                            50: '#eff6ff',
+                            100: '#dbeafe',
+                            400: '#60a5fa',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                        }
+                    },
+                    animation: {
+                        'fade-in-up': 'fadeInUp 0.8s ease-out forwards',
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    },
+                    keyframes: {
+                        fadeInUp: {
+                            '0%': { opacity: '0', transform: 'translateY(20px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* 
+         * CORE STYLES (From Motion 1)
+         */
+        :root {
+            --bg-color: #020408;
+            --text-main: #ffffff;
+            --text-muted: #94a3b8;
+            --accent-glow: rgba(56, 189, 248, 0.15);
+            --highlight-bad: #f87171;
+            --highlight-good: #38bdf8;
+        }
+
+        /* Container for all motion */
+        .stage {
+            position: relative;
+            /* Changed from absolute for flow */
+            width: 100%;
+            height: 100vh;
+            /* Takes full viewport */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+            overflow: hidden;
+        }
+
+        /* Cinema Grain */
+        .noise {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 999;
+            opacity: 0.035;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+
+        /* Vignette */
+        .vignette {
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at center, transparent 40%, rgba(0, 0, 0, 0.4) 100%);
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        /* SCENE COMPONENTS */
+        .scene {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            visibility: hidden;
+        }
+
+        /* Scene 1: Financial Hook */
+        .counter-wrapper {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: clamp(3rem, 10vw, 8rem);
+            font-weight: 700;
+            letter-spacing: -0.05em;
+            display: flex;
+            align-items: baseline;
+            color: white;
+            z-index: 20;
+            background: linear-gradient(to bottom, #ffffff 30%, #a1a1aa 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.1));
+        }
+
+        .currency {
+            font-size: 0.5em;
+            margin-right: 0.2em;
+            opacity: 0.6;
+            transform: translateY(-20%);
+            -webkit-text-fill-color: #888;
+        }
+
+        #counter-val {
+            font-variant-numeric: tabular-nums;
+        }
+
+        /* Typography */
+        .hero-text {
+            font-size: clamp(2.5rem, 6vw, 5rem);
+            font-weight: 800;
+            text-align: center;
+            line-height: 1.1;
+            letter-spacing: -0.03em;
+            color: white;
+            will-change: transform, opacity;
+            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .brand-name {
+            font-size: clamp(5rem, 14vw, 11rem);
+            font-weight: 800;
+            letter-spacing: -0.08em;
+            background: linear-gradient(135deg, #e0f2fe 0%, #7dd3fc 50%, #0284c7 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 2rem;
+            filter: drop-shadow(0 0 40px rgba(56, 189, 248, 0.3));
+            padding-right: 0.1em;
+        }
+
+        .final-brand {
+            font-size: clamp(4rem, 10vw, 7rem);
+            margin-top: 3.5rem;
+            margin-bottom: 0;
+        }
+
+        .brand-tagline {
+            font-size: clamp(1rem, 2vw, 1.5rem);
+            color: var(--text-muted);
+            font-weight: 400;
+            letter-spacing: 0.05em;
+        }
+
+        .brand-tagline .em-accent {
+            color: var(--highlight-good);
+            font-weight: 700;
+        }
+
+        /* Differentiators */
+        .diff-text {
+            font-size: clamp(2rem, 5vw, 4rem);
+            font-weight: 700;
+            text-align: center;
+            background: linear-gradient(to bottom, #fff 0%, #ccc 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .diff-sub {
+            display: block;
+            font-size: clamp(1rem, 2vw, 1.5rem);
+            font-weight: 400;
+            color: var(--text-muted);
+            margin-top: 1.5rem;
+            max-width: 600px;
+            line-height: 1.5;
+            -webkit-text-fill-color: var(--text-muted);
+        }
+
+        .diff-extra-group {
+            display: block;
+            margin-top: 2rem;
+            font-weight: 600;
+            font-size: clamp(1.2rem, 3vw, 2rem);
+        }
+
+        .diff-extra-1 {
+            -webkit-text-fill-color: var(--text-main);
+        }
+
+        .diff-extra-2 {
+            font-size: 0.8em;
+            color: var(--text-muted);
+            margin-left: 0.5rem;
+            font-weight: 400;
+            -webkit-text-fill-color: var(--text-muted);
+        }
+
+        /* CTA Button */
+        .cta-button {
+            display: inline-flex;
+            align-items: center;
+            padding: 1rem 2rem;
+            background-color: #ffffff;
+            color: #000000;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.1rem;
+            border-radius: 100px;
+            margin-top: 2rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 10px 30px rgba(255, 255, 255, 0.2);
+            pointer-events: auto;
+            visibility: hidden;
+            opacity: 0;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 15px 40px rgba(255, 255, 255, 0.3);
+        }
+
+        .cta-button:active {
+            transform: translateY(0) scale(0.98);
+        }
+
+        /* Utils */
+        .bg-gradient {
+            background: radial-gradient(circle at 60% 40%, #0c1221 0%, #020408 70%);
+            opacity: 0;
+            position: absolute;
+            inset: 0;
+            z-index: 1;
+        }
+
+        .em-bad {
+            color: var(--highlight-bad);
+            -webkit-text-fill-color: var(--highlight-bad);
+            opacity: 1;
+            font-weight: 700;
+            text-shadow: 0 0 8px rgba(248, 113, 113, 0.2);
+        }
+
+        .em-good {
+            color: var(--highlight-good);
+            font-weight: 700;
+            text-shadow: 0 0 15px rgba(56, 189, 248, 0.3);
+        }
+
+        .em-system {
+            color: #e2e8f0;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+        }
+
+        .ambient-glow {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100vw;
+            height: 100vh;
+            background: radial-gradient(circle at center, var(--accent-glow) 0%, transparent 50%);
+            z-index: 1;
+            pointer-events: none;
+            opacity: 0.4;
+        }
+
+        /* Overrides for Home Page Integration */
+        #motion-hero {
+            position: relative;
+            height: 100vh;
+            width: 100%;
+            background-color: var(--bg-color);
+            overflow: hidden;
+        }
+    </style>
+    <style>
+        /* Theming Constants */
+        :root {
+            /* Light Mode Defaults */
+            --bg-body: #ffffff;
+            --text-body: #18181b;
+            /* zinc-900 */
+            --glass-bg: rgba(255, 255, 255, 0.8);
+            --glass-border: rgba(0, 0, 0, 0.05);
+            --glass-card-bg: rgba(255, 255, 255, 0.6);
+            --glass-card-hover: rgba(0, 0, 0, 0.03);
+            --section-alt: #f4f4f5;
+            /* zinc-100 */
+        }
+
+        html.dark {
+            /* Dark Mode Overrides */
+            --bg-body: #050505;
+            --text-body: #ffffff;
+            --glass-bg: rgba(0, 0, 0, 0.7);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            /* Slightly clearer border for dark mode */
+            --glass-card-bg: rgba(255, 255, 255, 0.03);
+            --glass-card-hover: rgba(255, 255, 255, 0.08);
+            --section-alt: #000000;
+        }
+
+        body {
+            background-color: var(--bg-body);
+            color: var(--text-body);
+            overflow-x: hidden;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .glass-nav {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        .glass-card {
+            background: var(--glass-card-bg);
+            border: 1px solid var(--glass-border);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .glass-card:hover {
+            background: var(--glass-card-hover);
+        }
+
+        /* Text Gradients */
+        .text-gradient {
+            background: linear-gradient(to right, #333333 0%, #9ca3af 100%);
+            /* Light mode gradient */
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        html.dark .text-gradient {
+            background: linear-gradient(to right, #ffffff 0%, #a5a5a5 100%);
+            /* Dark mode gradient */
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .text-gradient-blue {
+            background: linear-gradient(to right, #0284c7 0%, #6366f1 100%);
+            /* Light mode blue */
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        html.dark .text-gradient-blue {
+            background: linear-gradient(to right, #38bdf8 0%, #818cf8 100%);
+            /* Dark mode blue */
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        html.dark .hero-gradient {
+            background: radial-gradient(circle at 50% 50%, rgba(14, 165, 233, 0.1) 0%, rgba(5, 5, 5, 1) 100%);
+        }
+
+        /* Utilities */
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Bar Animation */
+        .bar-grow {
+            width: 0 !important;
+            transition: width 1.5s cubic-bezier(0.34, 1.56, 0.64, 1) 0.5s;
+        }
+
+        .active .bar-grow {
+            width: var(--target-width, 100%) !important;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-body);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #d4d4d8;
+            border-radius: 4px;
+        }
+
+        html.dark ::-webkit-scrollbar-thumb {
+            background: #333;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #a1a1aa;
+        }
+
+        html.dark ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+    </style>
+    <script>
+        // Check local storage or system preference on load
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+
+        function toggleTheme() {
+            if (document.documentElement.classList.contains('dark')) {
+                document.documentElement.classList.remove('dark');
+                localStorage.theme = 'light';
+            } else {
+                document.documentElement.classList.add('dark');
+                localStorage.theme = 'dark';
+            }
+        }
+    </script>
+</head>
+
+<body class="antialiased selection:bg-blue-500/30 selection:text-blue-900 dark:selection:text-white">
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 glass-nav transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+            <a href="#" class="flex items-center gap-2 group">
+                <div
+                    class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-600 to-indigo-600 flex items-center justify-center text-white font-bold font-display text-xl shadow-lg shadow-blue-500/20 group-hover:scale-110 transition-transform">
+                    N</div>
+                <span class="font-display font-bold text-xl text-zinc-900 dark:text-white tracking-tight">Niyo</span>
+            </a>
+            <div class="hidden md:flex items-center gap-8 text-sm font-medium text-zinc-600 dark:text-zinc-400">
+                <a href="#problem" class="hover:text-black dark:hover:text-white transition-colors">The Problem</a>
+                <a href="#solution" class="hover:text-black dark:hover:text-white transition-colors">Solution</a>
+                <a href="#how-it-works" class="hover:text-black dark:hover:text-white transition-colors">How it
+                    Works</a>
+                <a href="#pricing" class="hover:text-black dark:hover:text-white transition-colors">Pricing</a>
+            </div>
+            <div class="flex items-center gap-4">
+                <!-- Theme Toggle Button -->
+                <button onclick="toggleTheme()"
+                    class="p-2 rounded-full hover:bg-zinc-200 dark:hover:bg-white/10 transition-colors text-zinc-600 dark:text-zinc-300 focus:outline-none"
+                    aria-label="Toggle Dark Mode">
+                    <!-- Sun Icon (Hidden in Light Mode, Shown in Dark) -->
+                    <svg class="w-5 h-5 hidden dark:block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z">
+                        </path>
+                    </svg>
+                    <!-- Moon Icon (Shown in Light Mode, Hidden in Dark) -->
+                    <svg class="w-5 h-5 block dark:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z">
+                        </path>
+                    </svg>
+                </button>
+
+                <a href="#"
+                    class="text-sm font-medium text-zinc-600 dark:text-zinc-300 hover:text-black dark:hover:text-white transition-colors hidden sm:block">Log
+                    in</a>
+                <a href="#"
+                    class="px-4 py-2 text-sm font-medium bg-zinc-900 dark:bg-white text-white dark:text-black rounded-full hover:bg-zinc-700 dark:hover:bg-zinc-200 transition-colors transform hover:scale-105 duration-200">Start
+                    Free</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Motion Hero Section (Replaces Static Hero) -->
+    <section id="motion-hero">
+        <!-- Global Texture & Lighting -->
+        <div class="noise"></div>
+        <div class="vignette"></div>
+        <div class="ambient-glow"></div>
+
+        <!-- Background Layer -->
+        <div id="gradient-bg" class="bg-gradient"></div>
+
+        <div class="stage">
+            <!-- Scene 1: Counter -->
+            <div id="scene-1" class="scene">
+                <div class="counter-wrapper">
+                    <span class="currency">$</span>
+                    <span id="counter-val">0</span>
+                </div>
+            </div>
+
+            <!-- Scene 2: Impact -->
+            <div id="scene-2" class="scene">
+                <h1 class="hero-text" id="impact-text">
+                    Cost of your<br>last <span class="em-bad">bad hire</span>
+                </h1>
+            </div>
+
+            <!-- Scene 3: Reframe -->
+            <div id="scene-3" class="scene">
+                <h1 class="hero-text" id="reframe-1">That’s not <span class="em-bad">bad luck</span>.</h1>
+                <h1 class="hero-text" id="reframe-2">That’s a <span class="em-bad">broken</span><br>hiring system.</h1>
+            </div>
+
+            <!-- Scene 4: Reveal -->
+            <div id="scene-4" class="scene">
+                <div class="brand-name" id="product-name">niyo</div>
+                <div class="brand-tagline" id="product-sub"><span class="em-accent">LESS</span> than your monthly <span
+                        class="em-accent">COFFEE</span> budget.</div>
+            </div>
+
+            <!-- Scene 5: Differentiators -->
+            <div id="scene-5" class="scene">
+                <h1 class="diff-text" id="diff-1">Not another <span class="em-bad">ATS</span></h1>
+                <h1 class="diff-text" id="diff-2">Not a <span class="em-bad">ChatGPT</span> prompt</h1>
+                <h1 class="diff-text" id="diff-3">
+                    A complete hiring system
+                    <span class="diff-sub text-italic">That turns chaos into your next <span class="em-good">great
+                            hire</span></span>
+                    <span class="diff-extra-group">
+                        <span class="diff-extra-1">Within hours</span>
+                        <span class="diff-extra-2">&mdash; Often within minutes.</span>
+                    </span>
+                </h1>
+                <div class="brand-name final-brand" id="final-brand">niyo</div>
+                <a href="#problem" class="cta-button" id="final-cta">See real results Free &rarr;</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 2: The Real Cost -->
+    <section id="problem" class="py-24 px-6 relative">
+        <div class="max-w-7xl mx-auto">
+            <div class="max-w-3xl mb-16 reveal">
+                <h2 class="text-3xl md:text-5xl font-bold tracking-tight mb-6">
+                    Manual screening doesn't just take time. <br>
+                    <span class="text-gradient text-zinc-400 dark:text-zinc-500">It takes everything.</span>
+                </h2>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Card 1 -->
+                <div class="glass-card p-8 rounded-3xl group reveal delay-100">
+                    <div
+                        class="w-12 h-12 rounded-2xl bg-red-100 dark:bg-red-500/20 flex items-center justify-center text-red-600 dark:text-red-500 mb-6 group-hover:scale-110 transition-transform">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">Time Cost</h3>
+                    <p class="text-zinc-500 dark:text-zinc-400 leading-relaxed mb-4">You spend 6-8 seconds per CV. At
+                        400 applications, that's 45+ hours before you've even started interviewing.</p>
+                    <p
+                        class="text-sm text-zinc-400 dark:text-zinc-500 border-t border-zinc-200 dark:border-white/10 pt-4">
+                        Implication: Using high-value time on low-value work.</p>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="glass-card p-8 rounded-3xl group reveal delay-200">
+                    <div
+                        class="w-12 h-12 rounded-2xl bg-orange-100 dark:bg-orange-500/20 flex items-center justify-center text-orange-600 dark:text-orange-500 mb-6 group-hover:scale-110 transition-transform">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">Quality Cost</h3>
+                    <p class="text-zinc-500 dark:text-zinc-400 leading-relaxed mb-4">Rushed screening means great
+                        candidates get missed. 60% of qualified candidates are rejected due to fatigue.</p>
+                    <p
+                        class="text-sm text-zinc-400 dark:text-zinc-500 border-t border-zinc-200 dark:border-white/10 pt-4">
+                        Implication: Your best hire is in the reject pile.</p>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="glass-card p-8 rounded-3xl group reveal delay-300">
+                    <div
+                        class="w-12 h-12 rounded-2xl bg-purple-100 dark:bg-purple-500/20 flex items-center justify-center text-purple-600 dark:text-purple-500 mb-6 group-hover:scale-110 transition-transform">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z">
+                            </path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">Hidden Cost</h3>
+                    <p class="text-zinc-500 dark:text-zinc-400 leading-relaxed mb-4">One bad hire costs 6-9 months of
+                        salary. Most companies make 2-3 per year without realizing it.</p>
+                    <p
+                        class="text-sm text-zinc-400 dark:text-zinc-500 border-t border-zinc-200 dark:border-white/10 pt-4">
+                        Implication: The problem compounds silently.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 4: How It Works -->
+    <section id="how-it-works" class="py-32 px-6 bg-zinc-50 dark:bg-black transition-colors duration-300">
+        <div class="max-w-7xl mx-auto">
+            <div class="mb-20 text-center reveal">
+                <h2 class="text-3xl md:text-5xl font-bold tracking-tight mb-4">
+                    From job post to shortlist. <br>
+                    <span class="text-zinc-400 dark:text-zinc-500">One system. Zero chaos.</span>
+                </h2>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 relative">
+                <!-- Connecting Line (Desktop) -->
+                <div
+                    class="hidden lg:block absolute top-12 left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-blue-500/20 to-transparent">
+                </div>
+
+                <!-- Step 1 -->
+                <div class="relative reveal delay-100">
+                    <div
+                        class="w-24 h-24 rounded-full bg-white dark:bg-black border border-zinc-200 dark:border-white/10 flex items-center justify-center text-2xl font-bold mb-6 mx-auto relative z-10 shadow-xl shadow-zinc-200/50 dark:shadow-[0_0_50px_rgba(0,0,0,1)]">
+                        <span
+                            class="bg-gradient-to-br from-zinc-800 to-zinc-500 dark:from-white dark:to-zinc-600 bg-clip-text text-transparent">01</span>
+                    </div>
+                    <div class="text-center">
+                        <h3 class="text-xl font-bold mb-3">Post</h3>
+                        <p class="text-zinc-500 dark:text-zinc-400 text-sm leading-relaxed px-4">Create a job and get a
+                            branded career page instantly. No designers. No developers.</p>
+                    </div>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="relative reveal delay-200">
+                    <div
+                        class="w-24 h-24 rounded-full bg-white dark:bg-black border border-zinc-200 dark:border-white/10 flex items-center justify-center text-2xl font-bold mb-6 mx-auto relative z-10 shadow-xl shadow-zinc-200/50 dark:shadow-[0_0_50px_rgba(0,0,0,1)]">
+                        <span
+                            class="bg-gradient-to-br from-zinc-800 to-zinc-500 dark:from-white dark:to-zinc-600 bg-clip-text text-transparent">02</span>
+                    </div>
+                    <div class="text-center">
+                        <h3 class="text-xl font-bold mb-3">Collect & Score</h3>
+                        <p class="text-zinc-500 dark:text-zinc-400 text-sm leading-relaxed px-4">Applications flow in.
+                            AI analyzes each candidate against your requirements instantly.</p>
+                    </div>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="relative reveal delay-300">
+                    <div
+                        class="w-24 h-24 rounded-full bg-white dark:bg-black border border-zinc-200 dark:border-white/10 flex items-center justify-center text-2xl font-bold mb-6 mx-auto relative z-10 shadow-xl shadow-zinc-200/50 dark:shadow-[0_0_50px_rgba(0,0,0,1)]">
+                        <span
+                            class="bg-gradient-to-br from-zinc-800 to-zinc-500 dark:from-white dark:to-zinc-600 bg-clip-text text-transparent">03</span>
+                    </div>
+                    <div class="text-center">
+                        <h3 class="text-xl font-bold mb-3">Rank & Hire</h3>
+                        <p class="text-zinc-500 dark:text-zinc-400 text-sm leading-relaxed px-4">Your shortlist appears.
+                            Top candidates float up. Schedule interviews with one click.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center mt-16 pt-16 border-t border-zinc-200 dark:border-white/5 reveal">
+                <p class="text-lg text-zinc-500 font-medium">This isn't six tools. This is one system that replaces all
+                    of them.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 5: The Proof -->
+    <section class="py-24 px-6 relative overflow-hidden">
+        <div class="absolute inset-0 bg-zinc-50/50 dark:bg-zinc-900/20 transform -skew-y-3"></div>
+        <div class="max-w-7xl mx-auto relative z-10">
+            <div class="max-w-3xl mx-auto text-center mb-16 reveal">
+                <h2 class="text-3xl md:text-5xl font-bold tracking-tight mb-6">
+                    Why your shortlist appears in <br>
+                    <span class="text-blue-600 dark:text-blue-400">hours, not weeks.</span>
+                </h2>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-6">
+                <!-- Proof 1 -->
+                <div class="glass-card p-8 rounded-2xl reveal delay-100">
+                    <h3 class="text-lg font-bold mb-2">01. Bulk Processing</h3>
+                    <p class="text-zinc-500 dark:text-zinc-400 text-sm mb-4">Niyo ingests and parses 100s of CVs
+                        simultaneously. Upload once — we process everything.</p>
+                    <div
+                        class="inline-block px-3 py-1 rounded-full bg-blue-100 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 text-xs font-mono">
+                        Avg time: 37s / 200 CVs</div>
+                </div>
+                <!-- Proof 2 -->
+                <div class="glass-card p-8 rounded-2xl reveal delay-200">
+                    <h3 class="text-lg font-bold mb-2">02. Explainable Scoring</h3>
+                    <p class="text-zinc-500 dark:text-zinc-400 text-sm mb-4">Every candidate gets a relevance score
+                        based on your job requirements. Transparent and clear.</p>
+                    <div
+                        class="inline-block px-3 py-1 rounded-full bg-green-100 dark:bg-green-500/10 text-green-600 dark:text-green-400 text-xs font-mono">
+                        Full Score Breakdown</div>
+                </div>
+                <!-- Proof 3 -->
+                <div class="glass-card p-8 rounded-2xl reveal delay-300">
+                    <h3 class="text-lg font-bold mb-2">03. Consistent Evaluation</h3>
+                    <p class="text-zinc-500 dark:text-zinc-400 text-sm mb-4">Same criteria. Every candidate. Every time.
+                        No prompt engineering. No human fatigue.</p>
+                    <div
+                        class="inline-block px-3 py-1 rounded-full bg-purple-100 dark:bg-purple-500/10 text-purple-600 dark:text-purple-400 text-xs font-mono">
+                        95% Screening Accuracy</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 6: Contrast (Niyo vs ChatGPT) -->
+    <section class="py-32 px-6 bg-zinc-900 dark:bg-black transition-colors duration-300">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid lg:grid-cols-2 gap-16 items-center">
+                <div class="reveal">
+                    <h2 class="text-3xl md:text-5xl font-bold tracking-tight mb-6 text-white leading-tight">
+                        "Why not just use <br>
+                        <span class="text-zinc-400">ChatGPT?"</span>
+                    </h2>
+                    <p class="text-xl text-zinc-400 mb-8 leading-relaxed">
+                        ChatGPT is great at answers. We also use ChatGPT internally. But real hiring requires systems,
+                        structure, and accountability.
+                    </p>
+                    <div class="pl-4 border-l-2 border-white/20">
+                        <p class="text-zinc-500 italic text-sm">"ChatGPT helps you think.
+                            Niyo helps you hire"</p>
+                    </div>
+                </div>
+
+                <div
+                    class="glass-card rounded-3xl overflow-hidden reveal delay-200 border border-white/10 bg-white/5 backdrop-blur-xl shadow-2xl">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-sm border-collapse">
+                            <thead>
+                                <tr class="border-b border-white/5 bg-white/[0.02]">
+                                    <th
+                                        class="py-4 px-6 font-semibold text-zinc-400 uppercase tracking-wider text-xs border-r border-white/5">
+                                        Capability</th>
+                                    <th
+                                        class="py-4 px-6 font-semibold text-zinc-400 text-center uppercase tracking-wider text-xs border-r border-white/5">
+                                        ChatGPT</th>
+                                    <th
+                                        class="py-4 px-6 font-bold text-blue-400 text-center uppercase tracking-wider text-xs bg-blue-500/5">
+                                        Niyo</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-zinc-400">
+                                <tr class="border-b border-white/5 hover:bg-white/[0.02] transition-colors group">
+                                    <td class="py-4 px-6 font-medium text-zinc-300 border-r border-white/5">Bulk CV
+                                        ingestion</td>
+                                    <td class="py-4 px-6 text-center border-r border-white/5">
+                                        <div class="inline-flex items-center gap-2">
+                                            <span class="text-rose-500/80 text-base">✕</span>
+                                            <span
+                                                class="text-[10px] text-zinc-500 uppercase font-bold tracking-tighter">Manual
+                                                copy-paste</span>
+                                        </div>
+                                    </td>
+                                    <td class="py-4 px-6 text-center bg-blue-500/[0.02]">
+                                        <div class="inline-flex items-center gap-2">
+                                            <span class="text-emerald-400 text-base">✓</span>
+                                            <span
+                                                class="text-[10px] text-blue-400/80 uppercase font-bold tracking-tighter">Auto-upload</span>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="border-b border-white/5 hover:bg-white/[0.02] transition-colors group">
+                                    <td class="py-4 px-6 font-medium text-zinc-300 border-r border-white/5">Consistent
+                                        scoring</td>
+                                    <td class="py-4 px-6 text-center border-r border-white/5">
+                                        <div class="inline-flex items-center gap-2">
+                                            <span class="text-rose-500/80 text-base">✕</span>
+                                            <span
+                                                class="text-[10px] text-zinc-500 uppercase font-bold tracking-tighter">Inconsistent</span>
+                                        </div>
+                                    </td>
+                                    <td class="py-4 px-6 text-center bg-blue-500/[0.02]">
+                                        <div class="inline-flex items-center gap-2">
+                                            <span class="text-emerald-400 text-base">✓</span>
+                                            <span
+                                                class="text-[10px] text-blue-400/80 uppercase font-bold tracking-tighter">Fixed
+                                                criteria</span>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="border-b border-white/5 hover:bg-white/[0.02] transition-colors group">
+                                    <td class="py-4 px-6 font-medium text-zinc-300 border-r border-white/5">Bias control
+                                    </td>
+                                    <td class="py-4 px-6 text-center border-r border-white/5">
+                                        <div class="inline-flex items-center gap-2">
+                                            <span class="text-rose-500/80 text-base">✕</span>
+                                            <span
+                                                class="text-[10px] text-zinc-500 uppercase font-bold tracking-tighter">None</span>
+                                        </div>
+                                    </td>
+                                    <td class="py-4 px-6 text-center bg-blue-500/[0.02]">
+                                        <div class="inline-flex items-center gap-2">
+                                            <span class="text-emerald-400 text-base">✓</span>
+                                            <span
+                                                class="text-[10px] text-blue-400/80 uppercase font-bold tracking-tighter">Fairness
+                                                built-in</span>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="border-b border-white/5 hover:bg-white/[0.02] transition-colors group">
+                                    <td class="py-4 px-6 font-medium text-zinc-300 border-r border-white/5">End-to-end
+                                        workflow</td>
+                                    <td class="py-4 px-6 text-center border-r border-white/5">
+                                        <div class="inline-flex items-center gap-2">
+                                            <span class="text-rose-500/80 text-base">✕</span>
+                                            <span
+                                                class="text-[10px] text-zinc-500 uppercase font-bold tracking-tighter">None</span>
+                                        </div>
+                                    </td>
+                                    <td class="py-4 px-6 text-center bg-blue-500/[0.02]">
+                                        <div class="inline-flex items-center gap-2">
+                                            <span class="text-emerald-400 text-base">✓</span>
+                                            <span
+                                                class="text-[10px] text-blue-400/80 uppercase font-bold tracking-tighter">Unified
+                                                pipeline</span>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="border-b border-white/5 hover:bg-white/[0.02] transition-colors group">
+                                    <td class="py-4 px-6 font-medium text-zinc-300 border-r border-white/5">Team
+                                        collaboration</td>
+                                    <td class="py-4 px-6 text-center border-r border-white/5">
+                                        <div class="inline-flex items-center gap-2">
+                                            <span class="text-rose-500/80 text-base">✕</span>
+                                            <span
+                                                class="text-[10px] text-zinc-500 uppercase font-bold tracking-tighter">Not
+                                                possible</span>
+                                        </div>
+                                    </td>
+                                    <td class="py-4 px-6 text-center bg-blue-500/[0.02]">
+                                        <div class="inline-flex items-center gap-2">
+                                            <span class="text-emerald-400 text-base">✓</span>
+                                            <span
+                                                class="text-[10px] text-blue-400/80 uppercase font-bold tracking-tighter">Full
+                                                access</span>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="border-b border-white/5 hover:bg-white/[0.02] transition-colors group">
+                                    <td class="py-4 px-6 font-medium text-zinc-300 border-r border-white/5">Audit trail
+                                    </td>
+                                    <td class="py-4 px-6 text-center border-r border-white/5">
+                                        <div class="inline-flex items-center gap-2">
+                                            <span class="text-rose-500/80 text-base">✕</span>
+                                            <span
+                                                class="text-[10px] text-zinc-500 uppercase font-bold tracking-tighter">Chat
+                                                only</span>
+                                        </div>
+                                    </td>
+                                    <td class="py-4 px-6 text-center bg-blue-500/[0.02]">
+                                        <div class="inline-flex items-center gap-2">
+                                            <span class="text-emerald-400 text-base">✓</span>
+                                            <span
+                                                class="text-[10px] text-blue-400/80 uppercase font-bold tracking-tighter">Full
+                                                records</span>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="hover:bg-white/[0.02] transition-colors group">
+                                    <td class="py-4 px-6 font-medium text-zinc-300 border-r border-white/5">
+                                        Hiring-specific UX</td>
+                                    <td class="py-4 px-6 text-center border-r border-white/5">
+                                        <div class="inline-flex items-center gap-2">
+                                            <span class="text-rose-500/80 text-base">✕</span>
+                                            <span
+                                                class="text-[10px] text-zinc-500 uppercase font-bold tracking-tighter">General</span>
+                                        </div>
+                                    </td>
+                                    <td class="py-4 px-6 text-center bg-blue-500/[0.02]">
+                                        <div class="inline-flex items-center gap-2">
+                                            <span class="text-emerald-400 text-base">✓</span>
+                                            <span
+                                                class="text-[10px] text-blue-400/80 uppercase font-bold tracking-tighter">Recruiter-first</span>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Section 9: Pricing -->
+    <section id="pricing" class="py-32 px-6 relative">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16 reveal">
+                <h2 class="text-3xl md:text-5xl font-bold tracking-tight mb-6">
+                    Pricing that costs <span class="text-red-500 dark:text-red-400">less</span> than <br>
+                    one bad hire.
+                </h2>
+                <p class="text-xl text-zinc-500 dark:text-zinc-400 max-w-2xl mx-auto">
+                    A bad hire costs 6-9 months of salary. Niyo costs less than that per year.
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto pointer-events-none md:pointer-events-auto">
+                <!-- Card 1 -->
+                <div
+                    class="glass-card p-8 rounded-3xl flex flex-col items-start reveal delay-100 pointer-events-auto group">
+                    <div class="mb-4">
+                        <span class="text-sm font-bold text-zinc-400 uppercase tracking-wider">Growth</span>
+                    </div>
+                    <div class="mb-6">
+                        <span class="text-4xl font-bold">$39</span>
+                        <span class="text-zinc-500">/mo</span>
+                    </div>
+                    <ul class="space-y-4 mb-8 flex-1 text-sm text-zinc-500 dark:text-zinc-300">
+                        <li class="flex items-center gap-3">
+                            <svg class="w-5 h-5 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            Up to 5 active jobs
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <svg class="w-5 h-5 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            500 CV parses / mo
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <svg class="w-5 h-5 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            Standard Branding
+                        </li>
+                    </ul>
+                    <a href="#"
+                        class="w-full py-3 bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-zinc-900 dark:text-white font-medium rounded-xl text-center transition-colors">Start
+                        Free</a>
+                </div>
+
+                <!-- Card 2 (Popular) -->
+                <div
+                    class="p-8 rounded-3xl flex flex-col items-start bg-zinc-900 dark:bg-white text-white dark:text-black relative transform scale-105 z-10 shadow-2xl shadow-blue-500/20 dark:shadow-blue-900/20 reveal delay-200 pointer-events-auto">
+                    <div
+                        class="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1 bg-gradient-to-r from-blue-500 to-purple-500 text-white text-xs font-bold rounded-full uppercase tracking-wide">
+                        Most Popular
+                    </div>
+                    <div class="mb-4">
+                        <span
+                            class="text-sm font-bold text-zinc-400 dark:text-zinc-600 uppercase tracking-wider">Professional</span>
+                    </div>
+                    <div class="mb-6">
+                        <span class="text-4xl font-bold">$99</span>
+                        <span class="text-zinc-400 dark:text-zinc-600">/mo</span>
+                    </div>
+                    <ul class="space-y-4 mb-8 flex-1 text-sm text-zinc-300 dark:text-zinc-700">
+                        <li class="flex items-center gap-3">
+                            <svg class="w-5 h-5 text-blue-400 dark:text-blue-600" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            Unlimited active jobs
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <svg class="w-5 h-5 text-blue-400 dark:text-blue-600" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            2,000 CV parses / mo
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <svg class="w-5 h-5 text-blue-400 dark:text-blue-600" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            Advanced Analytics
+                        </li>
+                    </ul>
+                    <a href="#"
+                        class="w-full py-3 bg-white dark:bg-black hover:bg-zinc-200 dark:hover:bg-zinc-800 text-black dark:text-white font-medium rounded-xl text-center transition-colors shadow-lg">Start
+                        Free Trial</a>
+                </div>
+
+                <!-- Card 3 -->
+                <div
+                    class="glass-card p-8 rounded-3xl flex flex-col items-start reveal delay-300 pointer-events-auto group">
+                    <div class="mb-4">
+                        <span class="text-sm font-bold text-zinc-400 uppercase tracking-wider">Enterprise</span>
+                    </div>
+                    <div class="mb-6">
+                        <span class="text-4xl font-bold">Custom</span>
+                    </div>
+                    <ul class="space-y-4 mb-8 flex-1 text-sm text-zinc-500 dark:text-zinc-300">
+                        <li class="flex items-center gap-3">
+                            <svg class="w-5 h-5 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            Unlimited Everything
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <svg class="w-5 h-5 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            Custom Integrations
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <svg class="w-5 h-5 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            Dedicated Success Manager
+                        </li>
+                    </ul>
+                    <a href="#"
+                        class="w-full py-3 bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-zinc-900 dark:text-white font-medium rounded-xl text-center transition-colors">Contact
+                        Sales</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Proof Point -->
+    <section class="py-20 lg:py-32 bg-slate-900 dark:bg-black text-white relative overflow-hidden">
+        <div class="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20"></div>
+        <div class="max-w-7xl mx-auto px-6 relative z-10">
+            <div class="grid lg:grid-cols-2 gap-16 items-center">
+                <div class="reveal">
+                    <h2 class="text-4xl lg:text-5xl font-display font-bold mb-6">400 applications.<br><span
+                            class="text-primary-400">12 minutes.</span><br>Your shortlist.</h2>
+                    <p class="text-slate-300 text-lg leading-relaxed mb-8">
+                        A growing SaaS company posted a single role. 400 applications came in. Niyo parsed every CV,
+                        scored each candidate against the job, and delivered a ranked shortlist — in 12 minutes.
+                    </p>
+                    <div class="pl-4 border-l-2 border-slate-700 mb-10">
+                        <p class="text-slate-400 italic">"Their previous process? Three weeks. Four people. Same outcome
+                            — just much slower and more stressful."</p>
+                    </div>
+                    <a href="#"
+                        class="inline-flex items-center text-lg font-semibold text-white hover:text-primary-400 transition-colors group">
+                        Explore Niyo features
+                        <span class="ml-2 transition-transform group-hover:translate-x-1">→</span>
+                    </a>
+                </div>
+
+                <!-- Simple Graph Viz -->
+                <div class="bg-white/5 border border-white/10 rounded-2xl p-8 backdrop-blur-sm reveal delay-200">
+                    <div class="space-y-6">
+                        <div>
+                            <div class="flex justify-between text-sm mb-2 text-slate-400">
+                                <span>Before Niyo</span>
+                                <span>3 weeks</span>
+                            </div>
+                            <div class="h-4 bg-white/10 rounded-full overflow-hidden">
+                                <div class="h-full bg-slate-600 rounded-full bar-grow" style="--target-width: 100%;">
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-sm mb-2 text-white font-medium">
+                                <span>With Niyo</span>
+                                <span class="text-primary-400">12 mins</span>
+                            </div>
+                            <div class="h-4 bg-white/10 rounded-full overflow-hidden">
+                                <div class="h-full bg-primary-500 rounded-full box-content border-r-2 border-white relative after:content-[''] after:absolute after:right-0 after:-top-1 after:w-2 after:h-6 after:bg-white/20 after:blur-sm bar-grow"
+                                    style="--target-width: 2%;">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="pt-4 flex items-center justify-between border-t border-white/10">
+                            <div class="text-xs text-slate-500 uppercase tracking-widest font-bold">Time Efficiency
+                            </div>
+                            <div class="text-primary-400 font-bold text-xl">250x Faster</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Final CTA -->
+    <section class="py-32 px-6 text-center relative overflow-hidden">
+        <!-- Background Glow -->
+        <div
+            class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-blue-600/20 rounded-full blur-[120px] -z-10 opacity-30">
+        </div>
+
+        <div class="max-w-3xl mx-auto z-10 relative">
+            <h2 class="text-4xl md:text-6xl font-bold tracking-tight mb-8 reveal">
+                Your next shortlist is <br>
+                <span class="text-gradient-blue">waiting.</span>
+            </h2>
+            <p class="text-xl text-zinc-500 dark:text-zinc-400 mb-10 reveal delay-100">
+                Upload real CVs. See real rankings. No demo data. <br>
+                In 5 minutes, you'll know if Niyo works for you.
+            </p>
+            <div class="reveal delay-200">
+                <a href="#"
+                    class="inline-block px-10 py-5 bg-zinc-900 dark:bg-white text-white dark:text-black text-xl font-bold rounded-full hover:bg-zinc-800 dark:hover:bg-zinc-200 transition-transform transform hover:scale-105 shadow-xl dark:shadow-[0_0_30px_rgba(255,255,255,0.2)]">
+                    Run a real hiring test ->
+                </a>
+                <div class="mt-8 flex flex-wrap justify-center gap-6 text-sm text-zinc-500">
+                    <span class="flex items-center gap-2"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd"
+                                d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                clip-rule="evenodd"></path>
+                        </svg> Cancel anytime</span>
+                    <span class="flex items-center gap-2"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd"
+                                d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                clip-rule="evenodd"></path>
+                        </svg> Your data stays yours</span>
+                    <span class="flex items-center gap-2"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd"
+                                d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                clip-rule="evenodd"></path>
+                        </svg> Explainable AI</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer
+        class="py-12 px-6 border-t border-zinc-200 dark:border-white/5 bg-zinc-100 dark:bg-black text-sm transition-colors duration-300">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center text-zinc-600 gap-4">
+            <div class="flex items-center gap-2">
+                <div class="w-4 h-4 rounded-full bg-gradient-to-tr from-blue-500 to-purple-500"></div>
+                <span class="font-semibold text-zinc-700 dark:text-zinc-400">Niyo &copy; 2026</span>
+            </div>
+            <div class="flex gap-8">
+                <a href="#" class="hover:text-black dark:hover:text-white transition-colors">Privacy</a>
+                <a href="#" class="hover:text-black dark:hover:text-white transition-colors">Terms</a>
+                <a href="#" class="hover:text-black dark:hover:text-white transition-colors">Twitter</a>
+                <a href="#" class="hover:text-black dark:hover:text-white transition-colors">LinkedIn</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Reveal animation on scroll
+        const observerOptions = {
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+        // Navbar shadow on scroll
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 20) {
+                navbar.classList.add('shadow-lg', 'border-b-zinc-200', 'dark:border-b-white/10');
+            } else {
+                navbar.classList.remove('shadow-lg', 'border-b-zinc-200', 'dark:border-b-white/10');
+            }
+        });
+    </script>
+    <!-- GSAP for complex timelines -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+
+            // Register GSAP
+            gsap.config({ nullTargetWarn: false });
+
+            // Master Timeline
+            const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
+
+            // Elements
+            const counterObj = { value: 0 };
+            const counterEl = document.getElementById("counter-val");
+            const scene1 = document.getElementById("scene-1");
+            const scene2 = document.getElementById("scene-2");
+            const scene3 = document.getElementById("scene-3");
+            const scene4 = document.getElementById("scene-4");
+            const scene5 = document.getElementById("scene-5");
+            const bg = document.getElementById("gradient-bg");
+
+            // --- SCENE 1: Financial Hook ---
+            // Rapid uneven count up
+            gsap.set(scene1, { visibility: "visible" });
+            // Three discrete tics (slowed down by double)
+            tl.set(counterObj, { value: 47000, onComplete: updateCounter }, "+=1.0")
+                .set(counterObj, { value: 63000, onComplete: updateCounter }, "+=0.8")
+                .set(counterObj, { value: 127000, onComplete: updateCounter }, "+=0.8");
+
+            // Screen shake on stop
+            tl.to("body", {
+                x: -10,
+                duration: 0.05,
+                yoyo: true,
+                repeat: 5,
+                ease: "rough({ template: none.out, strength: 1, points: 20, taper: 'none', randomize: true, clamp: false})"
+            }, "<"); // sync with end of count
+
+
+            // --- SCENE 2: The Impact ---
+            // "Cost of your last bad hire" slams in
+            gsap.set(scene2, { visibility: "visible" });
+
+            // Move number UP and fade it to background
+            tl.to(scene1, {
+                y: -120, // Move up
+                scale: 0.8,
+                opacity: 0.35, // Still visible in background
+                // Removed blur as requested
+                duration: 0.6
+            }, "+=0.1");
+
+            // Text slams in slightly BELOW the center
+            tl.fromTo("#impact-text",
+                { scale: 2, opacity: 0, filter: "blur(10px)", y: 50 }, // Start lower
+                { scale: 1, opacity: 1, filter: "blur(0px)", y: 80, duration: 0.4, ease: "expo.out" } // Land at y: 80 (below number)
+                , "<");
+
+
+            // --- SCENE 3: Reframe ---
+            // Smooth transition to dark gradient
+            tl.to(bg, { opacity: 1, duration: 1.5 }, "+=1.5");
+
+            // Cleanup previous scenes opacity
+            tl.to([scene1, scene2], { opacity: 0, duration: 0.5 }, "<");
+
+            // Text sequence 1
+            gsap.set(scene3, { visibility: "visible" });
+
+            tl.from("#reframe-1", {
+                y: 30,
+                opacity: 0,
+                duration: 0.8
+            }, "-=0.2");
+
+            tl.to("#reframe-1", {
+                y: -30,
+                opacity: 0,
+                duration: 0.6,
+                delay: 1.5
+            });
+
+            // Text sequence 2
+            tl.from("#reframe-2", {
+                y: 40,
+                opacity: 0,
+                duration: 0.8
+            }, "-=0.3");
+
+
+            // --- SCENE 4: Product Reveal ---
+            tl.to("#reframe-2", { opacity: 0, scale: 0.95, duration: 0.8, delay: 2 });
+
+            gsap.set(scene4, { visibility: "visible" });
+
+            tl.from("#product-name", {
+                scale: 0.8,
+                opacity: 0,
+                duration: 1.2,
+                ease: "expo.out"
+            }, "-=0.2");
+
+            // Pause 0.5s before tagline
+            tl.from("#product-sub", {
+                y: 20,
+                opacity: 0,
+                duration: 1
+            }, "+=0.5");
+
+
+            // --- SCENE 5: Differentiation ---
+            tl.to(scene4, { opacity: 0, y: -20, duration: 0.8, delay: 2 });
+
+            gsap.set(scene5, { visibility: "visible" });
+
+            // Cycle through texts
+            const diffs = ["#diff-1", "#diff-2", "#diff-3"];
+
+            // Hide all first
+            gsap.set(diffs, { display: "none", opacity: 0 });
+
+            // 1. Not another ATS
+            tl.set("#diff-1", { display: "block" });
+            tl.fromTo("#diff-1",
+                { opacity: 0, y: 30, rotationX: -20, filter: "blur(5px)" },
+                { opacity: 1, y: 0, rotationX: 0, filter: "blur(0px)", duration: 0.8 }
+            );
+            tl.to("#diff-1", { opacity: 0, y: -30, filter: "blur(5px)", duration: 0.5, delay: 1.2 });
+
+            // 2. Not a ChatGPT prompt
+            tl.set("#diff-1", { display: "none" });
+            tl.set("#diff-2", { display: "block" });
+            tl.fromTo("#diff-2",
+                { opacity: 0, y: 30, filter: "blur(5px)" },
+                { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.8 }
+            );
+            tl.to("#diff-2", { opacity: 0, y: -30, filter: "blur(5px)", duration: 0.5, delay: 1.2 });
+
+            // 3. Complete system
+            tl.set("#diff-2", { display: "none" });
+            tl.set("#diff-3", { display: "block" });
+
+            // Text split logic manually for scene 5
+            const diff3Main = document.querySelector("#diff-3");
+            const diff3Sub = document.querySelector("#diff-3 .diff-sub");
+            const diffExtra1 = document.querySelector(".diff-extra-1");
+            const diffExtra2 = document.querySelector(".diff-extra-2");
+
+            // HIDE EXTRA TEXT INITIALLY
+            gsap.set([diffExtra1, diffExtra2], { opacity: 0, display: "none" });
+
+            // Animate main text first
+            tl.fromTo(diff3Main,
+                { opacity: 0, scale: 1.1 },
+                { opacity: 1, scale: 1, duration: 1.2, ease: "circ.out" }
+            );
+
+            // Animate sub text (slide fade from left) with PAUSE
+            tl.fromTo(diff3Sub,
+                { opacity: 0, x: -50 },
+                { opacity: 1, x: 0, duration: 1.5, ease: "power2.out" },
+                "+=0.5" // 0.5s pause before showing this
+            );
+
+            // 1. "Within hours" - Slide in from right
+            tl.to(diffExtra1, {
+                display: "inline-block",
+                duration: 0
+            }, "+=0.2"); // Set display first
+
+            tl.fromTo(diffExtra1,
+                { opacity: 0, x: 50 },
+                { opacity: 1, x: 0, duration: 0.6, ease: "back.out(1.7)" }
+            );
+
+            // 2. "- Often within minutes" - Slide in from right with delay
+            tl.to(diffExtra2, {
+                display: "inline-block",
+                duration: 0
+            }, "+=0.4");
+
+            tl.fromTo(diffExtra2,
+                { opacity: 0, x: 50 },
+                { opacity: 1, x: 0, duration: 0.6, ease: "back.out(1.7)" }
+            );
+
+            // Final niyo brand fade in
+            const finalBrand = document.getElementById("final-brand");
+            gsap.set(finalBrand, { opacity: 0, display: "none" });
+
+            tl.to(finalBrand, {
+                display: "block",
+                duration: 0
+            }, "+=1");
+
+            tl.fromTo(finalBrand,
+                { opacity: 0, y: 20 },
+                { opacity: 1, y: 0, duration: 1.5, ease: "power2.out" }
+            );
+
+            // Final CTA Fade In
+            const finalCta = document.getElementById("final-cta");
+            tl.fromTo(finalCta,
+                { opacity: 0, y: 30, visibility: "hidden" },
+                {
+                    opacity: 1,
+                    y: 0,
+                    visibility: "visible",
+                    duration: 1,
+                    ease: "power2.out"
+                },
+                "+=0.3" // 0.3s pause after niyo appears
+            );
+
+            // Helpers
+            function updateCounter() {
+                // Formatting helper for currency
+                counterEl.innerText = Math.floor(counterObj.value).toLocaleString();
+            }
+
+        });
+    </script>
+</body>
+
+</html>

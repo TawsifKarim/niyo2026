@@ -376,26 +376,10 @@
             // --- SCENE 1: Financial Hook ---
             // Rapid uneven count up
             gsap.set(scene1, { visibility: "visible" });
-
-            tl.to(counterObj, {
-                value: 45000,
-                duration: 1.2,
-                ease: "power2.in",
-                onUpdate: updateCounter
-            })
-                .to(counterObj, {
-                    value: 89000,
-                    duration: 0.6,
-                    ease: "linear",
-                    onUpdate: updateCounter
-                })
-                // Hard stop
-                .to(counterObj, {
-                    value: 127000,
-                    duration: 0.1, // Sudden jump at end for "hard stop" feel
-                    ease: "power1.out",
-                    onUpdate: updateCounter
-                });
+            // Three discrete tics (slowed down by double)
+            tl.set(counterObj, { value: 47000, onComplete: updateCounter }, "+=1.0")
+                .set(counterObj, { value: 63000, onComplete: updateCounter }, "+=0.8")
+                .set(counterObj, { value: 127000, onComplete: updateCounter }, "+=0.8");
 
             // Screen shake on stop
             tl.to("body", {
