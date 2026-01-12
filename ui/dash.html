@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deals Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        gray: {
+                            50: '#F9FAFB',
+                            100: '#F3F4F6',
+                            200: '#E5E7EB',
+                            300: '#D1D5DB',
+                            400: '#9CA3AF',
+                            500: '#6B7280',
+                            600: '#4B5563',
+                            700: '#374151',
+                            800: '#1F2937',
+                            900: '#111827',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* Custom scrollbar for table if needed */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+
+<body class="bg-white text-gray-800 h-screen flex overflow-hidden text-sm">
+
+    <div id="app" class="flex w-full h-full">
+
+        <!-- Sidebar -->
+        <aside class="w-64 flex-shrink-0 border-r border-gray-200 flex flex-col bg-white">
+            <div class="p-4 flex items-center gap-3 cursor-pointer hover:bg-gray-50 rounded-lg m-2">
+                <img src="https://ui-avatars.com/api/?name=Sally+Potter&background=0D8ABC&color=fff&rounded=true"
+                    class="w-8 h-8 rounded-full" alt="Profile">
+                <span class="font-medium text-gray-700">Sally Potter</span>
+                <i class="fa-solid fa-chevron-down text-xs text-gray-400 ml-auto"></i>
+            </div>
+
+            <nav class="flex-1 px-2 space-y-1 overflow-y-auto">
+                <a href="#" class="flex items-center gap-3 px-3 py-2 text-gray-600 hover:bg-gray-100 rounded-md">
+                    <i class="fa-solid fa-magnifying-glass text-gray-400 w-4"></i> Search
+                </a>
+                <a href="#" class="flex items-center gap-3 px-3 py-2 text-gray-600 hover:bg-gray-100 rounded-md">
+                    <i class="fa-regular fa-envelope text-gray-400 w-4"></i> Inbox
+                    <span class="ml-auto text-xs text-gray-400">46</span>
+                </a>
+                <a href="#" class="flex items-center gap-3 px-3 py-2 text-gray-600 hover:bg-gray-100 rounded-md">
+                    <i class="fa-regular fa-square-check text-gray-400 w-4"></i> Tasks
+                </a>
+
+                <div class="pt-4"></div>
+
+                <a href="#" class="flex items-center gap-3 px-3 py-2 bg-gray-100 text-gray-900 font-medium rounded-md">
+                    <i class="fa-solid fa-bolt text-gray-700 w-4"></i> Deals
+                </a>
+                <a href="#" class="flex items-center gap-3 px-3 py-2 text-gray-600 hover:bg-gray-100 rounded-md">
+                    <i class="fa-regular fa-building text-gray-400 w-4"></i> Companies
+                    <span class="ml-auto text-xs text-gray-400">18</span>
+                </a>
+                <a href="#" class="flex items-center gap-3 px-3 py-2 text-gray-600 hover:bg-gray-100 rounded-md">
+                    <i class="fa-regular fa-user text-gray-400 w-4"></i> People
+                    <span class="ml-auto text-xs text-gray-400">12</span>
+                </a>
+                <a href="#" class="flex items-center gap-3 px-3 py-2 text-gray-600 hover:bg-gray-100 rounded-md">
+                    <i class="fa-solid fa-ellipsis text-gray-400 w-4"></i> More
+                </a>
+
+                <div
+                    class="pt-6 pb-2 px-3 flex items-center justify-between text-gray-400 text-xs font-medium uppercase tracking-wider">
+                    Collections
+                    <i class="fa-solid fa-ellipsis hover:text-gray-600 cursor-pointer"></i>
+                </div>
+
+                <a v-for="item in collections" :key="item.name" href="#"
+                    class="flex items-center gap-3 px-3 py-2 text-gray-600 hover:bg-gray-100 rounded-md group">
+                    <span class="w-4 flex justify-center"><i :class="item.icon"
+                            class="text-gray-400 group-hover:text-gray-500"></i></span>
+                    {{ item.name }}
+                </a>
+            </nav>
+
+            <div class="p-4 border-t border-gray-100">
+                <div class="flex items-center gap-3 px-3 py-2 text-gray-600 hover:bg-gray-50 rounded-md cursor-pointer">
+                    <i class="fa-solid fa-plus text-gray-400"></i> Invite teammates
+                </div>
+                <div class="flex items-center justify-between px-3 py-2 mt-1">
+                    <i class="fa-solid fa-gear text-gray-400 cursor-pointer hover:text-gray-600"></i>
+                    <i class="fa-solid fa-circle-question text-gray-400 cursor-pointer hover:text-gray-600"></i>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 flex flex-col min-w-0 bg-white">
+            <!-- Header -->
+            <header class="px-6 py-4 flex items-center justify-between border-b border-gray-100">
+                <h1 class="text-xl font-bold text-gray-800">Deals</h1>
+
+                <div class="flex items-center gap-4">
+                    <span class="text-gray-500 text-xs">Shared with timeless</span>
+                    <div class="flex -space-x-2">
+                        <img class="w-7 h-7 rounded-full border-2 border-white"
+                            src="https://ui-avatars.com/api/?name=Tim+Less&background=000&color=fff" alt="">
+                        <img class="w-7 h-7 rounded-full border-2 border-white"
+                            src="https://ui-avatars.com/api/?name=A&background=random" alt="">
+                        <img class="w-7 h-7 rounded-full border-2 border-white"
+                            src="https://ui-avatars.com/api/?name=B&background=random" alt="">
+                    </div>
+
+                    <button
+                        class="px-3 py-1.5 border border-gray-200 rounded-md hover:bg-gray-50 text-gray-700 font-medium text-xs flex items-center gap-2">
+                        <i class="fa-solid fa-grip text-gray-400"></i> All apps
+                    </button>
+                    <button
+                        class="px-3 py-1.5 bg-gray-900 text-white rounded-md hover:bg-gray-700 font-medium text-xs flex items-center gap-2">
+                        <i class="fa-solid fa-plus text-gray-400"></i> Add deal
+                    </button>
+                </div>
+            </header>
+
+            <!-- Toolbar -->
+            <div class="px-6 py-2 border-b border-gray-100 flex items-center gap-4 text-sm relative z-30">
+                <div class="flex items-center gap-1 text-gray-600 px-2 py-1 rounded hover:bg-gray-100 cursor-pointer">
+                    <i class="fa-regular fa-rectangle-list"></i> Table <i
+                        class="fa-solid fa-chevron-down text-xs ml-1"></i>
+                </div>
+
+                <div
+                    class="flex items-center gap-1 text-gray-800 font-medium px-2 py-1 bg-gray-100 rounded cursor-pointer">
+                    <i class="fa-solid fa-filter text-gray-500"></i> Filter
+                </div>
+
+                <div class="flex items-center gap-1 text-gray-600 px-2 py-1 rounded hover:bg-gray-100 cursor-pointer">
+                    <i class="fa-solid fa-arrow-down-short-wide"></i> Sort
+                </div>
+
+                <div class="flex items-center gap-1 text-blue-500 px-2 py-1 rounded hover:bg-blue-50 cursor-pointer">
+                    <i class="fa-solid fa-earth-americas"></i> Shared
+                </div>
+
+                <div class="ml-auto flex items-center gap-3">
+                    <div class="flex items-center gap-1 text-gray-500 hover:text-gray-700 cursor-pointer">
+                        <i class="fa-solid fa-plus"></i> Save as new view
+                    </div>
+                    <i class="fa-solid fa-layer-group text-gray-400 cursor-pointer hover:text-gray-600"></i>
+                    <i class="fa-solid fa-ellipsis text-gray-400 cursor-pointer hover:text-gray-600"></i>
+                </div>
+
+                <!-- Filter Popover (Mock) -->
+                <div
+                    class="absolute top-[42px] left-[70px] bg-white border border-gray-200 shadow-xl rounded-xl p-4 w-[650px] text-sm z-50 ring-1 ring-black/5">
+                    <div class="flex flex-col gap-3">
+                        <div class="flex items-center gap-2">
+                            <span class="text-gray-500 w-14 text-right font-medium">Where</span>
+                            <div
+                                class="flex items-center gap-1 border border-gray-200 rounded px-2.5 py-1.5 bg-gray-50 cursor-pointer hover:bg-white transition-colors">
+                                <i class="fa-regular fa-circle-check text-gray-500 text-xs"></i>
+                                <span class="text-gray-900 font-medium">Location</span>
+                                <i class="fa-solid fa-chevron-down text-[10px] text-gray-400 ml-1.5"></i>
+                            </div>
+                            <div
+                                class="flex items-center gap-1 border border-gray-200 rounded px-2.5 py-1.5 bg-gray-50 cursor-pointer hover:bg-white transition-colors text-gray-900 font-medium">
+                                Contains <i class="fa-solid fa-chevron-down text-[10px] text-gray-400 ml-1.5"></i>
+                            </div>
+                            <input type="text" value="San fransisco"
+                                class="border border-gray-300 rounded px-2.5 py-1.5 text-gray-900 font-medium focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-400 shadow-sm w-48">
+                            <i
+                                class="fa-solid fa-ellipsis text-gray-400 ml-auto cursor-pointer hover:text-gray-600"></i>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="text-gray-500 w-14 text-right font-medium">And</span>
+                            <div
+                                class="flex items-center gap-1 border border-gray-200 rounded px-2.5 py-1.5 bg-gray-50 cursor-pointer hover:bg-white transition-colors">
+                                <i class="fa-solid fa-font text-gray-500 text-xs"></i>
+                                <span class="text-gray-900 font-medium">Title</span>
+                                <i class="fa-solid fa-chevron-down text-[10px] text-gray-400 ml-1.5"></i>
+                            </div>
+                            <div
+                                class="flex items-center gap-1 border border-gray-200 rounded px-2.5 py-1.5 bg-gray-50 cursor-pointer hover:bg-white transition-colors text-gray-900 font-medium">
+                                Contains <i class="fa-solid fa-chevron-down text-[10px] text-gray-400 ml-1.5"></i>
+                            </div>
+                            <input type="text" placeholder="Value"
+                                class="border border-gray-200 rounded px-2.5 py-1.5 text-gray-500 w-48 bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-400 transition-all">
+                            <i
+                                class="fa-solid fa-ellipsis text-gray-400 ml-auto cursor-pointer hover:text-gray-600"></i>
+                        </div>
+                        <div class="flex items-center justify-between mt-2">
+                            <div
+                                class="flex items-center gap-2 text-gray-500 hover:text-gray-700 cursor-pointer pl-[72px] transition-colors">
+                                <i class="fa-solid fa-plus text-xs"></i> <span class="font-medium">Add filter</span>
+                            </div>
+                            <span
+                                class="text-gray-400 text-xs hover:text-red-500 cursor-pointer font-medium transition-colors">Delete
+                                filter</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Table Header -->
+            <div class="flex-1 overflow-auto bg-white relative z-0">
+                <table class="w-full text-left border-collapse">
+                    <thead class="bg-white sticky top-0 z-10 text-xs text-gray-500 font-medium">
+                        <tr class="border-b border-gray-200">
+                            <th class="py-2.5 pl-6 pr-3 w-10">
+                                <input type="checkbox"
+                                    class="rounded border-gray-300 text-blue-600 focus:ring-blue-500 h-4 w-4">
+                            </th>
+                            <th class="py-2.5 px-3 font-normal w-[220px]">Title</th>
+                            <th class="py-2.5 px-3 font-normal w-1/4">
+                                <i class="fa-solid fa-grip-lines-vertical text-gray-300 mr-2 text-[10px]"></i>
+                                Company
+                            </th>
+                            <th class="py-2.5 px-3 font-normal">
+                                <i class="fa-solid fa-grip-lines-vertical text-gray-300 mr-2 text-[10px]"></i>
+                                People
+                            </th>
+                            <th class="py-2.5 px-3 font-normal">
+                                <i class="fa-solid fa-grip-lines-vertical text-gray-300 mr-2 text-[10px]"></i>
+                                <i class="fa-solid fa-arrows-up-down-left-right text-gray-400 mr-1 text-[10px]"></i>
+                                Stage
+                            </th>
+                            <th class="py-2.5 px-3 font-normal">
+                                <i class="fa-solid fa-grip-lines-vertical text-gray-300 mr-2 text-[10px]"></i>
+                                <i class="fa-regular fa-calendar text-gray-700 mr-1"></i> Close date
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-sm">
+                        <tr v-for="deal in deals" :key="deal.id"
+                            :class="{'bg-blue-50/50': deal.selected, 'ring-2 ring-orange-400 z-20 relative rounded-sm': deal.focused}"
+                            class="border-b border-gray-100 hover:bg-gray-50 group h-[52px]">
+
+                            <td class="py-2 pl-6 pr-3 align-middle whitespace-nowrap">
+                                <input type="checkbox" v-model="deal.selected"
+                                    class="rounded border-gray-300 text-blue-600 focus:ring-blue-500 cursor-pointer h-4 w-4">
+                            </td>
+
+                            <td
+                                class="py-2 px-3 text-gray-900 align-middle font-medium whitespace-nowrap truncate max-w-[200px]">
+                                {{ deal.title }}
+                            </td>
+
+                            <td class="py-2 px-3 align-middle whitespace-nowrap">
+                                <div class="flex items-center gap-3">
+                                    <div
+                                        class="w-5 flex-shrink-0 flex items-center justify-center text-xs font-semibold">
+                                        <span v-if="deal.companyIcon" class="text-gray-700">{{deal.companyIcon}}</span>
+                                        <img v-else-if="deal.companyLogo" :src="deal.companyLogo"
+                                            class="w-5 h-5 object-contain" alt="">
+                                        <i v-else class="fa-regular fa-building text-gray-400"></i>
+                                    </div>
+                                    <span class="text-gray-600 truncate max-w-[140px]">{{ deal.company }}</span>
+
+                                    <div class="flex gap-1 ml-auto">
+                                        <button v-if="deal.hasMenu || deal.focused"
+                                            class="text-gray-400 hover:text-gray-600 px-1.5 rounded hover:bg-gray-100">
+                                            <i class="fa-solid fa-ellipsis"></i>
+                                        </button>
+                                        <span v-for="tag in deal.tags" :class="tagColor(tag)"
+                                            class="px-2 py-0.5 rounded text-[11px] font-medium border">{{ tag }}</span>
+                                    </div>
+                                </div>
+                            </td>
+
+                            <td class="py-2 px-3 align-middle whitespace-nowrap">
+                                <div class="flex items-center gap-2.5">
+                                    <img :src="deal.personAvatar"
+                                        class="w-6 h-6 rounded-full object-cover border border-gray-100">
+                                    <span class="text-gray-600">{{ deal.personName }}</span>
+                                </div>
+                            </td>
+
+                            <td class="py-2 px-3 align-middle whitespace-nowrap">
+                                <div class="flex items-center gap-2">
+                                    <span :class="stageColor(deal.stage)" class="w-1.5 h-1.5 rounded-full"></span>
+                                    <span
+                                        class="text-gray-700 decoration-gray-300 underline decoration-dotted underline-offset-4 text-xs font-medium">{{
+                                        deal.stage }}</span>
+                                </div>
+                            </td>
+
+                            <td class="py-2 px-3 text-gray-600 align-middle whitespace-nowrap">
+                                {{ deal.closeDate }}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <!-- Bottom Floating Action Bar if Selected -->
+                <div v-if="selectedCount > 0"
+                    class="fixed bottom-6 left-1/2 transform -translate-x-1/2 bg-white border border-gray-200 shadow-[0_8px_30px_rgb(0,0,0,0.12)] rounded-xl px-2 py-2 flex items-center gap-2 z-50 animate-bounce-in min-w-[400px]">
+                    <div
+                        class="bg-black text-white px-2 py-0.5 rounded text-xs font-bold shadow-sm h-5 flex items-center justify-center">
+                        {{ selectedCount }}</div>
+                    <span class="text-xs font-semibold text-gray-800 pr-3 border-r border-gray-200 mr-1">{{
+                        selectedCount }} Deal selected</span>
+
+                    <button
+                        class="px-2 py-1 text-gray-600 hover:bg-gray-100 rounded flex items-center gap-1.5 text-xs font-medium transition-colors">
+                        <i class="fa-solid fa-plus text-gray-400"></i> Add to collection
+                    </button>
+
+                    <button
+                        class="px-3 py-1 text-gray-600 hover:bg-gray-100 rounded text-xs font-medium transition-colors border-l border-gray-100 ml-1">Delete</button>
+
+                    <button @click="deselectAll"
+                        class="px-2 py-1 text-gray-400 hover:text-gray-600 text-xs ml-auto transition-colors"><i
+                            class="fa-solid fa-xmark"></i></button>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <script>
+        const { createApp } = Vue
+
+        createApp({
+            data() {
+                return {
+                    collections: [
+                        { name: 'Products', icon: 'fa-regular fa-sun' }, // Using sun as closest generic match for 'splat' icon
+                        { name: 'My deals flow', icon: 'fa-solid fa-diagram-project' },
+                        { name: 'Support', icon: 'fa-solid fa-headset' },
+                        { name: 'Sales', icon: 'fa-solid fa-briefcase' },
+                        { name: 'Operations', icon: 'fa-solid fa-key' },
+                        { name: 'Partner team', icon: 'fa-regular fa-building' },
+                        { name: 'Quality', icon: 'fa-solid fa-infinity' },
+                    ],
+                    deals: [
+                        { id: 1, title: 'Summer Catalog', company: 'Season', companyIcon: 'S', tags: [], personName: 'Sally Potter', personAvatar: 'https://ui-avatars.com/api/?name=Sally+Potter&background=FCD34D&color=fff', stage: 'Qualified', closeDate: 'Mar 31' },
+                        { id: 2, title: 'Yellow Dreams', company: 'Louis Vuitton', companyIcon: 'L', tags: ['Saas', 'AI'], personName: 'Selena Delgado', personAvatar: 'https://ui-avatars.com/api/?name=Selena+Delgado&background=EA580C&color=fff', stage: 'Qualified', closeDate: 'Apr 08' },
+                        { id: 3, title: 'Website Design', company: 'Apple Inc.', companyIcon: 'A', tags: ['Tech', 'Fintech'], personName: 'Jenny Wilson', personAvatar: 'https://ui-avatars.com/api/?name=Jenny+Wilson&background=7C3AED&color=fff', stage: 'Proposal', closeDate: 'May 14', decoration: 'yellow' },
+                        { id: 4, title: 'Inspired Magazine Design', company: 'Dropbox', companyIcon: 'D', tags: ['Crypto'], personName: 'Stacy Kreed', personAvatar: 'https://ui-avatars.com/api/?name=Stacy+Kreed&background=FBBF24&color=fff', stage: 'Qualified', closeDate: 'Apr 28' },
+                        { id: 5, title: 'Paris Gallery', company: 'Circooies', companyIcon: 'C', tags: ['Saas', 'AI'], personName: 'Liam Steel', personAvatar: 'https://ui-avatars.com/api/?name=Liam+Steel&background=E5E7EB&color=000', stage: 'Won', closeDate: 'Jun 17', dot: 'green' },
+                        { id: 6, title: 'Fashion Magazine App', company: 'Spotify', companyIcon: 'S', tags: ['Tech', 'Fintech'], personName: 'Robert Fox', personAvatar: 'https://ui-avatars.com/api/?name=Robert+Fox&background=DC2626&color=fff', stage: 'Won', closeDate: 'Aug 23', dot: 'green', hasMenu: true, selected: false }, // Mocking the row with menu "..."
+                        { id: 61, title: 'Yellow Dreams', company: 'Spotify', companyIcon: 'S', tags: ['Tech', 'Fintech'], personName: 'Matt Daemon', personAvatar: 'https://ui-avatars.com/api/?name=Matt+Daemon&background=EA580C&color=fff', stage: 'Negotiation', closeDate: 'May 19', selected: false, focused: true }, // The focused row in image
+                        { id: 7, title: 'Catwalk Photoshoot', company: 'Nike Inc.', companyIcon: 'N', tags: ['CS', 'Tech'], personName: 'Daniel Kieth', personAvatar: 'https://ui-avatars.com/api/?name=Daniel+Kieth&background=D97706&color=fff', stage: 'Qualified', closeDate: 'Apr 27' },
+                        { id: 8, title: 'Summer Catalog', company: 'Centered', companyIcon: false, companyLogo: 'https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600', tags: ['Partnership', 'Saas'], personName: 'Sally Potter', personAvatar: 'https://ui-avatars.com/api/?name=Sally+Potter&background=FCD34D&color=fff', stage: 'Qualified', closeDate: 'Sep 30', selected: true },
+                        { id: 9, title: 'Paris Gallery', company: 'Catalog', companyIcon: 'C', tags: ['Tech', 'AI'], personName: 'Liam Alexander', personAvatar: 'https://ui-avatars.com/api/?name=Liam+Alexander&background=059669&color=fff', stage: 'Qualified', closeDate: 'Jul 14' },
+                        { id: 10, title: 'Summer Catalog', company: 'Wikipedia', companyIcon: 'W', tags: ['Crypto', 'AI', 'Tech'], personName: 'Dianne Russell', personAvatar: 'https://ui-avatars.com/api/?name=Dianne+Russell&background=2563EB&color=fff', stage: 'Contact made', closeDate: 'Mar 31', dot: 'blue' },
+                        { id: 11, title: 'Website Design', company: 'Hourglass', companyIcon: 'A', tags: ['B2b', 'Saas'], personName: 'Savannah Nguyen', personAvatar: 'https://ui-avatars.com/api/?name=Savannah+Nguyen&background=D97706&color=fff', stage: 'Qualified', closeDate: 'Jun 12' },
+                        { id: 12, title: 'Inspired Magazine Design', company: 'Oracle', companyIcon: 'O', tags: ['e-commerce', 'Saas'], personName: 'Chris Stone', personAvatar: 'https://ui-avatars.com/api/?name=Chris+Stone&background=D97706&color=fff', stage: 'Contact made', closeDate: 'Sep 19', dot: 'blue' },
+                        { id: 13, title: 'Inspired Photoshoot', company: 'Qatalog', companyIcon: false, companyLogo: 'https://tailwindui.com/img/logos/mark.svg?color=gray&shade=800', tags: ['Tech', 'Crypto'], personName: 'Darrell Steward', personAvatar: 'https://ui-avatars.com/api/?name=Darrell+Steward&background=B45309&color=fff', stage: 'Contact made', closeDate: 'Mar 28', dot: 'blue' },
+                        { id: 14, title: 'Green Art Website', company: 'Github', companyIcon: 'G', tags: ['Gaming', 'Tech'], personName: 'Kristin Watson', personAvatar: 'https://ui-avatars.com/api/?name=Kristin+Watson&background=2563EB&color=fff', stage: 'Lost', closeDate: 'Aug 24', dot: 'red' },
+                        { id: 15, title: 'Online Store Design', company: 'Sound cloud', companyIcon: 'S', tags: ['Partnership', 'Saas'], personName: 'Layla Green', personAvatar: 'https://ui-avatars.com/api/?name=Layla+Green&background=D97706&color=fff', stage: 'Negotiation', closeDate: 'Aug 14' },
+                        { id: 16, title: 'Paris Gallery', company: 'Asana', companyIcon: 'A', tags: ['Tech', 'Fintech'], personName: 'Nathan Wallace', personAvatar: 'https://ui-avatars.com/api/?name=Nathan+Wallace&background=D97706&color=fff', stage: 'Negotiation', closeDate: 'Oct 23' },
+                        { id: 17, title: 'Green Art Website', company: 'Sony', companyIcon: 'S', tags: ['CS', 'Tech'], personName: 'Darlene Robertson', personAvatar: 'https://ui-avatars.com/api/?name=Darlene+Robertson&background=E5E7EB&color=000', stage: 'Qualified', closeDate: 'May 25' },
+                    ]
+                }
+            },
+            computed: {
+                selectedCount() {
+                    return this.deals.filter(d => d.selected).length;
+                }
+            },
+            methods: {
+                tagColor(tag) {
+                    const colors = {
+                        'Saas': 'bg-gray-100 text-gray-600 border-gray-200',
+                        'AI': 'bg-gray-100 text-gray-600 border-gray-200',
+                        'Tech': 'bg-gray-100 text-gray-600 border-gray-200',
+                        'Fintech': 'bg-gray-100 text-gray-600 border-gray-200',
+                        'Crypto': 'bg-orange-50 text-orange-600 border-orange-100', // Mocking coloring based on image visual guess
+                        'CS': 'bg-gray-100 text-gray-600 border-gray-200',
+                        'Partnership': 'bg-gray-100 text-gray-600 border-gray-200',
+                        'B2b': 'bg-gray-100 text-gray-600 border-gray-200',
+                        'e-commerce': 'bg-gray-100 text-gray-600 border-gray-200',
+                        'Gaming': 'bg-gray-100 text-gray-600 border-gray-200',
+                    };
+                    return colors[tag] || 'bg-gray-100 text-gray-600 border-gray-200';
+                },
+                stageColor(stage) {
+                    // Mapping dots
+                    if (['Won', 'Qualified'].includes(stage)) return 'bg-cyan-400';
+                    if (['Proposal'].includes(stage)) return 'bg-yellow-400';
+                    if (['Negotiation'].includes(stage)) return 'bg-orange-400';
+                    if (['Contact made'].includes(stage)) return 'bg-blue-600';
+                    if (['Lost'].includes(stage)) return 'bg-red-500';
+
+                    return 'bg-blue-300';
+                },
+                deselectAll() {
+                    this.deals.forEach(d => d.selected = false);
+                }
+            }
+        }).mount('#app')
+    </script>
+</body>
+
+</html>
