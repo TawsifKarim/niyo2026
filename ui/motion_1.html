@@ -109,6 +109,7 @@
             /* Subtle text gradient for metallic feel */
             background: linear-gradient(to bottom, #ffffff 30%, #a1a1aa 100%);
             -webkit-background-clip: text;
+            background-clip: text;
             -webkit-text-fill-color: transparent;
             filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.1));
         }
@@ -141,13 +142,14 @@
         /* Scene 4: Product Reveal */
         /* Scene 4: Product Reveal */
         .brand-name {
-            font-size: clamp(4rem, 12vw, 9rem);
+            font-size: clamp(5rem, 14vw, 11rem);
             font-weight: 800;
             letter-spacing: -0.08em;
             /* Tighter for lowercase */
             /* Premium metallic blue gradient */
             background: linear-gradient(135deg, #e0f2fe 0%, #7dd3fc 50%, #0284c7 100%);
             -webkit-background-clip: text;
+            background-clip: text;
             -webkit-text-fill-color: transparent;
             margin-bottom: 2rem;
             filter: drop-shadow(0 0 40px rgba(56, 189, 248, 0.3));
@@ -156,8 +158,8 @@
         }
 
         .final-brand {
-            font-size: clamp(2rem, 5vw, 2.5rem);
-            margin-top: 2.5rem;
+            font-size: clamp(4rem, 10vw, 7rem);
+            margin-top: 3.5rem;
             margin-bottom: 0;
         }
 
@@ -180,6 +182,7 @@
             text-align: center;
             background: linear-gradient(to bottom, #fff 0%, #ccc 100%);
             -webkit-background-clip: text;
+            background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
@@ -213,6 +216,34 @@
             -webkit-text-fill-color: var(--text-muted);
         }
 
+        /* CTA Button */
+        .cta-button {
+            display: inline-flex;
+            align-items: center;
+            padding: 1rem 2rem;
+            background-color: #ffffff;
+            color: #000000;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.1rem;
+            border-radius: 100px;
+            margin-top: 2rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 10px 30px rgba(255, 255, 255, 0.2);
+            pointer-events: auto;
+            visibility: hidden;
+            opacity: 0;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 15px 40px rgba(255, 255, 255, 0.3);
+        }
+
+        .cta-button:active {
+            transform: translateY(0) scale(0.98);
+        }
+
         /* UTILS */
         /* UTILS */
         .bg-gradient {
@@ -227,9 +258,10 @@
         /* Keyword Emphasis */
         .em-bad {
             color: var(--highlight-bad);
-            opacity: 0.9;
+            -webkit-text-fill-color: var(--highlight-bad);
+            opacity: 1;
             font-weight: 700;
-            text-shadow: 0 0 15px rgba(248, 113, 113, 0.3);
+            text-shadow: 0 0 8px rgba(248, 113, 113, 0.2);
         }
 
         .em-good {
@@ -290,8 +322,8 @@
 
         <!-- Scene 3: Reframe -->
         <div id="scene-3" class="scene">
-            <h1 class="hero-text" id="reframe-1">That’s not bad luck.</h1>
-            <h1 class="hero-text" id="reframe-2">That’s a <span class="em-system">broken<br>hiring system.</span></h1>
+            <h1 class="hero-text" id="reframe-1">That’s not <span class="em-bad">bad luck</span>.</h1>
+            <h1 class="hero-text" id="reframe-2">That’s a <span class="em-bad">broken</span><br>hiring system.</h1>
         </div>
 
         <!-- Scene 4: Reveal -->
@@ -303,8 +335,8 @@
 
         <!-- Scene 5: Differentiators -->
         <div id="scene-5" class="scene">
-            <h1 class="diff-text" id="diff-1">Not another ATS</h1>
-            <h1 class="diff-text" id="diff-2">Not a ChatGPT prompt</h1>
+            <h1 class="diff-text" id="diff-1">Not another <span class="em-bad">ATS</span></h1>
+            <h1 class="diff-text" id="diff-2">Not a <span class="em-bad">ChatGPT</span> prompt</h1>
             <h1 class="diff-text" id="diff-3">
                 A complete hiring system
                 <span class="diff-sub text-italic">That turns chaos into your next <span class="em-good">great
@@ -315,6 +347,7 @@
                 </span>
             </h1>
             <div class="brand-name final-brand" id="final-brand">niyo</div>
+            <a href="#" class="cta-button" id="final-cta">See real results &rarr;</a>
         </div>
 
     </div>
@@ -459,8 +492,8 @@
             // 1. Not another ATS
             tl.set("#diff-1", { display: "block" });
             tl.fromTo("#diff-1",
-                { opacity: 0, y: 30, rotationX: -20 },
-                { opacity: 1, y: 0, rotationX: 0, duration: 0.8 }
+                { opacity: 0, y: 30, rotationX: -20, filter: "blur(5px)" },
+                { opacity: 1, y: 0, rotationX: 0, filter: "blur(0px)", duration: 0.8 }
             );
             tl.to("#diff-1", { opacity: 0, y: -30, filter: "blur(5px)", duration: 0.5, delay: 1.2 });
 
@@ -468,8 +501,8 @@
             tl.set("#diff-1", { display: "none" });
             tl.set("#diff-2", { display: "block" });
             tl.fromTo("#diff-2",
-                { opacity: 0, y: 30 },
-                { opacity: 1, y: 0, duration: 0.8 }
+                { opacity: 0, y: 30, filter: "blur(5px)" },
+                { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.8 }
             );
             tl.to("#diff-2", { opacity: 0, y: -30, filter: "blur(5px)", duration: 0.5, delay: 1.2 });
 
@@ -533,6 +566,20 @@
             tl.fromTo(finalBrand,
                 { opacity: 0, y: 20 },
                 { opacity: 1, y: 0, duration: 1.5, ease: "power2.out" }
+            );
+
+            // Final CTA Fade In
+            const finalCta = document.getElementById("final-cta");
+            tl.fromTo(finalCta,
+                { opacity: 0, y: 30, visibility: "hidden" },
+                {
+                    opacity: 1,
+                    y: 0,
+                    visibility: "visible",
+                    duration: 1,
+                    ease: "power2.out"
+                },
+                "+=0.3" // 0.3s pause after niyo appears
             );
 
             // Helpers
