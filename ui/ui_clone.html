@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Niyo - Intelligent Hiring</title>
+
+    <!-- Dependencies -->
+    <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'niyo-bg': '#f8fafc',    /* Slate 50 */
+                        'niyo-dark': '#0f172a',  /* Slate 900 */
+                        'niyo-card': '#ffffff',
+                        'niyo-accent': '#e0f2fe', /* Sky 100 */
+                        'niyo-primary': '#0284c7', /* Sky 600 */
+                        'niyo-text': '#334155',    /* Slate 700 */
+                        'niyo-muted': '#94a3b8',   /* Slate 400 */
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Outfit', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #f8fafc;
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+
+<body class="min-h-screen p-5">
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        // --- SVGs ---
+        // Retaining the high-fidelity geometric patterns but recoloring them for SaaS feel
+        const HeroPattern = () => (
+            <svg className="absolute inset-0 w-full h-full" viewBox="0 0 400 400" preserveAspectRatio="xMidYMid slice">
+                <defs>
+                    <radialGradient id="niyoGradient" cx="50%" cy="50%" r="50%">
+                        <stop offset="0%" stopColor="#1e293b" /> {/* Slate 800 */}
+                        <stop offset="100%" stopColor="#0f172a" /> {/* Slate 900 */}
+                    </radialGradient>
+                    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+                        <feDropShadow dx="2" dy="2" stdDeviation="3" floodOpacity="0.3" />
+                    </filter>
+                </defs>
+                <div className="absolute inset-0 bg-gradient-to-br from-slate-800 via-slate-900 to-black"></div>
+                {/* Abstract Data Flow Lines instead of Honeycomb? Or keep honeycomb as "Nodes"? keeping honeycomb for layout fidelity but darker */}
+                <g opacity="0.3">
+                    <circle cx="50" cy="50" r="150" fill="url(#niyoGradient)" filter="url(#shadow)" opacity="0.4" />
+                    <circle cx="350" cy="350" r="200" fill="url(#niyoGradient)" filter="url(#shadow)" opacity="0.4" />
+                </g>
+            </svg>
+        );
+
+        const ChartIcon = () => (
+            <svg viewBox="0 0 56 56" className="w-full h-full">
+                <rect width="56" height="56" fill="#0ea5e9" rx="12" />
+                <path d="M16 38V28M24 38V20M32 38V14M40 38V24" stroke="white" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+        );
+
+        const GridTexture = () => (
+            <svg viewBox="0 0 100 100" className="absolute inset-0 w-full h-full opacity-40" preserveAspectRatio="none">
+                <defs>
+                    <pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse">
+                        <path d="M 10 0 L 0 0 0 10" fill="none" stroke="#60a5fa" strokeWidth="0.5" />
+                    </pattern>
+                </defs>
+                <rect width="100" height="100" fill="url(#grid)" />
+            </svg>
+        );
+
+        const DarkCardTexture = () => (
+            <svg viewBox="0 0 200 200" className="absolute inset-0 w-full h-full opacity-10" preserveAspectRatio="xMidYMid slice">
+                <path d="M0 200L200 0H200V200H0Z" fill="url(#grad1)" />
+                <defs>
+                    <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stopColor="#38bdf8" />
+                        <stop offset="100%" stopColor="#0284c7" />
+                    </linearGradient>
+                </defs>
+            </svg>
+        );
+
+        // --- Components ---
+
+        const Scoop = ({ position, style = {} }) => {
+            // Reusing logic but with new bg color match
+            const bgColor = '#f8fafc'; // Matches body
+
+            const baseStyle = {
+                position: 'absolute',
+                width: '20px',
+                height: '20px',
+                zIndex: 100,
+                overflow: 'hidden',
+                pointerEvents: 'none',
+                ...style
+            };
+
+            let circlePosition = {};
+            if (position === 'tl') circlePosition = { bottom: 0, right: 0 };
+            if (position === 'tr') circlePosition = { bottom: 0, left: 0 };
+            if (position === 'bl') circlePosition = { top: 0, right: 0 };
+            if (position === 'br') circlePosition = { top: 0, left: 0 };
+
+            return (
+                <div style={baseStyle}>
+                    <div style={{
+                        ...circlePosition,
+                        position: 'absolute',
+                        width: '40px',
+                        height: '40px',
+                        borderRadius: '50%',
+                        background: bgColor
+                    }}></div>
+                </div>
+            );
+        };
+
+        const NavBar = () => {
+            // bg-white remains white as card background
+            return (
+                <div className="col-span-5 bg-niyo-card rounded-full flex items-center justify-between px-5 relative h-full border border-slate-100 shadow-sm">
+                    <div className="w-10 h-10 bg-niyo-primary rounded-full flex items-center justify-center shadow-sm text-white font-bold font-display">
+                        N
+                    </div>
+                    <div className="flex items-center gap-6 text-slate-400">
+                        <button className="hover:text-niyo-primary transition-colors"><i className="fa-solid fa-border-all"></i></button>
+                        <button className="hover:text-niyo-primary transition-colors"><i className="fa-solid fa-chart-line"></i></button>
+                        <button className="hover:text-niyo-primary transition-colors"><i className="fa-solid fa-users"></i></button>
+                        <button className="hover:text-niyo-primary transition-colors"><i className="fa-regular fa-bell"></i></button>
+                    </div>
+                    <Scoop position="bl" style={{ bottom: '-20px', left: '-20px' }} />
+                </div>
+            );
+        };
+
+        const HeroSection = () => {
+            return (
+                <div className="col-span-12 md:col-span-7 row-span-2 relative rounded-[40px] overflow-visible">
+                    <div className="absolute inset-0 rounded-[40px] overflow-hidden bg-niyo-dark">
+                        <HeroPattern />
+                        {/* Subtle blue gradient overlay */}
+                        <div className="absolute inset-0 bg-gradient-to-tr from-slate-900 via-slate-900/80 to-blue-900/20"></div>
+                    </div>
+
+                    <div className="relative z-10 h-full flex flex-col p-10 justify-between">
+                        <div className="flex items-start justify-between">
+                            <button className="bg-white/10 backdrop-blur-md text-white px-4 py-2 rounded-full flex items-center gap-2 text-xs font-medium border border-white/10 hover:bg-white/20 transition-colors">
+                                <i className="fa-solid fa-bolt text-yellow-400"></i>
+                                Intelligent Hiring
+                            </button>
+                        </div>
+
+                        <h1 className="text-white text-5xl xl:text-6xl font-display font-semibold leading-[1.1] tracking-tight mt-4">
+                            You're not bad<br />
+                            at <span className="text-blue-400">hiring.</span><br />
+                            <span className="text-slate-500">The process<br />is broken.</span>
+                        </h1>
+
+                        <div className="mt-6 flex items-center gap-2 text-slate-400 text-xs">
+                            <i className="fa-solid fa-circle-check text-green-500"></i> AI-Powered Shortlisting
+                        </div>
+                    </div>
+
+                    <Scoop position="tr" style={{ top: '-20px', right: '-36px' }} />
+                </div>
+            );
+        };
+
+        const SmallFeatureCard = () => {
+            return (
+                <div className="col-span-6 md:col-span-2 bg-niyo-card rounded-[28px] p-3 flex items-center gap-3 shadow-sm border border-slate-100 relative group overflow-hidden h-full">
+                    <div className="w-12 h-12 rounded-[14px] overflow-hidden flex-shrink-0 flex items-center justify-center bg-sky-100 text-sky-600">
+                        <i className="fa-solid fa-list-check text-xl"></i>
+                    </div>
+                    <div className="flex flex-col text-xs leading-snug">
+                        <span className="font-semibold text-niyo-dark">Explainable</span>
+                        <span className="text-slate-500">Scoring</span>
+                    </div>
+                    <button className="absolute top-2 right-2 w-6 h-6 bg-niyo-dark text-white rounded-full flex items-center justify-center text-[9px] opacity-0 group-hover:opacity-100 transition-opacity">
+                        <i className="fa-solid fa-arrow-right"></i>
+                    </button>
+                </div>
+            );
+        };
+
+        const AccentCard = () => {
+            return (
+                <div className="col-span-6 md:col-span-3 row-span-2 bg-niyo-accent rounded-[32px] p-6 flex flex-col justify-between shadow-sm relative h-full border border-blue-100">
+                    <div>
+                        <h3 className="text-xl font-display font-semibold text-niyo-dark leading-tight mb-3">
+                            Ready in minutes,<br />not weeks.
+                        </h3>
+                        <p className="text-[11px] text-slate-600 leading-relaxed font-medium">
+                            Your shortlist appears instantly. Top candidates float up.
+                        </p>
+                    </div>
+
+                    <div className="mt-4 space-y-2">
+                        <div className="flex items-center gap-2 text-[10px] text-slate-700">
+                            <i className="fa-solid fa-check text-blue-600"></i> No prompt engineering
+                        </div>
+                        <div className="flex items-center gap-2 text-[10px] text-slate-700">
+                            <i className="fa-solid fa-check text-blue-600"></i> No human fatigue
+                        </div>
+                    </div>
+
+                    <button className="px-5 py-2 rounded-full bg-white text-niyo-primary text-xs font-bold hover:shadow-md transition-all w-fit mt-4">
+                        See Demo
+                    </button>
+                    <Scoop position="tl" style={{ top: '-20px', left: '-20px' }} />
+                </div>
+            );
+        };
+
+        const VideoCard = () => {
+            return (
+                <div className="col-span-6 md:col-span-2 rounded-[28px] overflow-hidden relative group h-full bg-slate-900 border border-slate-800">
+                    <GridTexture />
+                    <div className="absolute inset-0 flex items-center justify-center">
+                        <button className="w-12 h-12 bg-white/10 backdrop-blur border border-white/20 rounded-full flex items-center justify-center pl-0.5 hover:scale-110 hover:bg-white hover:text-niyo-primary transition-all shadow-lg text-white">
+                            <i className="fa-solid fa-play text-sm"></i>
+                        </button>
+                    </div>
+                    <Scoop position="tl" style={{ top: '-20px', left: '-20px' }} />
+                    <Scoop position="tr" style={{ top: '-20px', right: '-20px' }} />
+                </div>
+            );
+        };
+
+        const TextCard = () => {
+            return (
+                <div className="col-span-12 md:col-span-4 bg-niyo-card rounded-[28px] p-6 flex items-center shadow-sm border border-slate-100 relative h-full">
+                    <p className="text-xs text-slate-600 leading-relaxed">
+                        Stop using <span className="font-semibold text-niyo-dark">high-value time</span> on low-value work.
+                        Your best hire is likely in the <span className="italic text-red-500">reject pile</span> due to fatigue.
+                        Niyo solves this by ensuring <span className="font-bold text-niyo-primary">consistent evaluation</span> for every candidate.
+                    </p>
+                    <Scoop position="tr" style={{ top: '-20px', right: '-20px' }} />
+                </div>
+            );
+        };
+
+        const StatsSection = () => {
+            return (
+                <div className="col-span-12 md:col-span-3 flex items-center justify-center gap-8 h-full">
+                    <div className="text-center">
+                        <div className="text-4xl font-light text-niyo-dark font-display">37s</div>
+                        <div className="text-[10px] text-slate-500 font-medium">Avg time / 200 CVs</div>
+                    </div>
+                    <div className="text-center">
+                        <div className="text-4xl font-light text-niyo-dark font-display">95%</div>
+                        <div className="text-[10px] text-slate-500 font-medium">Screening Accuracy</div>
+                    </div>
+                </div>
+            );
+        };
+
+        const DarkCard = () => {
+            return (
+                <div className="col-span-12 md:col-span-5 row-span-2 bg-niyo-dark rounded-[32px] p-8 flex flex-col justify-end text-white relative overflow-hidden shadow-xl h-full border border-slate-800">
+                    <DarkCardTexture />
+                    <div className="absolute top-6 right-6 text-slate-700">
+                        <i className="fa-solid fa-infinity text-3xl"></i>
+                    </div>
+
+                    <div className="relative z-10">
+                        <h3 className="text-2xl font-display font-medium mb-3 leading-tight">
+                            Manual screening<br />takes everything.
+                        </h3>
+                        <p className="text-xs text-slate-400 leading-relaxed max-w-[240px]">
+                            Time, Quality, & Cost.<br />
+                            Replace generic summaries with actual intelligent parsing.
+                        </p>
+                    </div>
+
+                    <Scoop position="tl" style={{ top: '-20px', left: '-20px' }} />
+                </div>
+            );
+        };
+
+        const FooterButtons = () => {
+            return (
+                <>
+                    <div className="col-span-6 md:col-span-3 h-full">
+                        <button className="w-full h-full bg-niyo-primary rounded-full flex items-center justify-center font-bold text-white hover:bg-sky-500 transition-all shadow-md shadow-sky-900/10">
+                            Start Free Trial
+                        </button>
+                    </div>
+                    <div className="col-span-3 md:col-span-2 bg-niyo-card rounded-full flex items-center justify-center gap-2.5 shadow-sm border border-slate-100 h-full">
+                        <a href="#" className="w-8 h-8 bg-slate-100 rounded-full flex items-center justify-center text-slate-600 text-xs hover:bg-niyo-dark hover:text-white transition-colors">
+                            <i className="fa-brands fa-linkedin-in"></i>
+                        </a>
+                        <a href="#" className="w-8 h-8 bg-slate-100 rounded-full flex items-center justify-center text-slate-600 text-xs hover:bg-niyo-dark hover:text-white transition-colors">
+                            <i className="fa-brands fa-twitter"></i>
+                        </a>
+                    </div>
+                    <div className="col-span-3 md:col-span-2 bg-niyo-card rounded-full flex items-center justify-between px-3 shadow-sm border border-slate-100 h-full">
+                        <div className="flex -space-x-2">
+                            <div className="w-7 h-7 rounded-full border-2 border-white bg-gray-200 flex items-center justify-center text-[8px] font-bold">JD</div>
+                            <div className="w-7 h-7 rounded-full border-2 border-white bg-blue-100 flex items-center justify-center text-[8px] font-bold">AS</div>
+                            <div className="w-7 h-7 rounded-full border-2 border-white bg-green-100 flex items-center justify-center text-[8px] font-bold">MR</div>
+                        </div>
+                        <div className="text-[9px] font-semibold text-niyo-dark leading-tight ml-2">
+                            Join 200+<br />Recruiters
+                        </div>
+                        <button className="w-6 h-6 bg-slate-100 rounded-full flex items-center justify-center text-slate-900 text-[9px] ml-1 hover:bg-niyo-primary hover:text-white transition-colors">
+                            <i className="fa-solid fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </>
+            );
+        }
+
+        const Spacer = () => <div className="hidden md:block col-span-5"></div>;
+
+        const App = () => {
+            return (
+                <div className="max-w-[1400px] mx-auto">
+                    <div
+                        className="grid grid-cols-12 gap-4 auto-rows-min md:auto-rows-auto"
+                        style={{
+                            // Using media queries in style for layout shift if needed, but Tailwind md: handles cols.
+                            // However, explicit row heights were key to the Bento look.
+                            // We will keep the row template for desktop, but let mobile flow naturally.
+                        }}
+                    >
+                        {/* Desktop Grid Layout Enforcer via Style injection for Grid Template Rows */}
+                        <style>{`
+                            @media (min-width: 768px) {
+                                .grid-layout-custom {
+                                    grid-template-rows: 70px minmax(180px, 1fr) minmax(180px, 1fr) 90px 55px;
+                                }
+                            }
+                        `}</style>
+
+                        <div className="grid-cols-12 col-span-12 grid gap-4 grid-layout-custom">
+
+                            {/* Row 1 */}
+                            <div className="col-span-7 hidden md:block"></div>
+                            <NavBar />
+
+                            {/* Row 2 & 3 */}
+                            <HeroSection />
+
+                            {/* Row 2 Right */}
+                            <SmallFeatureCard />
+                            <GreenCardWrapper />
+
+                            {/* Row 3 Right */}
+                            <VideoCard />
+
+                            {/* Row 4 */}
+                            <TextCard />
+                            <StatsSection />
+
+                            {/* Row 4/5 Spanning Card */}
+                            <DarkCard />
+                            <FooterButtons />
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        // Wrapper to handle the Green Card (AccentCard) placement wrapper logic if needed
+        // Renaming AccentCard back to GreenCard slot for clarity in grid flow
+        const GreenCardWrapper = () => <AccentCard />;
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+
+</html>

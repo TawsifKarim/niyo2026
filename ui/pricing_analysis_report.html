@@ -1,0 +1,868 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pricing Analysis & Strategy | Niyo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #0f172a;
+            --accent: #10b981;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+            color: #1e293b;
+            scroll-behavior: smooth;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4 {
+            font-family: 'Outfit', sans-serif;
+            letter-spacing: -0.02em;
+        }
+
+        .glass {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 10px 10px -5px rgba(0, 0, 0, 0.02);
+        }
+
+        .prose blockquote {
+            border-left: 4px solid var(--primary);
+            padding-left: 1.5rem;
+            font-style: italic;
+            color: #475569;
+            margin: 2rem 0;
+            background: #f1f5f9;
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+        }
+
+        .sidebar-link {
+            transition: all 0.2s;
+        }
+
+        .sidebar-link:hover {
+            color: var(--primary);
+            padding-left: 4px;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -1.75rem;
+            top: 0.5rem;
+            width: 0.75rem;
+            height: 0.75rem;
+            border-radius: 50%;
+            background: var(--primary);
+            border: 2px solid white;
+            z-index: 10;
+        }
+
+        .timeline-line::after {
+            content: '';
+            position: absolute;
+            left: -1.43rem;
+            top: 1rem;
+            bottom: -1rem;
+            width: 2px;
+            background: #e2e8f0;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Background Decoration -->
+    <div class="fixed top-0 left-0 w-full h-full -z-10 overflow-hidden pointer-events-none">
+        <div class="absolute -top-[10%] -left-[10%] w-[40%] h-[40%] bg-indigo-100 rounded-full blur-[120px] opacity-50">
+        </div>
+        <div
+            class="absolute -bottom-[10%] -right-[10%] w-[40%] h-[40%] bg-purple-100 rounded-full blur-[120px] opacity-50">
+        </div>
+    </div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div class="flex flex-col lg:flex-row gap-12">
+
+            <!-- Sidebar Navigation -->
+            <aside class="lg:w-72 flex-shrink-0">
+                <div class="sticky top-8 space-y-8">
+                    <div>
+                        <div class="flex items-center gap-2 mb-6">
+                            <div
+                                class="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center text-white font-bold">
+                                N</div>
+                            <span class="text-xl font-bold tracking-tight text-slate-900 leading-none">Niyo
+                                Strategy</span>
+                        </div>
+                        <nav class="space-y-1">
+                            <p class="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-3 px-3">Table of
+                                Contents</p>
+                            <a href="#core-truth"
+                                class="sidebar-link block py-2 px-3 text-sm font-medium text-slate-600 rounded-md">1.
+                                The Core Truth</a>
+                            <a href="#saas-reality"
+                                class="sidebar-link block py-2 px-3 text-sm font-medium text-slate-600 rounded-md">2.
+                                SaaS Reality</a>
+                            <a href="#market-selection"
+                                class="sidebar-link block py-2 px-3 text-sm font-medium text-slate-600 rounded-md">3.
+                                Pick a Market</a>
+                            <a href="#buyer-questions"
+                                class="sidebar-link block py-2 px-3 text-sm font-medium text-slate-600 rounded-md">4.
+                                Three Buyer Questions</a>
+                            <a href="#distribution"
+                                class="sidebar-link block py-2 px-3 text-sm font-medium text-slate-600 rounded-md">5.
+                                Distribution First</a>
+                            <a href="#starting-sales"
+                                class="sidebar-link block py-2 px-3 text-sm font-medium text-slate-600 rounded-md">6.
+                                How Selling Starts</a>
+                            <a href="#first-goals"
+                                class="sidebar-link block py-2 px-3 text-sm font-medium text-slate-600 rounded-md">7.
+                                Initial Goals</a>
+                            <a href="#pricing-truth"
+                                class="sidebar-link block py-2 px-3 text-sm font-medium text-slate-600 rounded-md">8.
+                                Pricing Strategy</a>
+                            <a href="#conversion"
+                                class="sidebar-link block py-2 px-3 text-sm font-medium text-slate-600 rounded-md">9.
+                                Conversion Clarity</a>
+                            <a href="#founder-role"
+                                class="sidebar-link block py-2 px-3 text-sm font-medium text-slate-600 rounded-md">10.
+                                The Real Job</a>
+                            <a href="#playbook"
+                                class="sidebar-link block py-2 px-3 text-sm font-medium text-slate-600 rounded-md">11.
+                                The Playbook</a>
+
+                            <div class="pt-4 mt-4 border-t border-slate-200">
+                                <a href="#mrr-path"
+                                    class="sidebar-link block py-2 px-3 text-sm font-bold text-indigo-600 rounded-md">The
+                                    $0 → $1k MRR Path</a>
+                            </div>
+
+                            <div class="pt-4 mt-4 border-t border-slate-200">
+                                <a href="#niyo-analysis"
+                                    class="sidebar-link block py-2 px-3 text-sm font-bold text-slate-900 rounded-md">Niyo
+                                    Specific Analysis</a>
+                                <a href="#current-pricing"
+                                    class="sidebar-link block py-2 px-3 text-sm text-slate-600 pl-6">Current Gaps</a>
+                                <a href="#recommended-models"
+                                    class="sidebar-link block py-2 px-3 text-sm text-slate-600 pl-6">New Models</a>
+                                <a href="#presentation"
+                                    class="sidebar-link block py-2 px-3 text-sm text-slate-600 pl-6">Presentation</a>
+                                <a href="#guardrails"
+                                    class="sidebar-link block py-2 px-3 text-sm text-slate-600 pl-6">Guardrails</a>
+                                <a href="#action-plan"
+                                    class="sidebar-link block py-2 px-3 text-sm text-slate-600 pl-6">7-Day Plan</a>
+                            </div>
+                        </nav>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Main Content -->
+            <main class="flex-1 max-w-4xl">
+                <!-- Header -->
+                <header class="mb-16">
+                    <div
+                        class="inline-flex items-center px-3 py-1 rounded-full bg-indigo-100 text-indigo-700 text-xs font-bold uppercase tracking-wider mb-4 border border-indigo-200">
+                        Strategic Analysis v2.0
+                    </div>
+                    <h1 class="text-5xl font-extrabold text-slate-900 leading-tight mb-6">
+                        Pricing Analysis & Scaling <span class="gradient-text">Strategy for Niyo</span>
+                    </h1>
+                    <p class="text-xl text-slate-600 leading-relaxed max-w-2xl">
+                        Detailed breakdown on SaaS mechanics, market positioning, and the transition from infrastructure
+                        pricing to outcome-based value.
+                    </p>
+                </header>
+
+                <!-- Part 1: Core Principles -->
+                <section class="space-y-16">
+
+                    <div id="intro" class="prose prose-slate max-w-none">
+                        <p class="text-lg font-medium text-slate-700 italic">
+                            Most small teams of developers fail at SaaS not due to code, but due to <span
+                                class="text-red-600 font-bold">delusion about distribution.</span>
+                        </p>
+                        <p class="text-slate-600 mt-4">
+                            Let's introduce SaaS selling the way insiders actually think about it.
+                        </p>
+                    </div>
+
+                    <!-- 1. The Core Truth -->
+                    <div id="core-truth" class="scroll-mt-8">
+                        <div class="flex items-center gap-3 mb-6">
+                            <span
+                                class="flex items-center justify-center w-8 h-8 rounded bg-indigo-100 text-indigo-600 font-bold text-sm">1</span>
+                            <h2 class="text-3xl font-bold text-slate-900">The Core Truth</h2>
+                        </div>
+                        <div class="bg-white rounded-2xl p-8 shadow-sm border border-slate-100">
+                            <blockquote
+                                class="m-0 bg-slate-50 border-l-4 border-indigo-500 rounded-r-xl p-6 mb-8 text-xl font-medium text-slate-700">
+                                People don’t buy software. They buy relief from pain or a shortcut to money/status/time.
+                            </blockquote>
+                            <p class="text-slate-600 mb-6">Your app is irrelevant until:</p>
+                            <ul class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                <li class="p-4 bg-indigo-50/50 rounded-xl border border-indigo-100">
+                                    <span class="block font-bold text-indigo-900 mb-1">A Specific Person</span>
+                                    <span class="text-sm text-indigo-700">Not "everyone" or "businesses". A real human
+                                        role.</span>
+                                </li>
+                                <li class="p-4 bg-indigo-50/50 rounded-xl border border-indigo-100">
+                                    <span class="block font-bold text-indigo-900 mb-1">Specific Painful Problem</span>
+                                    <span class="text-sm text-indigo-700">Something that is objectively failing or
+                                        slow.</span>
+                                </li>
+                                <li class="p-4 bg-indigo-50/50 rounded-xl border border-indigo-100">
+                                    <span class="block font-bold text-indigo-900 mb-1">Already Paying</span>
+                                    <span class="text-sm text-indigo-700">They already spend money or hours to fix
+                                        it.</span>
+                                </li>
+                            </ul>
+                            <div
+                                class="mt-8 p-4 bg-red-50 border border-red-100 rounded-xl text-red-700 text-sm font-medium">
+                                👉 If you can’t answer <strong>who hurts</strong> and <strong>why they care
+                                    today</strong>, stop coding.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 2. SaaS Reality -->
+                    <div id="saas-reality" class="scroll-mt-8">
+                        <div class="flex items-center gap-3 mb-6">
+                            <span
+                                class="flex items-center justify-center w-8 h-8 rounded bg-indigo-100 text-indigo-600 font-bold text-sm">2</span>
+                            <h2 class="text-3xl font-bold text-slate-900">SaaS Is Not “Build → Launch → Growth”</h2>
+                        </div>
+                        <div class="bg-slate-900 rounded-2xl p-8 text-white shadow-xl overflow-hidden relative">
+                            <div class="absolute top-0 right-0 p-8 opacity-10">
+                                <svg width="120" height="120" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <path d="M12 2v20M2 12h20" />
+                                </svg>
+                            </div>
+                            <p class="text-slate-400 mb-8 uppercase tracking-widest text-xs font-bold">The Insider
+                                Formula</p>
+                            <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+                                <div class="px-6 py-3 bg-slate-800 rounded-lg border border-slate-700 font-bold">Problem
+                                </div>
+                                <svg class="hidden md:block w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <path d="M5 12h14M12 5l7 7-7 7" />
+                                </svg>
+                                <div class="px-6 py-3 bg-slate-800 rounded-lg border border-slate-700 font-bold">
+                                    Audience</div>
+                                <svg class="hidden md:block w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <path d="M5 12h14M12 5l7 7-7 7" />
+                                </svg>
+                                <div class="px-6 py-3 bg-slate-800 rounded-lg border border-slate-700 font-bold">
+                                    Distribution</div>
+                                <svg class="hidden md:block w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <path d="M5 12h14M12 5l7 7-7 7" />
+                                </svg>
+                                <div
+                                    class="px-6 py-3 bg-slate-800 rounded-lg border border-slate-700 font-bold text-indigo-400">
+                                    Offer</div>
+                                <svg class="hidden md:block w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <path d="M5 12h14M12 5l7 7-7 7" />
+                                </svg>
+                                <div class="px-6 py-3 bg-indigo-600 rounded-lg font-bold">Product</div>
+                            </div>
+                            <p class="mt-8 text-slate-400 italic text-sm text-center">Most small teams reverse it and
+                                die.</p>
+                        </div>
+                    </div>
+
+                    <!-- 3. Pick a Market -->
+                    <div id="market-selection" class="scroll-mt-8">
+                        <div class="flex items-center gap-3 mb-6">
+                            <span
+                                class="flex items-center justify-center w-8 h-8 rounded bg-indigo-100 text-indigo-600 font-bold text-sm">3</span>
+                            <h2 class="text-3xl font-bold text-slate-900">Pick a Market That Can Pay</h2>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-6">
+                            <div class="bg-white rounded-2xl p-8 border-t-4 border-red-500 shadow-sm">
+                                <h4 class="text-xl font-bold text-slate-900 mb-4 flex items-center gap-2">
+                                    <svg class="w-5 h-5 text-red-500" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fill-rule="evenodd"
+                                            d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                                            clip-rule="evenodd" />
+                                    </svg>
+                                    Bad Markets
+                                </h4>
+                                <ul class="space-y-3 text-slate-600">
+                                    <li class="flex items-center gap-2">
+                                        <div class="w-1.5 h-1.5 rounded-full bg-red-400"></div> “Everyone”
+                                    </li>
+                                    <li class="flex items-center gap-2">
+                                        <div class="w-1.5 h-1.5 rounded-full bg-red-400"></div> Students
+                                    </li>
+                                    <li class="flex items-center gap-2">
+                                        <div class="w-1.5 h-1.5 rounded-full bg-red-400"></div> Hobbyists
+                                    </li>
+                                    <li class="flex items-center gap-2">
+                                        <div class="w-1.5 h-1.5 rounded-full bg-red-400"></div> Early-stage founders
+                                        with no revenue
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="bg-white rounded-2xl p-8 border-t-4 border-emerald-500 shadow-sm">
+                                <h4 class="text-xl font-bold text-slate-900 mb-4 flex items-center gap-2">
+                                    <svg class="w-5 h-5 text-emerald-500" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fill-rule="evenodd"
+                                            d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                            clip-rule="evenodd" />
+                                    </svg>
+                                    Good Markets
+                                </h4>
+                                <ul class="space-y-3 text-slate-600">
+                                    <li class="flex items-center gap-2">
+                                        <div class="w-1.5 h-1.5 rounded-full bg-emerald-400"></div> Businesses with cash
+                                        flow
+                                    </li>
+                                    <li class="flex items-center gap-2">
+                                        <div class="w-1.5 h-1.5 rounded-full bg-emerald-400"></div> Roles tied to
+                                        revenue
+                                    </li>
+                                    <li class="flex items-center gap-2">
+                                        <div class="w-1.5 h-1.5 rounded-full bg-emerald-400"></div> Cost reduction
+                                        specialized roles
+                                    </li>
+                                    <li class="flex items-center gap-2">
+                                        <div class="w-1.5 h-1.5 rounded-full bg-emerald-400"></div> Tool buyers (monthly
+                                        subs)
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 4. Buyer Questions -->
+                    <div id="buyer-questions" class="scroll-mt-8">
+                        <div class="flex items-center gap-3 mb-6">
+                            <span
+                                class="flex items-center justify-center w-8 h-8 rounded bg-indigo-100 text-indigo-600 font-bold text-sm">4</span>
+                            <h2 class="text-3xl font-bold text-slate-900">The 3 SaaS Buyer Questions</h2>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <div class="p-6 bg-white rounded-2xl border border-slate-100 shadow-sm card">
+                                <h5 class="font-bold text-slate-900 mb-2">1. Positioning</h5>
+                                <p class="text-indigo-600 font-bold text-lg mb-4">“Is this for someone like me?”</p>
+                                <p class="text-sm text-slate-500">Must resonate immediately with their identity/role.
+                                </p>
+                            </div>
+                            <div class="p-6 bg-white rounded-2xl border border-slate-100 shadow-sm card">
+                                <h5 class="font-bold text-slate-900 mb-2">2. Value</h5>
+                                <p class="text-indigo-600 font-bold text-lg mb-4">“Will this make or save me
+                                    money/time?”</p>
+                                <p class="text-sm text-slate-500">Must have a clear, quantifiable outcome.</p>
+                            </div>
+                            <div class="p-6 bg-white rounded-2xl border border-slate-100 shadow-sm card">
+                                <h5 class="font-bold text-slate-900 mb-2">3. Risk Reversal</h5>
+                                <p class="text-indigo-600 font-bold text-lg mb-4">“Is it safe to try?”</p>
+                                <p class="text-sm text-slate-500">Remove friction: proof, trials, guarantees.</p>
+                            </div>
+                        </div>
+                        <div class="mt-8 text-center text-slate-500">
+                            If you fail any one → <span class="text-slate-900 font-bold">no sale.</span>
+                        </div>
+                    </div>
+
+                    <!-- 5. Distribution -->
+                    <div id="distribution" class="scroll-mt-8">
+                        <div class="flex items-center gap-3 mb-6">
+                            <span
+                                class="flex items-center justify-center w-8 h-8 rounded bg-indigo-100 text-indigo-600 font-bold text-sm">5</span>
+                            <h2 class="text-3xl font-bold text-slate-900">Distribution Comes Before Features</h2>
+                        </div>
+                        <div class="bg-indigo-50 rounded-2xl p-8 border border-indigo-100">
+                            <p class="text-indigo-900 font-medium mb-6">Pick <strong
+                                    class="bg-indigo-200 px-1">ONE</strong> channel. Trying all = zero traction.</p>
+                            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
+                                <div class="text-center p-4 bg-white rounded-xl shadow-sm border border-indigo-100">
+                                    <div class="text-2xl mb-2">📧</div>
+                                    <div class="text-xs font-bold text-slate-700">Cold Outbound</div>
+                                </div>
+                                <div class="text-center p-4 bg-white rounded-xl shadow-sm border border-indigo-100">
+                                    <div class="text-2xl mb-2">🔍</div>
+                                    <div class="text-xs font-bold text-slate-700">SEO</div>
+                                </div>
+                                <div class="text-center p-4 bg-white rounded-xl shadow-sm border border-indigo-100">
+                                    <div class="text-2xl mb-2">🤝</div>
+                                    <div class="text-xs font-bold text-slate-700">Communities</div>
+                                </div>
+                                <div class="text-center p-4 bg-white rounded-xl shadow-sm border border-indigo-100">
+                                    <div class="text-2xl mb-2">🏪</div>
+                                    <div class="text-xs font-bold text-slate-700">Marketplaces</div>
+                                </div>
+                                <div
+                                    class="text-center p-4 bg-indigo-600 text-white rounded-xl shadow-md transform scale-105">
+                                    <div class="text-2xl mb-2">💡</div>
+                                    <div class="text-xs font-bold">Demos</div>
+                                </div>
+                            </div>
+                            <div class="mt-8 flex items-center gap-4 p-4 bg-white rounded-xl border border-indigo-200">
+                                <div
+                                    class="w-12 h-12 rounded-full bg-indigo-100 flex items-center justify-center text-xl shrink-0">
+                                    🎯</div>
+                                <div>
+                                    <p class="text-indigo-900 font-bold">Founder Best-Bet:</p>
+                                    <p class="text-sm text-slate-600">Cold outreach + founder demos wins early for solo
+                                        devs.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Skip some generic sections for space, focusing on Niyo soon -->
+                    <!-- 8. Pricing -->
+                    <div id="pricing-truth" class="scroll-mt-8">
+                        <div class="flex items-center gap-3 mb-6">
+                            <span
+                                class="flex items-center justify-center w-8 h-8 rounded bg-indigo-100 text-indigo-600 font-bold text-sm">8</span>
+                            <h2 class="text-3xl font-bold text-slate-900">Pricing: Stop Undercharging</h2>
+                        </div>
+                        <div class="bg-slate-900 rounded-2xl p-8 text-white">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                                <div>
+                                    <h4 class="text-slate-400 uppercase tracking-widest text-xs font-bold mb-4">Buyer
+                                        Psychology</h4>
+                                    <ul class="space-y-4">
+                                        <li class="flex items-start gap-3">
+                                            <span class="text-red-400 shrink-0 mt-1">✕</span>
+                                            <span>"Cheap = risky"</span>
+                                        </li>
+                                        <li class="flex items-start gap-3">
+                                            <span class="text-red-400 shrink-0 mt-1">✕</span>
+                                            <span>"If it’s critical, why is it $5?"</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h4 class="text-slate-400 uppercase tracking-widest text-xs font-bold mb-4">Golden
+                                        Rules</h4>
+                                    <ul class="space-y-4">
+                                        <li class="flex items-start gap-3">
+                                            <span class="text-emerald-400 shrink-0 mt-1">✓</span>
+                                            <span>Price on <strong>value unlocked</strong>, not code complexity.</span>
+                                        </li>
+                                        <li class="flex items-start gap-3">
+                                            <span class="text-emerald-400 shrink-0 mt-1">✓</span>
+                                            <span>B2B SaaS rarely survives below <strong>$20–$50/month.</strong></span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Path to $1k MRR -->
+                    <div id="mrr-path" class="scroll-mt-8 pt-12 border-t border-slate-200">
+                        <div class="text-center mb-12">
+                            <h2 class="text-4xl font-extrabold text-slate-900 mb-4">The Journey From $0-1k MRR</h2>
+                            <p class="text-slate-600 max-w-xl mx-auto">A battle-tested path with failure-proofing baked
+                                in. <br>Target: <strong>$50 plan × 20 customers = $1k MRR</strong></p>
+                        </div>
+
+                        <div class="space-y-12 pl-8 relative">
+                            <div class="timeline-line"></div>
+
+                            <!-- Phase 1 -->
+                            <div class="timeline-item relative">
+                                <h3 class="text-xl font-bold text-slate-900 mb-2">PHASE 1 — Pick a Winnable Problem
+                                    (Days 1–5)</h3>
+                                <div class="bg-white rounded-xl p-6 shadow-sm border border-slate-100">
+                                    <p class="text-slate-600 mb-4">Choose <strong>one role + one painful job</strong>.
+                                    </p>
+                                    <div class="flex flex-wrap gap-2 mb-4">
+                                        <span
+                                            class="px-3 py-1 bg-emerald-100 text-emerald-700 text-xs font-bold rounded-full">✓
+                                            Invoice reconciliation</span>
+                                        <span
+                                            class="px-3 py-1 bg-emerald-100 text-emerald-700 text-xs font-bold rounded-full">✓
+                                            Weekly candidate shortlisting</span>
+                                        <span class="px-3 py-1 bg-red-100 text-red-700 text-xs font-bold rounded-full">✕
+                                            HR software</span>
+                                    </div>
+                                    <p class="text-sm font-medium text-slate-500">Why? Narrow = clearer messaging &
+                                        higher willingness to pay.</p>
+                                </div>
+                            </div>
+
+                            <!-- Phase 2 -->
+                            <div class="timeline-item relative">
+                                <h3 class="text-xl font-bold text-slate-900 mb-2">PHASE 2 — Talk Before You Build (Days
+                                    6–10)</h3>
+                                <div class="bg-white rounded-xl p-6 shadow-sm border border-slate-100">
+                                    <p class="text-slate-600 mb-4">Talk to 10–15 real people. Do <strong>NOT</strong>
+                                        pitch your idea.</p>
+                                    <ul class="text-sm text-slate-500 space-y-1">
+                                        <li>• "How do you do this today?"</li>
+                                        <li>• "What breaks?"</li>
+                                        <li>• "What happens if it goes wrong?"</li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <!-- Phase 3-5 combined for layout -->
+                            <div class="timeline-item relative">
+                                <h3 class="text-xl font-bold text-slate-900 mb-2">PHASE 3-5 — Build, Charge, Sell (Days
+                                    11–40)</h3>
+                                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                    <div class="p-4 bg-indigo-50 border border-indigo-100 rounded-xl">
+                                        <span class="block font-bold text-indigo-900 mb-1">Smallest Sellable</span>
+                                        <p class="text-xs text-indigo-700">A painkiller, not an app. One workflow. One
+                                            report.</p>
+                                    </div>
+                                    <div class="p-4 bg-indigo-50 border border-indigo-100 rounded-xl">
+                                        <span class="block font-bold text-indigo-900 mb-1">Charge Early</span>
+                                        <p class="text-xs text-indigo-700">Pick $30–$75/month. Get 3 paying users to
+                                            prove value.</p>
+                                    </div>
+                                    <div class="p-4 bg-indigo-50 border border-indigo-100 rounded-xl">
+                                        <span class="block font-bold text-indigo-900 mb-1">Led Sales</span>
+                                        <p class="text-xs text-indigo-700">Reach out to 5-10 people/day. Demos close
+                                            deals.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Niyo Specific Analysis -->
+                    <div id="niyo-analysis" class="scroll-mt-8 pt-12 border-t-2 border-indigo-100">
+                        <div class="flex items-center gap-4 mb-8">
+                            <div
+                                class="w-12 h-12 bg-indigo-600 rounded-xl flex items-center justify-center text-white text-2xl font-bold">
+                                N</div>
+                            <div>
+                                <h2 class="text-3xl font-bold text-slate-900">Niyo Strategy Analysis</h2>
+                                <p class="text-slate-500">Specific insights for the Niyo platform</p>
+                            </div>
+                        </div>
+
+                        <!-- Current Pricing Problems -->
+                        <div id="current-pricing" class="bg-red-50/30 rounded-3xl p-8 border border-red-100 mb-12">
+                            <h3 class="text-2xl font-bold text-red-900 mb-6 flex items-center gap-2">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                                </svg>
+                                Why Current Pricing Underperforms
+                            </h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div class="p-5 bg-white rounded-2xl shadow-sm border border-red-50">
+                                    <h4 class="font-bold text-slate-900 mb-2">"Credit Anxiety"</h4>
+                                    <p class="text-sm text-slate-600 leading-relaxed">Recruiters don't think in PDFs or
+                                        credits. They think in jobs, shortlists, and time saved. Uncertainty kills
+                                        conversion.</p>
+                                </div>
+                                <div class="p-5 bg-white rounded-2xl shadow-sm border border-red-50">
+                                    <h4 class="font-bold text-slate-900 mb-2">Punishing Spikes</h4>
+                                    <div class="text-sm text-slate-600 leading-relaxed">Hiring is bursty. Variable costs
+                                        for spikes cause anxiety instead of rewarding usage.</div>
+                                </div>
+                                <div class="p-5 bg-white rounded-2xl shadow-sm border border-red-50">
+                                    <h4 class="font-bold text-slate-900 mb-2">Feature Parity</h4>
+                                    <div class="text-sm text-slate-600 leading-relaxed">When only volume changes, buyers
+                                        anchor to the cheapest plan. No clear incentive to upgrade early.</div>
+                                </div>
+                                <div class="p-5 bg-white rounded-2xl shadow-sm border border-red-50">
+                                    <h4 class="font-bold text-slate-900 mb-2">Selling Infrastructure</h4>
+                                    <div class="text-sm text-slate-600 leading-relaxed">"Pay for file processing" vs
+                                        "Pay for faster shortlisting". You're selling the mechanism, not the outcome.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Recommended Models -->
+                        <div id="recommended-models" class="mb-12">
+                            <h3 class="text-2xl font-bold text-slate-900 mb-8">Recommended: Two-Path Pricing</h3>
+
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                <!-- Internal HR -->
+                                <div
+                                    class="bg-indigo-600 rounded-3xl p-8 text-white shadow-xl transform transition-all hover:scale-[1.02]">
+                                    <div class="text-indigo-200 text-xs font-bold uppercase tracking-widest mb-2">
+                                        Segment A</div>
+                                    <h4 class="text-2xl font-bold mb-6">Internal HR Plans</h4>
+                                    <p class="text-indigo-100 text-sm mb-8">Predictable, retention-driven model for
+                                        startups and scaleups.</p>
+
+                                    <div class="space-y-4 mb-8">
+                                        <div class="p-4 bg-indigo-500/30 rounded-2xl border border-indigo-400/30">
+                                            <div class="flex justify-between items-center mb-1">
+                                                <span class="font-bold">Starter</span>
+                                                <span class="text-xl font-bold">$49/mo</span>
+                                            </div>
+                                            <p class="text-xs text-indigo-100">3 active jobs • Unlimited CVs</p>
+                                        </div>
+                                        <div
+                                            class="p-4 bg-indigo-500/30 rounded-2xl border border-indigo-400/30 relative">
+                                            <div
+                                                class="absolute -top-2 -right-2 bg-emerald-400 text-slate-900 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">
+                                                Most Popular</div>
+                                            <div class="flex justify-between items-center mb-1">
+                                                <span class="font-bold">Growth</span>
+                                                <span class="text-xl font-bold">$149/mo</span>
+                                            </div>
+                                            <p class="text-xs text-indigo-100">10 active jobs • Hiring manager view</p>
+                                        </div>
+                                        <div class="p-4 bg-indigo-500/30 rounded-2xl border border-indigo-400/30">
+                                            <div class="flex justify-between items-center mb-1">
+                                                <span class="font-bold">Pro</span>
+                                                <span class="text-xl font-bold">$349/mo</span>
+                                            </div>
+                                            <p class="text-xs text-indigo-100">Unlimited jobs • Team access</p>
+                                        </div>
+                                    </div>
+                                    <div
+                                        class="bg-indigo-700/50 p-4 rounded-xl text-xs text-indigo-100 border border-indigo-500/30">
+                                        <strong>Rationale:</strong> Removes credit anxiety. Easy to budget for finance
+                                        teams.
+                                    </div>
+                                </div>
+
+                                <!-- Agencies -->
+                                <div
+                                    class="bg-slate-900 rounded-3xl p-8 text-white shadow-xl transform transition-all hover:scale-[1.02]">
+                                    <div class="text-slate-400 text-xs font-bold uppercase tracking-widest mb-2">Segment
+                                        B</div>
+                                    <h4 class="text-2xl font-bold mb-6">Recruitment Agencies</h4>
+                                    <p class="text-slate-400 text-sm mb-8">Burst-friendly, high-volume model designed
+                                        for revenue sharing.</p>
+
+                                    <div class="space-y-4 mb-8">
+                                        <div class="p-4 bg-slate-800 rounded-2xl border border-slate-700">
+                                            <div class="flex justify-between items-center mb-1 text-emerald-400">
+                                                <span class="font-bold">Pay-Per-Job</span>
+                                                <span class="text-xl font-bold">$29/job</span>
+                                            </div>
+                                            <p class="text-xs text-slate-400">300 CVs • No subscription • Zero risk</p>
+                                        </div>
+                                        <div class="p-4 bg-slate-800 rounded-2xl border border-slate-700">
+                                            <div class="flex justify-between items-center mb-1">
+                                                <span class="font-bold">Agency Monthly</span>
+                                                <span class="text-xl font-bold">$199/mo</span>
+                                            </div>
+                                            <p class="text-xs text-slate-400">20 active jobs • Branded exports</p>
+                                        </div>
+                                        <div class="p-4 bg-slate-800 rounded-2xl border border-slate-700">
+                                            <div class="flex justify-between items-center mb-1">
+                                                <span class="font-bold">Agency Pro</span>
+                                                <span class="text-xl font-bold">$499/mo</span>
+                                            </div>
+                                            <p class="text-xs text-slate-400">Unlimited jobs • SLA-backed • Support</p>
+                                        </div>
+                                    </div>
+                                    <div
+                                        class="bg-slate-800/50 p-4 rounded-xl text-xs text-slate-300 border border-slate-700/50">
+                                        <strong>Rationale:</strong> Agencies sell on placements. They want to pay when
+                                        they make money.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Presentation & Guardrails -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+                            <div id="presentation" class="bg-white rounded-3xl p-8 border border-slate-100 shadow-sm">
+                                <h3 class="text-xl font-bold text-slate-900 mb-6 flex items-center gap-2">
+                                    <svg class="w-5 h-5 text-indigo-500" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122" />
+                                    </svg>
+                                    How to Present This
+                                </h3>
+                                <div class="space-y-4">
+                                    <div class="p-4 bg-slate-50 rounded-xl">
+                                        <p class="text-sm font-bold text-slate-700 mb-1">The First Toggle</p>
+                                        <p class="text-xs text-slate-500">“Internal Hiring” | “Recruitment Agencies”</p>
+                                    </div>
+                                    <div class="p-4 bg-slate-50 rounded-xl">
+                                        <p class="text-sm font-bold text-slate-700 mb-1">Outcome-Driven Headlines</p>
+                                        <p class="text-xs text-slate-500 italic mb-2">Internal: "Shortlist candidates in
+                                            hours, not days — without reading CVs."</p>
+                                        <p class="text-xs text-slate-500 italic">Agency: "Handle 10× more roles without
+                                            adding recruiters."</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="guardrails" class="bg-white rounded-3xl p-8 border border-slate-100 shadow-sm">
+                                <h3 class="text-xl font-bold text-slate-900 mb-6 flex items-center gap-2">
+                                    <svg class="w-5 h-5 text-red-500" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                                    </svg>
+                                    Hard Guardrails
+                                </h3>
+                                <ul class="space-y-3">
+                                    <li class="flex items-center gap-2 text-sm text-slate-600">
+                                        <span
+                                            class="w-5 h-5 bg-red-100 text-red-600 rounded flex items-center justify-center text-[10px] font-bold">✕</span>
+                                        Don’t allow agencies on cheap HR plans
+                                    </li>
+                                    <li class="flex items-center gap-2 text-sm text-slate-600">
+                                        <span
+                                            class="w-5 h-5 bg-red-100 text-red-600 rounded flex items-center justify-center text-[10px] font-bold">✕</span>
+                                        Don’t mix “credits” and “jobs” on one page
+                                    </li>
+                                    <li class="flex items-center gap-2 text-sm text-slate-600">
+                                        <span
+                                            class="w-5 h-5 bg-red-100 text-red-600 rounded flex items-center justify-center text-[10px] font-bold">✕</span>
+                                        Don’t say “unlimited” without safeguards
+                                    </li>
+                                    <li class="flex items-center gap-2 text-sm text-slate-600 mt-4">
+                                        <span
+                                            class="w-5 h-5 bg-emerald-100 text-emerald-600 rounded flex items-center justify-center text-[10px] font-bold">✓</span>
+                                        Enforce soft limits quietly
+                                    </li>
+                                    <li class="flex items-center gap-2 text-sm text-slate-600">
+                                        <span
+                                            class="w-5 h-5 bg-emerald-100 text-emerald-600 rounded flex items-center justify-center text-[10px] font-bold">✓</span>
+                                        Upgrade prompts tied to job count
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- Action Plan -->
+                        <div id="action-plan" class="bg-indigo-50 rounded-3xl p-8 border border-indigo-100 mb-20">
+                            <h3 class="text-2xl font-bold text-indigo-900 mb-8">7-Day Execution Plan</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
+                                <div
+                                    class="p-4 bg-white rounded-2xl border border-indigo-100 shadow-sm relative overflow-hidden">
+                                    <span
+                                        class="absolute -top-1 -right-1 text-indigo-100 font-extrabold text-4xl">1</span>
+                                    <div class="relative">
+                                        <span class="block text-[10px] font-bold text-indigo-500 uppercase mb-2">Day
+                                            1</span>
+                                        <p class="text-xs font-bold text-slate-900">Keep backend credits unchanged.</p>
+                                    </div>
+                                </div>
+                                <div
+                                    class="p-4 bg-white rounded-2xl border border-indigo-100 shadow-sm relative overflow-hidden">
+                                    <span
+                                        class="absolute -top-1 -right-1 text-indigo-100 font-extrabold text-4xl">2</span>
+                                    <div class="relative">
+                                        <span class="block text-[10px] font-bold text-indigo-500 uppercase mb-2">Day
+                                            2-3</span>
+                                        <p class="text-xs font-bold text-slate-900">Redesign UI with two buyer paths.
+                                        </p>
+                                    </div>
+                                </div>
+                                <div
+                                    class="p-4 bg-white rounded-2xl border border-indigo-100 shadow-sm relative overflow-hidden">
+                                    <span
+                                        class="absolute -top-1 -right-1 text-indigo-100 font-extrabold text-4xl">3</span>
+                                    <div class="relative">
+                                        <span class="block text-[10px] font-bold text-indigo-500 uppercase mb-2">Day
+                                            4</span>
+                                        <p class="text-xs font-bold text-slate-900">Rewrite copy to remove "PDF /
+                                            Credits".</p>
+                                    </div>
+                                </div>
+                                <div
+                                    class="p-4 bg-white rounded-2xl border border-indigo-100 shadow-sm relative overflow-hidden">
+                                    <span
+                                        class="absolute -top-1 -right-1 text-indigo-100 font-extrabold text-4xl">4</span>
+                                    <div class="relative">
+                                        <span class="block text-[10px] font-bold text-indigo-500 uppercase mb-2">Day
+                                            5</span>
+                                        <p class="text-xs font-bold text-slate-900">Launch pay-per-job for agencies.</p>
+                                    </div>
+                                </div>
+                                <div
+                                    class="p-4 bg-indigo-600 rounded-2xl shadow-indigo-200 shadow-lg relative overflow-hidden border border-indigo-500">
+                                    <span
+                                        class="absolute -top-1 -right-1 text-indigo-500 font-extrabold text-4xl">5</span>
+                                    <div class="relative">
+                                        <span class="block text-[10px] font-bold text-indigo-200 uppercase mb-2">Day
+                                            6-7</span>
+                                        <p class="text-xs font-bold text-white">Sell first 5 agency customers manually.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Final Insight -->
+                        <div class="relative rounded-3xl overflow-hidden bg-slate-900 p-12 text-center">
+                            <div
+                                class="absolute inset-0 bg-gradient-to-br from-indigo-900/50 to-purple-900/50 opacity-50">
+                            </div>
+                            <div class="relative z-10">
+                                <h4 class="text-slate-400 uppercase tracking-widest text-xs font-bold mb-4">The Real
+                                    Insight</h4>
+                                <blockquote class="m-0 text-3xl font-bold text-white leading-tight mb-8">
+                                    "Your product is strong. Your pricing is telling the wrong story. You’re selling
+                                    <span class="text-indigo-400">infrastructure</span> to people who buy <span
+                                        class="text-emerald-400">outcomes</span>."
+                                </blockquote>
+                                <div
+                                    class="inline-block px-8 py-4 bg-white text-slate-900 font-bold rounded-xl shadow-xl">
+                                    Fix the story → MRR follows.
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </section>
+
+                <footer class="mt-20 pt-8 border-t border-slate-200 text-center text-slate-400 text-sm">
+                    Pricing Analysis & Strategic Report • Phase 2 • 2026
+                </footer>
+            </main>
+        </div>
+    </div>
+
+    <!-- Smooth Scroll Script -->
+    <script>
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>

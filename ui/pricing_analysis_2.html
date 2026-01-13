@@ -1,0 +1,1172 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SaaS Pricing Analysis & Strategy | Niyo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0f172a;
+            color: #e2e8f0;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        .font-heading {
+            font-family: 'Outfit', sans-serif;
+        }
+
+        .glass {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .prose blockquote {
+            border-left: 4px solid var(--primary);
+            background: rgba(99, 102, 241, 0.1);
+            padding: 1.5rem;
+            border-radius: 0 0.75rem 0.75rem 0;
+            font-style: italic;
+            margin: 2rem 0;
+        }
+
+        .prose h2 {
+            font-size: 2.25rem;
+            font-weight: 800;
+            margin-top: 4rem;
+            margin-bottom: 2rem;
+            color: #f8fafc;
+            letter-spacing: -0.025em;
+        }
+
+        .prose h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-top: 2.5rem;
+            margin-bottom: 1.25rem;
+            color: #f1f5f9;
+        }
+
+        .prose p {
+            margin-bottom: 1.5rem;
+            line-height: 1.8;
+            color: #cbd5e1;
+            font-size: 1.125rem;
+        }
+
+        .prose ul {
+            margin-bottom: 2rem;
+            list-style-type: none;
+        }
+
+        .prose ul li {
+            position: relative;
+            padding-left: 2rem;
+            margin-bottom: 0.75rem;
+            color: #cbd5e1;
+        }
+
+        .prose ul li::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            color: var(--primary);
+            font-weight: bold;
+        }
+
+        .prose strong {
+            color: #f8fafc;
+            font-weight: 600;
+        }
+
+        .prose hr {
+            border: 0;
+            height: 1px;
+            background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.1), transparent);
+            margin: 4rem 0;
+        }
+
+        .sidebar-link {
+            transition: all 0.2s;
+        }
+
+        .sidebar-link:hover {
+            color: var(--primary);
+            background: rgba(99, 102, 241, 0.05);
+        }
+
+        .callout {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(30, 41, 59, 0.7) 100%);
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            padding: 2rem;
+            border-radius: 1rem;
+            margin: 2.5rem 0;
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #818cf8 0%, #c084fc 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        ::selection {
+            background: rgba(99, 102, 241, 0.3);
+            color: #fff;
+        }
+    </style>
+</head>
+
+<body class="selection:bg-indigo-500/30 selection:text-white">
+    <!-- Header -->
+    <header class="fixed top-0 left-0 right-0 z-50 glass border-b border-slate-800">
+        <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <div class="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center font-bold text-white">N
+                </div>
+                <span class="font-heading font-bold text-xl tracking-tight text-white">Niyo Pricing Analysis</span>
+            </div>
+            <div class="hidden md:flex items-center gap-6 text-sm font-medium text-slate-400">
+                <a href="#core-truth" class="hover:text-white transition-colors">Strategy</a>
+                <a href="#mrr-path" class="hover:text-white transition-colors">$0-$1k MRR</a>
+                <a href="#niyo-analysis" class="hover:text-white transition-colors">Niyo Deep Dive</a>
+                <a href="#pricing-models" class="hover:text-white transition-colors">Models</a>
+            </div>
+            <button
+                class="bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2 rounded-full text-sm font-semibold transition-all shadow-lg shadow-indigo-500/20">
+                Download Report
+            </button>
+        </div>
+    </header>
+
+    <main class="pt-32 pb-24 px-6 max-w-7xl mx-auto flex gap-12">
+        <!-- Sidebar Navigation -->
+        <aside class="hidden lg:block w-72 shrink-0 h-fit sticky top-32">
+            <nav class="space-y-1">
+                <p class="text-[10px] uppercase tracking-widest text-slate-500 font-bold mb-4 px-3">Foundations</p>
+                <a href="#core-truth" class="sidebar-link block py-2 px-3 rounded-lg text-slate-400 hover:text-white">1.
+                    The Core Truth</a>
+                <a href="#saas-reality"
+                    class="sidebar-link block py-2 px-3 rounded-lg text-slate-400 hover:text-white">2. SaaS Reality
+                    Check</a>
+                <a href="#market-selection"
+                    class="sidebar-link block py-2 px-3 rounded-lg text-slate-400 hover:text-white">3. Market
+                    Selection</a>
+                <a href="#buyer-questions"
+                    class="sidebar-link block py-2 px-3 rounded-lg text-slate-400 hover:text-white">4. Three Buyer
+                    Questions</a>
+                <a href="#distribution"
+                    class="sidebar-link block py-2 px-3 rounded-lg text-slate-400 hover:text-white">5. Distribution
+                    First</a>
+
+                <p class="text-[10px] uppercase tracking-widest text-slate-500 font-bold mt-8 mb-4 px-3">Execution</p>
+                <a href="#start-selling"
+                    class="sidebar-link block py-2 px-3 rounded-lg text-slate-400 hover:text-white">6. How Selling
+                    Starts</a>
+                <a href="#first-goal" class="sidebar-link block py-2 px-3 rounded-lg text-slate-400 hover:text-white">7.
+                    The First Goal</a>
+                <a href="#pricing-truth"
+                    class="sidebar-link block py-2 px-3 rounded-lg text-slate-400 hover:text-white">8. Pricing
+                    Truths</a>
+                <a href="#conversion" class="sidebar-link block py-2 px-3 rounded-lg text-slate-400 hover:text-white">9.
+                    Conversion Clarity</a>
+                <a href="#founders-job"
+                    class="sidebar-link block py-2 px-3 rounded-lg text-slate-400 hover:text-white">10. The Founder's
+                    Job</a>
+
+                <p class="text-[10px] uppercase tracking-widest text-slate-500 font-bold mt-8 mb-4 px-3">Growth Path</p>
+                <a href="#mrr-path" class="sidebar-link block py-2 px-3 rounded-lg text-slate-400 hover:text-white">$0 →
+                    $1k MRR Path</a>
+                <a href="#niyo-analysis"
+                    class="sidebar-link block py-2 px-3 rounded-lg text-slate-400 hover:text-white">Niyo Pricing
+                    Analysis</a>
+                <a href="#recommended-models"
+                    class="sidebar-link block py-2 px-3 rounded-lg text-slate-400 hover:text-white">Recommended
+                    Models</a>
+            </nav>
+        </aside>
+
+        <!-- Article Content -->
+        <article class="prose prose-invert max-w-3xl flex-1">
+            <header class="mb-16">
+                <span class="text-indigo-400 font-semibold tracking-wider text-sm uppercase">Analysis Report v2.0</span>
+                <h1 class="text-5xl md:text-6xl font-extrabold mt-4 mb-8 leading-tight">
+                    SaaS Pricing & <span class="gradient-text">Distribution Strategy</span>
+                </h1>
+                <p class="text-xl text-slate-400 leading-relaxed font-light">
+                    A comprehensive guide on why most small teams fail and how to build a battle-tested path to $1k MRR.
+                </p>
+            </header>
+
+            <section id="core-truth">
+                <p class="text-xl">most small team of developers fail at SaaS not due to code, but due to
+                    <strong>delusion about distribution</strong>.
+                </p>
+                <p>Lets introduce SaaS selling the way insiders actually think about it.</p>
+
+                <hr>
+
+                <h2>1. The Core Truth (Most small Dev teams Learn This Too Late)</h2>
+                <blockquote>
+                    <strong>People don’t buy software. They buy relief from pain or a shortcut to
+                        money/status/time.</strong>
+                </blockquote>
+                <p>Your app is irrelevant until:</p>
+                <ul>
+                    <li>A <strong>specific person</strong></li>
+                    <li>Has a <strong>specific painful problem</strong></li>
+                    <li>That they already <strong>pay for (with money or time)</strong></li>
+                </ul>
+                <p>If you can’t answer <em>who hurts</em> and <em>why they care today</em>, stop coding.</p>
+            </section>
+
+            <hr>
+
+            <section id="saas-reality">
+                <h2>2. SaaS Is Not “Build → Launch → Growth”</h2>
+                <p>That’s a fantasy.</p>
+                <p>Real SaaS works like this:</p>
+                <div
+                    class="p-6 rounded-xl bg-slate-800/50 border border-slate-700 text-center font-bold text-indigo-300 tracking-wide">
+                    Problem → Audience → Distribution → Offer → Product
+                </div>
+                <p class="mt-6">Most small teams reverse it and die.</p>
+            </section>
+
+            <hr>
+
+            <section id="market-selection">
+                <h2>3. Pick a Market That Can Pay (This Is Non-Negotiable)</h2>
+                <p>Bad markets:</p>
+                <ul>
+                    <li>“Everyone”</li>
+                    <li>Students</li>
+                    <li>Hobbyists</li>
+                    <li>Early-stage founders with no revenue</li>
+                </ul>
+                <p>Good markets:</p>
+                <ul>
+                    <li>Businesses with <strong>cash flow</strong></li>
+                    <li>Roles tied to revenue or cost reduction</li>
+                    <li>People who already buy tools monthly</li>
+                </ul>
+                <p>Examples:</p>
+                <ul>
+                    <li>Recruiters</li>
+                    <li>Agencies</li>
+                    <li>E-commerce operators</li>
+                    <li>Sales teams</li>
+                    <li>Finance / Ops</li>
+                    <li>Compliance-heavy roles</li>
+                </ul>
+                <p>If a user can’t justify your tool to their boss or accountant, they won’t stick.</p>
+            </section>
+
+            <hr>
+
+            <section id="buyer-questions">
+                <h2>4. Learn the 3 SaaS Buyer Questions (Everything Revolves Around These)</h2>
+                <p>Every landing page, demo, pricing page answers:</p>
+                <ol class="space-y-6 list-decimal pl-6 text-slate-300">
+                    <li class="pl-4">
+                        <strong>“Is this for someone like me?”</strong><br>
+                        <span class="text-slate-500">(Positioning)</span>
+                    </li>
+                    <li class="pl-4">
+                        <strong>“Will this clearly make or save me money/time?”</strong><br>
+                        <span class="text-slate-500">(Value)</span>
+                    </li>
+                    <li class="pl-4">
+                        <strong>“Is it safe to try?”</strong><br>
+                        <span class="text-slate-500">(Risk reversal)</span>
+                    </li>
+                </ol>
+                <p class="mt-8 italic text-slate-400">If you fail any one → no sale.</p>
+            </section>
+
+            <hr>
+
+            <section id="distribution">
+                <h2>5. Distribution Comes Before Features</h2>
+                <p>This is where small teams panic.</p>
+                <p>You don’t need “marketing skills”.<br>
+                    You need <strong>one repeatable channel</strong>.</p>
+
+                <h3>Beginner-friendly SaaS channels</h3>
+                <ul>
+                    <li>Cold outbound (email, LinkedIn)</li>
+                    <li>SEO (long-term)</li>
+                    <li>Communities (Slack, Discord, Reddit)</li>
+                    <li>Marketplaces (Shopify, Notion, Chrome, etc.)</li>
+                    <li>Founder-led demos (calls)</li>
+                </ul>
+                <div class="callout">
+                    <p class="mb-0"><strong>Pick ONE.</strong><br>
+                        Trying all = zero traction.</p>
+                    <p class="mt-4">If I had to bet for a solo dev:<br>
+                        👉 <strong>Cold outreach + founder demos</strong> wins early.</p>
+                </div>
+            </section>
+
+            <hr>
+
+            <section id="start-selling">
+                <h2>6. How Selling Actually Starts (No Ads, No Brand)</h2>
+                <p>Forget “growth hacks”. Do this:</p>
+
+                <h3>Step 1: Find 20 real people</h3>
+                <ul>
+                    <li>LinkedIn</li>
+                    <li>Twitter/X</li>
+                    <li>Indie communities</li>
+                    <li>Job boards (see who’s hiring for the problem you solve)</li>
+                </ul>
+
+                <h3>Step 2: Start conversations, not pitches</h3>
+                <p>Bad message:</p>
+                <p class="p-4 bg-red-900/20 border border-red-500/20 rounded-lg text-red-200">“Hey, check out my SaaS…”
+                </p>
+
+                <p class="mt-6">Good message:</p>
+                <p class="p-4 bg-emerald-900/20 border border-emerald-500/20 rounded-lg text-emerald-200">
+                    “I’m talking to [role] who struggle with [specific problem]. Is this something you deal with?”
+                </p>
+                <p class="mt-4 italic">You’re collecting <strong>pain</strong>, not praise.</p>
+            </section>
+
+            <hr>
+
+            <section id="first-goal">
+                <h2>7. Your First SaaS Goal Is NOT Revenue</h2>
+                <p>Your first goal:</p>
+                <blockquote class="bg-slate-800/30">
+                    Someone uses it without you reminding them
+                </blockquote>
+                <p>Then:</p>
+                <blockquote class="bg-slate-800/30">
+                    Someone pays without negotiating
+                </blockquote>
+                <p>Then:</p>
+                <blockquote class="bg-slate-800/30">
+                    Someone refers another person
+                </blockquote>
+                <p>Until then, pricing, scaling, branding don’t matter.</p>
+            </section>
+
+            <hr>
+
+            <section id="pricing-truth">
+                <h2>8. Pricing: Stop Undercharging (Harsh Truth)</h2>
+                <p>Most small team price like this:</p>
+                <ul>
+                    <li>“We are new”</li>
+                    <li>“It’s MVP”</li>
+                    <li>“We’ll make it cheap”</li>
+                </ul>
+                <p>Buyers think:</p>
+                <ul>
+                    <li>“Cheap = risky”</li>
+                    <li>“If it’s critical, why is it $5?”</li>
+                </ul>
+                <div class="callout">
+                    <h4 class="text-indigo-300 mb-4 font-bold">Rule of thumb:</h4>
+                    <ul>
+                        <li>Price based on <strong>value unlocked</strong>, not code complexity</li>
+                        <li>B2B SaaS rarely survives below <strong>$20–$50/month</strong></li>
+                    </ul>
+                    <p class="mt-4">If your product saves 10 hours/month → price boldly.</p>
+                </div>
+            </section>
+
+            <hr>
+
+            <section id="conversion">
+                <h2>9. Conversion Is Clarity, Not Persuasion</h2>
+                <p>High-converting SaaS pages:</p>
+                <ul>
+                    <li>Name the enemy clearly</li>
+                    <li>Show the before/after</li>
+                    <li>Prove it works (logos, quotes, screenshots)</li>
+                    <li>Remove friction (free trial, refund, no CC)</li>
+                </ul>
+                <p>Low-converting pages:</p>
+                <ul>
+                    <li>“AI-powered platform”</li>
+                    <li>Feature dumps</li>
+                    <li>No opinion</li>
+                    <li>No proof</li>
+                </ul>
+                <p class="italic text-indigo-300">Be opinionated. Safe SaaS is invisible SaaS.</p>
+            </section>
+
+            <hr>
+
+            <section id="founders-job">
+                <h2>10. The Founder’s Real Job (This Will Hurt)</h2>
+                <p>As a small team SaaS founder, your job is:</p>
+                <ul class="grid grid-cols-2 gap-4">
+                    <li class="p-4 bg-slate-800/50 border border-slate-700 rounded-lg text-center">30% coding</li>
+                    <li class="p-4 bg-slate-800/50 border border-slate-700 rounded-lg text-center">30% talking to users
+                    </li>
+                    <li class="p-4 bg-slate-800/50 border border-slate-700 rounded-lg text-center">20% fixing onboarding
+                    </li>
+                    <li class="p-4 bg-slate-800/50 border border-slate-700 rounded-lg text-center">20% distribution</li>
+                </ul>
+                <p class="mt-8 italic text-slate-400">If you only code, you’re a contractor — not a founder.</p>
+            </section>
+
+            <hr>
+
+            <section id="playbook">
+                <h2>11. A Simple SaaS Starter Playbook (Use This)</h2>
+                <ol class="space-y-4 list-decimal pl-6">
+                    <li>Pick <strong>one painful B2B problem</strong></li>
+                    <li>Identify <strong>one role</strong></li>
+                    <li>Find <strong>where they hang out</strong></li>
+                    <li>Talk to 20 of them</li>
+                    <li>Build only what removes the pain</li>
+                    <li>Do live demos</li>
+                    <li>Charge early</li>
+                    <li>Iterate based on objections, not ideas</li>
+                </ol>
+
+                <div class="mt-12 p-8 glass rounded-2xl border-l-4 border-l-red-500">
+                    <h3 class="mt-0 text-red-400">Blind Spot to Watch For (Most Dangerous)</h3>
+                    <blockquote>“I’ll sell it once it’s polished”</blockquote>
+                    <p class="mb-0">No. You sell to <strong>know what to polish</strong>.</p>
+                </div>
+            </section>
+
+            <hr id="mrr-path">
+
+            <section>
+                <h1 class="text-4xl font-bold mb-8">Journey From $0-1k MRR</h1>
+                <p>$0 → $1k MRR is the <strong>hardest and most important phase</strong>.<br>
+                    If you can do this once, you can repeat it forever.</p>
+
+                <div class="p-6 bg-indigo-600/20 rounded-xl border border-indigo-500/30 text-center">
+                    <h3 class="mt-0 tracking-tight">Target math:</h3>
+                    <p class="text-3xl font-bold text-white mb-0">$50 plan × 20 customers = $1k MRR</p>
+                    <p class="text-slate-400 mt-2">(Anything else is harder.)</p>
+                </div>
+
+                <h2>PHASE 1 — Pick a Winnable Problem (Days 1–5)</h2>
+                <h3>What to do</h3>
+                <p>Choose <strong>one role + one painful job</strong>.</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+                    <div class="p-6 rounded-xl bg-red-900/10 border border-red-500/20">
+                        <p class="font-bold text-red-400 mb-2">Bad:</p>
+                        <ul class="text-sm">
+                            <li>“HR software”</li>
+                            <li>“AI productivity tool”</li>
+                            <li>“Accounting for everyone”</li>
+                        </ul>
+                    </div>
+                    <div class="p-6 rounded-xl bg-emerald-900/10 border border-emerald-500/20">
+                        <p class="font-bold text-emerald-400 mb-2">Good:</p>
+                        <ul class="text-sm">
+                            <li>“Weekly candidate shortlisting for recruiters”</li>
+                            <li>“Invoice reconciliation for Shopify stores”</li>
+                            <li>“Compliance reporting for fintech ops”</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h3>Rule</h3>
+                <p>If the user can’t say:</p>
+                <blockquote class="bg-indigo-900/10 border-indigo-500/50">“I hate doing this every week”</blockquote>
+                <p>…you picked wrong.</p>
+
+                <h3>Why you won’t fail here</h3>
+                <ul>
+                    <li>You’re <strong>narrow</strong>, not ambitious</li>
+                    <li>Narrow = fewer competitors</li>
+                    <li>Narrow = clearer messaging</li>
+                    <li>Narrow = higher willingness to pay</li>
+                </ul>
+                <p class="italic">Most fail by picking markets that <em>sound</em> big instead of <em>hurt</em> big.</p>
+            </section>
+
+            <hr>
+
+            <section>
+                <h2>PHASE 2 — Talk Before You Build (Days 6–10)</h2>
+                <h3>What to do</h3>
+                <p>Talk to <strong>10–15 real people</strong> in that role.</p>
+                <p>Your only questions:</p>
+                <ul>
+                    <li>“How do you do this today?”</li>
+                    <li>“What breaks?”</li>
+                    <li>“What happens if it goes wrong?”</li>
+                    <li>“What do you pay for already?”</li>
+                </ul>
+                <p>Do <strong>NOT</strong> pitch your idea.</p>
+
+                <h3>Output</h3>
+                <p>A list of: Exact phrases they use, what they pay for, and what they hate about current tools.</p>
+
+                <h3>Why you won’t fail here</h3>
+                <ul>
+                    <li>You’re not guessing features</li>
+                    <li>You’re stealing copy for free</li>
+                    <li>You avoid building useless “nice-to-haves”</li>
+                </ul>
+            </section>
+
+            <hr>
+
+            <section>
+                <h2>PHASE 3 — Build the Smallest Sellable Thing (Days 11–20)</h2>
+                <h3>What to build</h3>
+                <p>Not an app. A <strong>painkiller</strong>.</p>
+                <p>Example: One workflow, one report, one automation, or one screen that removes pain.</p>
+
+                <h3>Must-have</h3>
+                <ul>
+                    <li>Works end-to-end</li>
+                    <li>Delivers outcome in &lt;10 minutes</li>
+                    <li>Can be demoed live</li>
+                </ul>
+
+                <h3>Hard rule</h3>
+                <p>If you can’t explain it in <strong>one sentence</strong>, it’s too big.</p>
+
+                <h3>Why you won’t fail here</h3>
+                <ul>
+                    <li>Scope is controlled</li>
+                    <li>Time-to-value is fast</li>
+                    <li>You finish something usable</li>
+                </ul>
+            </section>
+
+            <hr>
+
+            <section>
+                <h2>PHASE 4 — Charge Before You’re Ready (Days 21–25)</h2>
+                <h3>Pricing</h3>
+                <p>Pick <strong>$30–$75/month</strong>.</p>
+                <p>No free forever. Free trial or money-back guarantee only.</p>
+
+                <h3>Script (important)</h3>
+                <blockquote>“I’m charging because I’m building this for serious users only.”</blockquote>
+                <p>This filters bad customers.</p>
+
+                <h3>Goal</h3>
+                <p>First <strong>3 paying users</strong>, not perfection.</p>
+
+                <h3>Why you won’t fail here</h3>
+                <ul>
+                    <li>Paying users give real feedback</li>
+                    <li>Free users lie</li>
+                    <li>Price creates commitment</li>
+                </ul>
+            </section>
+
+            <hr>
+
+            <section>
+                <h2>PHASE 5 — Founder-Led Sales (Days 26–40)</h2>
+                <h3>What to do daily</h3>
+                <ul>
+                    <li>Reach out to 5–10 people/day</li>
+                    <li>Personalized, short, human</li>
+                </ul>
+
+                <h3>Demo > Landing page</h3>
+                <p>At this stage:</p>
+                <ul>
+                    <li>Demos close deals</li>
+                    <li>Websites don’t</li>
+                </ul>
+
+                <h3>Why you won’t fail here</h3>
+                <ul>
+                    <li>You control conversion</li>
+                    <li>No ad spend</li>
+                    <li>No SEO dependency</li>
+                </ul>
+            </section>
+
+            <hr>
+
+            <section>
+                <h2>PHASE 6 — Lock in Retention (Days 41–60)</h2>
+                <h3>Your only focus</h3>
+                <p>Why did they stay? Why did they leave? Where did they get stuck?</p>
+                <p>Fix: Onboarding, defaults, first-time success.</p>
+                <p>Do <strong>not</strong> add features unless they:</p>
+                <ul>
+                    <li>Reduce churn</li>
+                    <li>Increase usage frequency</li>
+                </ul>
+
+                <h3>Target metrics</h3>
+                <ul>
+                    <li>5–10 active users/week</li>
+                    <li>&lt;5% monthly churn</li>
+                </ul>
+            </section>
+
+            <hr>
+
+            <section>
+                <h2>PHASE 7 — Scale to $1k MRR (Days 60–90)</h2>
+                <p>Now repeat what already works: same audience, same pitch, same demo.</p>
+                <div class="p-6 bg-slate-800/80 rounded-xl border border-slate-700">
+                    <h4 class="mt-0 font-bold mb-4">Math:</h4>
+                    <ul class="mb-0">
+                        <li>1 new customer every 3 days</li>
+                        <li>30 customers × $35 = $1,050 MRR</li>
+                    </ul>
+                </div>
+                <p class="mt-8">This is <strong>boring by design</strong>.</p>
+            </section>
+
+            <section id="path-comparison">
+                <h2>Why This Path Works When Others Don’t</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-6">
+                    <div>
+                        <h4 class="text-emerald-400 font-bold mb-4">You win because</h4>
+                        <ul class="text-sm space-y-2">
+                            <li>You sell before scaling</li>
+                            <li>You choose pain over ideas</li>
+                            <li>You price like a business</li>
+                            <li>You talk to users daily</li>
+                            <li>You control your funnel</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="text-red-400 font-bold mb-4">Others fail because</h4>
+                        <ul class="text-sm space-y-2">
+                            <li>They build in isolation</li>
+                            <li>They chase trends (AI, vibe coding)</li>
+                            <li>They undercharge</li>
+                            <li>They fear sales</li>
+                            <li>They overbuild</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <hr class="my-12">
+
+                <div class="p-8 glass rounded-3xl border-indigo-500/30">
+                    <h2 class="mt-0 tracking-tight">One Brutal Question for You</h2>
+                    <blockquote class="bg-indigo-900/10 border-indigo-500/50 italic mb-6">
+                        Can you talk to strangers about your product <strong>every day for 30 days</strong>?
+                    </blockquote>
+                    <p class="mb-0">
+                        If yes → $1k MRR is realistic.<br>
+                        If no → you’ll stall at $0–$300 forever.
+                    </p>
+                </div>
+            </section>
+
+            <hr>
+
+            <section id="niyo-analysis">
+                <h1 class="text-4xl font-bold mb-8">Niyo's Existing Pricing Strategy analysis</h1>
+                <p>This is exactly where MRR is leaking. Niyo's <strong>pricing model is logical for engineers</strong>
+                    but <strong>misaligned with how recruiters think and buy</strong>.</p>
+
+                <p>Lets break this into:</p>
+                <ol>
+                    <li>Why niyo's current pricing *kind of* works</li>
+                    <li>Why it will <strong>cap growth and conversion</strong></li>
+                    <li>What to change (concrete models)</li>
+                    <li>A recruiter-native pricing model I’d ship</li>
+                </ol>
+                <p>No fluff.</p>
+
+                <hr class="my-12">
+
+                <h2>1. Why Your Current Credit Pricing Works (Partially)</h2>
+                <h3>What you did right</h3>
+                <ul>
+                    <li><strong>Usage-based</strong> → aligns with value</li>
+                    <li><strong>Predictable cost</strong> → good for ops</li>
+                    <li><strong>Scales with volume</strong> → good for you</li>
+                    <li>Simple math internally</li>
+                </ul>
+                <p>For <em>internal HR teams</em> with stable hiring volume, this can survive.</p>
+            </section>
+
+            <hr>
+
+            <section>
+                <h2>2. Why This Pricing Will Underperform (Core Problems)</h2>
+
+                <h3 class="text-red-400">❌ Problem 1: Recruiters Don’t Think in “Credits”</h3>
+                <p>Recruiters think in: Jobs, Roles, Pipelines, Shortlists, Time saved.</p>
+                <p>They <strong>don’t think in PDFs</strong>.</p>
+                <blockquote class="bg-red-900/5 border-red-900/20 italic">
+                    “Is that enough? Will I run out? What if volume spikes?”
+                </blockquote>
+                <p>Uncertainty kills conversion.</p>
+
+                <h3 class="text-red-400">❌ Problem 2: Punishing High-Volume Moments</h3>
+                <p>Hiring is <strong>bursty</strong>, not linear.</p>
+                <p>Your pricing says: “Congrats, you’re punished for success.” Recruiters hate variable anxiety.</p>
+
+                <h3 class="text-red-400">❌ Problem 3: Feature Parity = Price Comparison</h3>
+                <p>All tiers have same features. So buyers ask: “Why not start with the cheapest?” This slows upgrades
+                    and increases churn.</p>
+
+                <h3 class="text-red-400">❌ Problem 4: You’re Selling Infrastructure, Not Outcome</h3>
+                <p>Right now you’re saying: “Pay for file processing.”</p>
+                <p>You should be saying: <strong>“Pay for faster shortlisting per job.”</strong></p>
+            </section>
+
+            <hr id="recommended-models">
+
+            <section>
+                <h2>3. What Recruiters Will Pay For (Reality)</h2>
+                <p>Recruiters pay for: Fewer hours per job, faster shortlists, fewer angry hiring managers, fewer late
+                    nights.</p>
+                <p>They justify spend like: “This saves me 1–2 days per role.” Not: “This processes 500 PDFs.”</p>
+            </section>
+
+            <hr>
+
+            <section>
+                <h2>4. The Pricing Model That Fits Recruiters (Recommended)</h2>
+
+                <div class="mb-12">
+                    <h3 class="text-indigo-400 font-bold">🔥 Model #1: Per Job Posting (Best Fit)</h3>
+                    <p>This maps <strong>perfectly</strong> to recruiter mental models.</p>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-8">
+                        <div class="p-6 glass rounded-xl border-slate-700">
+                            <h4 class="mt-0 text-white">Starter</h4>
+                            <p class="text-2xl font-bold text-white">$49 / mo</p>
+                            <ul class="text-sm mt-4 text-slate-400">
+                                <li>3 active jobs</li>
+                                <li>Unlimited CVs</li>
+                                <li>AI Shortlisting</li>
+                            </ul>
+                        </div>
+                        <div class="p-6 glass rounded-xl border-indigo-500/50 relative">
+                            <div
+                                class="absolute -top-3 left-1/2 -translate-x-1/2 bg-indigo-600 text-[10px] font-bold px-2 py-1 rounded text-white uppercase">
+                                Most Popular</div>
+                            <h4 class="mt-0 text-white">Growth</h4>
+                            <p class="text-2xl font-bold text-white">$149 / mo</p>
+                            <ul class="text-sm mt-4 text-slate-400">
+                                <li>10 active jobs</li>
+                                <li>Unlimited CVs</li>
+                                <li>Priority processing</li>
+                            </ul>
+                        </div>
+                        <div class="p-6 glass rounded-xl border-slate-700">
+                            <h4 class="mt-0 text-white">Pro</h4>
+                            <p class="text-2xl font-bold text-white">$349 / mo</p>
+                            <ul class="text-sm mt-4 text-slate-400">
+                                <li>Unlimited jobs</li>
+                                <li>Team access</li>
+                                <li>Advanced filters</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-12">
+                    <h3 class="text-indigo-400 font-bold">🔥 Model #2: Hybrid (If You Must Keep Credits)</h3>
+                    <p>If you’re emotionally attached to credits, <strong>hide them</strong>.</p>
+                    <p>Credits stay <strong>internal only</strong>. External plans show job and CV ranges.</p>
+                </div>
+
+                <div>
+                    <h3 class="text-indigo-400 font-bold">⚠️ Model #3: Agency-Friendly Volume Pricing (Upsell)</h3>
+                    <p>Recruitment agencies behave differently. Offer: Pay per job or pay per batch.</p>
+                    <p>Example: $29 per job, Up to 300 CVs, One-time payment. This converts skeptics fast.</p>
+                </div>
+            </section>
+
+            <hr>
+
+            <section id="credits-internal">
+                <h2>5. What to Do With Your Existing Credit System</h2>
+                <p>Don’t delete it. <strong>Reframe it.</strong></p>
+
+                <h3>Internally</h3>
+                <ul>
+                    <li>Credits = cost control</li>
+                </ul>
+
+                <h3>Externally</h3>
+                <ul>
+                    <li>Jobs</li>
+                    <li>CV range</li>
+                    <li>Time saved</li>
+                </ul>
+
+                <p>Your pricing page should <strong>never lead with credits</strong>.</p>
+            </section>
+
+            <hr>
+
+            <section id="rewrite-page">
+                <h2>6. How to Rewrite Your Pricing Page (Important)</h2>
+                <h3>Replace this</h3>
+                <p class="text-red-400">“150 credits per month”</p>
+
+                <h3>With this</h3>
+                <p class="text-emerald-400">“Shortlist up to ~150 CVs per month (≈ 6–8 hours saved)”</p>
+
+                <p>Or better:</p>
+                <p class="text-indigo-400 font-bold">“Handle up to 3 hiring roles per month without manual screening”
+                </p>
+
+                <p>Tie pricing to <strong>outcome</strong>, not mechanism.</p>
+            </section>
+
+            <hr>
+
+            <section id="conversion-increase">
+                <h2>7. Why This Will Increase Conversion</h2>
+                <ul>
+                    <li>Removes fear of running out</li>
+                    <li>Matches recruiter language</li>
+                    <li>Makes ROI obvious</li>
+                    <li>Encourages upgrades naturally</li>
+                    <li>Reduces churn from surprise overages</li>
+                </ul>
+            </section>
+
+            <hr>
+
+            <section id="hard-truth-2">
+                <h2>8. Hard Truth (You Need This)</h2>
+                <p>Your pricing today signals: “We are a developer tool.”</p>
+                <p>Recruiters buy: <strong>Hiring leverage.</strong></p>
+                <p>Change the signal.</p>
+            </section>
+
+            <hr>
+
+            <section id="action-plan-1">
+                <h2>What I’d Do in the Next 7 Days</h2>
+                <ol>
+                    <li>Keep backend credits</li>
+                    <li>Redesign pricing around <strong>jobs</strong></li>
+                    <li>A/B test: “per job” vs “per CV”</li>
+                    <li>Talk to 5 recruiters with the new pricing</li>
+                    <li>Watch confusion drop instantly</li>
+                </ol>
+            </section>
+
+            <hr>
+
+            <section id="maximize-conversions">
+                <h1 class="text-4xl font-bold mb-8">How niyo should design pricing to maximize conversions</h1>
+                <p>This is where most hiring SaaS either unlocks growth — or stalls forever.</p>
+                <p>Here is a <strong>clean, recruiter-native pricing split</strong> that matches <em>how agencies
+                        buy</em> vs <em>how internal HR buys</em>, with rationale and guardrails.</p>
+
+                <hr>
+
+                <h1>Pricing Model #2</h1>
+                <h2>Agency Plans vs Internal HR Plans</h2>
+                <p>You should <strong>not</strong> sell one pricing model to both. Their incentives, volume patterns,
+                    and churn behavior are fundamentally different.</p>
+            </section>
+
+            <h2>PART A — INTERNAL HR PRICING (Predictable, Retention-Driven)</h2>
+            <p>How internal HR thinks: Fixed hiring budget, fewer roles, longer timelines, wants predictability.</p>
+
+            <div class="space-y-6 mt-8">
+                <div class="p-6 bg-slate-800/50 rounded-xl border border-slate-700">
+                    <h4 class="mt-0">Starter – Internal HR</h4>
+                    <p class="text-2xl font-bold text-white leading-none">$49 / month</p>
+                    <ul class="text-sm mt-4 text-slate-400">
+                        <li>Up to <strong>3 active jobs</strong></li>
+                        <li>Unlimited CVs per job</li>
+                        <li>AI shortlisting + ranking</li>
+                        <li>Export shortlist</li>
+                        <li>Single user</li>
+                    </ul>
+                    <div class="mt-4 pt-4 border-t border-slate-700">
+                        <p class="text-xs font-bold uppercase text-slate-500">Who this fits</p>
+                        <ul class="text-xs text-slate-400 mt-2">
+                            <li>Startups</li>
+                            <li>SMBs</li>
+                            <li>Founders hiring occasionally</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="p-6 bg-slate-800/50 rounded-xl border border-slate-700">
+                    <h4 class="mt-0">Growth – Internal HR</h4>
+                    <p class="text-2xl font-bold text-white leading-none">$149 / month</p>
+                    <ul class="text-sm mt-4 text-slate-400">
+                        <li>Up to <strong>10 active jobs</strong></li>
+                        <li>Unlimited CVs per job</li>
+                        <li>Advanced filters & scoring</li>
+                        <li>Hiring manager view</li>
+                        <li>3 users</li>
+                    </ul>
+                    <div class="mt-4 pt-4 border-t border-slate-700">
+                        <p class="text-xs font-bold uppercase text-slate-500">Who this fits</p>
+                        <ul class="text-xs text-slate-400 mt-2">
+                            <li>Growing companies</li>
+                            <li>Dedicated HR teams</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="p-6 bg-slate-800/50 rounded-xl border border-slate-700">
+                    <h4 class="mt-0">Pro – Internal HR</h4>
+                    <p class="text-2xl font-bold text-white leading-none">$349 / month</p>
+                    <ul class="text-sm mt-4 text-slate-400">
+                        <li>Unlimited jobs</li>
+                        <li>Unlimited CVs</li>
+                        <li>Team access</li>
+                        <li>Priority processing</li>
+                        <li>Audit logs / compliance-ready</li>
+                    </ul>
+                    <div class="mt-4 pt-4 border-t border-slate-700">
+                        <p class="text-xs font-bold uppercase text-slate-500">Who this fits</p>
+                        <ul class="text-xs text-slate-400 mt-2">
+                            <li>Scaleups</li>
+                            <li>Ops-heavy teams</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <h3>Why this works</h3>
+            <ul>
+                <li>No “credit anxiety”</li>
+                <li>Easy to budget</li>
+                <li>Clear upgrade path</li>
+                <li>Low churn</li>
+            </ul>
+
+            <div class="mt-8 p-4 bg-yellow-900/10 border border-yellow-500/20 text-yellow-200 text-sm">
+                <strong>Important:</strong> Do NOT mention credits anywhere in this flow.
+            </div>
+            </section>
+
+            <hr>
+
+            <section>
+                <h2>PART B — AGENCY PRICING (High Volume, Burst-Friendly)</h2>
+                <p>How agencies think: Revenue per placement, volume spikes, short-term usage.</p>
+                <p>Agencies hate: Monthly caps, credit expiry, “fair use” ambiguity.</p>
+
+                <div class="space-y-6 mt-8">
+                    <div class="p-6 bg-indigo-900/10 border border-indigo-500/20 rounded-xl">
+                        <h4 class="mt-0">Pay-Per-Job (Entry Wedge)</h4>
+                        <p class="text-2xl font-bold text-white leading-none">$29 per job</p>
+                        <ul class="text-sm mt-4 text-slate-400">
+                            <li>Up to <strong>300 CVs</strong></li>
+                            <li>AI shortlisting</li>
+                            <li>One-time payment</li>
+                            <li>No subscription</li>
+                        </ul>
+                        <div class="mt-4 pt-4 border-t border-indigo-500/20">
+                            <p class="text-xs font-bold text-indigo-300">Why this is deadly effective</p>
+                            <ul class="text-xs text-slate-400 mt-2">
+                                <li>Zero commitment</li>
+                                <li>Easy yes</li>
+                                <li>Converts skeptics</li>
+                                <li>Feeds pipeline for subscription upsell</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="p-6 bg-slate-800/50 rounded-xl border border-slate-700">
+                        <h4 class="mt-0">Agency Monthly</h4>
+                        <p class="text-2xl font-bold text-white leading-none">$199 / month</p>
+                        <ul class="text-sm mt-4 text-slate-400">
+                            <li>Up to <strong>20 active jobs</strong></li>
+                            <li>Unlimited CVs</li>
+                            <li>Priority processing</li>
+                            <li>Branded exports</li>
+                            <li>Team access</li>
+                        </ul>
+                    </div>
+
+                    <div class="p-6 bg-slate-800/50 rounded-xl border border-slate-700">
+                        <h4 class="mt-0">Agency Pro</h4>
+                        <p class="text-2xl font-bold text-white leading-none">$499 / month</p>
+                        <ul class="text-sm mt-4 text-slate-400">
+                            <li>Unlimited jobs</li>
+                            <li>Unlimited CVs</li>
+                            <li>SLA-backed processing</li>
+                            <li>Dedicated support</li>
+                            <li>White-label reports (optional)</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <hr>
+
+                <h2 id="credits-internal-v2">PART C — What to Do With Credits (Internally)</h2>
+                <p>You already built credits. Keep them — <strong>but only internally</strong>.</p>
+
+                <h3>Backend logic</h3>
+                <ul>
+                    <li>1 CV = X credits</li>
+                    <li>Jobs have soft caps</li>
+                    <li>Abuse detection</li>
+                    <li>Cost control</li>
+                </ul>
+
+                <h3>Frontend language</h3>
+                <ul class="grid grid-cols-2 gap-2">
+                    <li class="p-3 bg-red-900/10 border border-red-500/20 text-red-400 text-xs flex items-center gap-2">
+                        ❌ Credits</li>
+                    <li
+                        class="p-3 bg-emerald-900/10 border border-emerald-500/20 text-emerald-400 text-xs flex items-center gap-2">
+                        ✅ Jobs</li>
+                    <li class="p-3 bg-red-900/10 border border-red-500/20 text-red-400 text-xs flex items-center gap-2">
+                        ❌ File processing</li>
+                    <li
+                        class="p-3 bg-emerald-900/10 border border-emerald-500/20 text-emerald-400 text-xs flex items-center gap-2">
+                        ✅ Roles</li>
+                    <li
+                        class="p-3 bg-emerald-900/10 border border-emerald-500/20 text-emerald-400 text-xs flex items-center gap-2">
+                        ✅ Shortlists</li>
+                    <li
+                        class="p-3 bg-emerald-900/10 border border-emerald-500/20 text-emerald-400 text-xs flex items-center gap-2">
+                        ✅ Time saved</li>
+                </ul>
+
+                <hr>
+
+                <h2 id="outperform">PART D — Why This Split Will Outperform Your Current Model</h2>
+                <h3>Your current pricing causes</h3>
+                <ul>
+                    <li>Confusion (“How many credits do I need?”)</li>
+                    <li>Fear of running out</li>
+                    <li>Cheap plan anchoring</li>
+                    <li>Slow upgrades</li>
+                    <li>High churn for agencies</li>
+                </ul>
+
+                <h3>This new pricing creates</h3>
+                <ul>
+                    <li>Clear mental model</li>
+                    <li>Faster buying decisions</li>
+                    <li>Higher ARPU</li>
+                    <li>Natural expansion</li>
+                    <li>Segment-specific messaging</li>
+                </ul>
+
+                <h3>Optional Add-On</h3>
+                <ul>
+                    <li>Extra job pack: <strong>$99 for 5 jobs</strong></li>
+                    <li>High-volume batch processing</li>
+                    <li>Rush processing</li>
+                </ul>
+            </section>
+
+            <hr>
+
+            <section>
+                <h2>PART E — How to Present This on the Pricing Page</h2>
+                <h3 class="mb-4">First toggle</h3>
+                <div class="flex items-center gap-4 mb-8">
+                    <div class="px-6 py-2 bg-indigo-600 rounded-full text-white font-bold">Internal Hiring</div>
+                    <div class="px-6 py-2 bg-slate-800 rounded-full text-slate-400 font-bold">Recruitment Agencies</div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="p-6 glass rounded-2xl">
+                        <h4 class="mt-0 text-white">Internal HR Copy</h4>
+                        <p class="italic">“Shortlist candidates in hours, not days — without reading CVs.”</p>
+                    </div>
+                    <div class="p-6 glass rounded-2xl">
+                        <h4 class="mt-0 text-white">Agency Copy</h4>
+                        <p class="italic">“Handle 10× more roles without adding recruiters.”</p>
+                    </div>
+                </div>
+
+                <hr>
+
+                <h2 id="guardrails">PART F — Hard Guardrails (Don’t Skip This)</h2>
+                <ul>
+                    <li>❌ Don’t allow agencies on cheap HR plans</li>
+                    <li>❌ Don’t mix “credits” and “jobs” on the same page</li>
+                    <li>❌ Don’t say “unlimited” without safeguards</li>
+                    <li>✅ Enforce soft limits quietly</li>
+                    <li>✅ Upgrade prompts tied to job count</li>
+                </ul>
+
+                <hr>
+
+                <h2 id="action-plan-2">What I’d Do This Week (Action Plan)</h2>
+                <ol>
+                    <li>Keep backend credits unchanged</li>
+                    <li>Redesign pricing UI with <strong>two buyer paths</strong></li>
+                    <li>Rewrite copy to remove all “PDF / credits” language</li>
+                    <li>Offer <strong>pay-per-job</strong> to agencies immediately</li>
+                    <li>Manually sell first 5 agency customers</li>
+                </ol>
+            </section>
+
+            <hr>
+
+            <footer class="mt-24 pb-12">
+                <div class="p-8 gradient-bg rounded-3xl text-center bg-indigo-600">
+                    <h2 class="mt-0 text-white">The Real Insight (Read This Twice)</h2>
+                    <p class="text-white text-xl opacity-90">
+                        Your product is strong. Your pricing is telling the <strong>wrong story</strong>.
+                    </p>
+                    <p class="text-white text-xl font-bold mt-4">
+                        Fix the story → MRR follows.
+                    </p>
+                </div>
+                <div class="mt-12 text-center text-slate-500 text-sm">
+                    &copy; 2026 Niyo Strategy Framework. Confidential Analysis.
+                </div>
+            </footer>
+        </article>
+    </main>
+
+    <script>
+        // Smooth scrolling for sidebar links
+        document.querySelectorAll('.sidebar-link').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Intersection Observer for highlighting active section
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    document.querySelectorAll('.sidebar-link').forEach(link => {
+                        link.classList.remove('text-indigo-400', 'bg-indigo-500/5', 'font-semibold');
+                        if (link.getAttribute('href') === '#' + entry.target.id) {
+                            link.classList.add('text-indigo-400', 'bg-indigo-500/5', 'font-semibold');
+                        }
+                    });
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('section[id]').forEach((section) => {
+            observer.observe(section);
+        });
+    </script>
+</body>
+
+</html>
