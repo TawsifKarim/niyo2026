@@ -1030,3 +1030,274 @@ You’re selling **infrastructure** to people who buy **outcomes**.
 Fix the story → MRR follows.
 
 ---
+
+Niyo is a **real product**, not a toy. But it’s underperforming because you’re committing the #1 SaaS sin:
+
+> **You’re building a hiring platform when the market only wants a shortcut.**
+
+Let’s evaluate this like a ruthless operator.
+
+---
+
+## First: What You’ve Actually Built (Truth, Not Narrative)
+
+You *think* you built:
+
+> “An AI-powered hiring platform”
+
+You’ve *actually* built:
+
+> **A CV shortlisting acceleration engine**
+
+That distinction matters because platforms lose. **Point solutions win early.**
+
+---
+
+## The Core Value (This Is Strong)
+
+Your strongest claim is this:
+
+> **45+ hours → 1–1.5 hours**
+
+That’s not a feature. That’s a **business case**.
+
+This alone can justify:
+
+* $50–$200 / month (SMB)
+* $500+ / month (agencies / enterprise)
+
+Everything else is secondary.
+
+---
+
+## Why the App Is Underperforming (Root Causes)
+
+### 1. You’re Over-scoping Too Early
+
+You’re drifting into:
+
+* ATS
+* Interview scheduling
+* Video interviewing
+* Calendar sync
+* Candidate experience
+
+You’re competing (unknowingly) with:
+
+* Greenhouse
+* Lever
+* Ashby
+* Workable
+* HireVue
+
+You **cannot win that fight** as a solo/small team.
+
+---
+
+### 2. You’re Solving HR’s *Aspirations*, Not Their *Daily Pain*
+
+HR *says* they want:
+
+* Better interviews
+* Smarter AI scoring
+* Structured hiring
+
+HR *actually buys*:
+
+* Faster shortlists
+* Less manual work
+* Fewer angry hiring managers
+
+Buying behavior > vision.
+
+---
+
+### 3. Your ICP Is Blurry
+
+Right now your product implies:
+
+* SMBs
+* Mid-market
+* Enterprises
+* Agencies
+
+Each of these buys differently.
+
+This alone can kill conversion.
+
+---
+
+## Feature-by-Feature: What to Build vs What Will Likely Fail
+
+Let’s be brutal.
+
+---
+
+### ✅ **CV Parsing + AI Shortlisting**
+
+**This is your wedge. Double down.**
+
+Why it works:
+
+* Immediate ROI
+* Easy to demo
+* Replaces manual labor
+* HR already feels the pain
+
+What to improve instead of adding features:
+
+* Better ranking explainability
+* “Why rejected / why shortlisted”
+* Custom weight controls (skills vs experience)
+* One-click export of shortlist
+
+👉 This alone can take you to $1k–$5k MRR.
+
+---
+
+### ⚠️ **Career Page + Direct Applications**
+
+**Useful, but not a growth driver.**
+
+Why it won’t sell on its own:
+
+* Everyone already has this
+* HR doesn’t feel pain here
+* It’s table stakes
+
+Keep it, but don’t invest heavily.
+
+---
+
+### ⚠️ **Interview Scheduling**
+
+**Danger zone.**
+
+Why:
+
+* HR already uses Google Calendar
+* They tolerate bad scheduling tools
+* This is not where urgency lives
+
+Google Calendar sync helps **retention**, not **acquisition**.
+
+👉 Build *only* if:
+
+* Customers explicitly ask
+* It reduces churn
+* It’s low effort
+
+---
+
+### ❌ **Video Interviews + AI Scoring (For Now)**
+
+This is your biggest trap.
+
+Why this will likely fail *right now*:
+
+* Long trust curve
+* Legal/compliance concerns
+* Bias & fairness fears
+* HR skepticism of “AI judging humans”
+* Much harder to explain + sell
+
+Also:
+
+* Candidates hate it
+* HR is scared of lawsuits
+* Procurement will block it
+
+This is **Phase 3**, not Phase 1.
+
+---
+
+## What You SHOULD Do Instead (High-Leverage Moves)
+
+### 1. Collapse the Product Into a Single Promise
+
+Your homepage should say something like:
+
+> **“Shortlist 400 CVs in under 90 minutes — without reading them.”**
+
+Everything else becomes optional or hidden.
+
+---
+
+### 2. Pick ONE Buyer Persona (Non-Negotiable)
+
+Best early candidates:
+
+* Recruitment agencies
+* High-volume hiring companies
+* Fast-growing startups
+* Offshore HR teams
+
+Avoid:
+
+* Enterprises (slow sales)
+* SMBs with 5 hires/year
+* “Anyone hiring”
+
+---
+
+### 3. Redesign the Demo Around Time Saved
+
+Your demo should show:
+
+* Upload 100 CVs
+* Click “Shortlist”
+* Show ranked list
+* Show explanation
+* Export results
+
+No career page.
+No scheduling.
+No future roadmap.
+
+---
+
+### 4. Price Based on Volume, Not Features
+
+Smart pricing:
+
+* $X per job
+* $X per 100 CVs
+* Tiered by volume
+
+This aligns price with value.
+
+---
+
+## A Sharp Recommendation (Do This Next)
+
+If I were in your seat, I would:
+
+**For the next 30–45 days:**
+
+1. Freeze all new features
+2. Kill roadmap noise
+3. Focus ONLY on:
+
+   * Shortlisting accuracy
+   * Speed
+   * Explainability
+   * Demo clarity
+4. Talk to 10 recruiters/week
+5. Sell manually
+
+Only after **consistent paid usage** do you:
+
+* Add calendar sync (retention)
+* Add interview tooling (upsell)
+* Add video AI (enterprise tier)
+
+---
+
+## The Uncomfortable Truth
+
+You don’t have a feature problem.
+You have a **focus problem**.
+
+Your product is strong — but it’s trying to be impressive instead of **irresistible**.
+
+---
