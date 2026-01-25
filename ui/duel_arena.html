@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Duel Arena - Finalist Showdown</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Vue 3 -->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Black+Ops+One&family=Rajdhani:wght@500;600;700&display=swap"
+        rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Rajdhani', sans-serif;
+            background-color: #050505;
+            color: white;
+        }
+
+        .font-display {
+            font-family: 'Black Ops One', cursive;
+        }
+
+        .card-slant {
+            clip-path: polygon(10% 0, 100% 0, 100% 90%, 90% 100%, 0 100%, 0 10%);
+        }
+
+        .vs-text {
+            text-shadow: 0 0 20px #ef4444, 4px 4px 0px #7f1d1d;
+        }
+
+        .stat-bar-l {
+            transform-origin: right;
+            transform: scaleX(0);
+            animation: grow-in 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards 0.3s;
+        }
+
+        .stat-bar-r {
+            transform-origin: left;
+            transform: scaleX(0);
+            animation: grow-in 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards 0.3s;
+        }
+
+        @keyframes grow-in {
+            to {
+                transform: scaleX(1);
+            }
+        }
+
+        /* Neon Glows */
+        .glow-blue {
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.4);
+        }
+
+        .glow-red {
+            box-shadow: 0 0 15px rgba(239, 68, 68, 0.4);
+        }
+
+        .scanline {
+            background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0) 50%, rgba(0, 0, 0, 0.2) 50%, rgba(0, 0, 0, 0.2));
+            background-size: 100% 4px;
+            pointer-events: none;
+        }
+    </style>
+</head>
+
+<body class="h-screen overflow-hidden flex flex-col relative">
+
+    <!-- CRT Effect Overlay -->
+    <div class="absolute inset-0 scanline z-50 opacity-20 pointer-events-none"></div>
+
+    <div id="app" class="h-full flex flex-col">
+
+        <!-- Header -->
+        <header class="h-16 flex items-center justify-center border-b border-white/10 bg-white/5 backdrop-blur z-20">
+            <h1 class="font-display text-2xl tracking-widest text-slate-500 uppercase">Finalist Showdown</h1>
+        </header>
+
+        <!-- Main Arena -->
+        <main class="flex-1 flex relative">
+
+            <!-- PLAYER 1 SIDE (Challenger) -->
+            <section
+                class="flex-1 flex flex-col items-center justify-center relative bg-gradient-to-r from-blue-900/20 to-transparent border-r border-white/5">
+
+                <!-- Selector -->
+                <div v-if="!player1" class="text-center">
+                    <button @click="openSelector(1)"
+                        class="w-24 h-24 rounded-full border-2 border-dashed border-blue-500/50 flex items-center justify-center text-blue-400 hover:bg-blue-500/20 transition-all group">
+                        <span class="text-4xl group-hover:scale-110 transition-transform">+</span>
+                    </button>
+                    <p class="mt-4 text-blue-400 font-bold tracking-widest uppercase">Select Player 1</p>
+                </div>
+
+                <!-- Active Character -->
+                <div v-else class="flex flex-col items-center w-full max-w-sm relative z-10">
+                    <div class="relative w-64 h-64 mb-6 group cursor-pointer" @click="openSelector(1)">
+                        <div
+                            class="absolute inset-0 bg-blue-500/20 rounded-full blur-2xl group-hover:bg-blue-500/30 transition-all">
+                        </div>
+                        <img :src="player1.avatar"
+                            class="w-full h-full object-cover rounded-full border-4 border-blue-500 glow-blue grayscale group-hover:grayscale-0 transition-all duration-500">
+                        <div
+                            class="absolute -bottom-4 left-1/2 -translate-x-1/2 bg-blue-600 px-4 py-1 rounded-sm text-xs font-bold uppercase tracking-widest skew-x-[-10deg]">
+                            Challenger</div>
+                    </div>
+
+                    <h2 class="font-display text-4xl text-white mb-1">{{ player1.name }}</h2>
+                    <p class="text-blue-400 font-bold text-xl uppercase tracking-widest">{{ player1.role }}</p>
+
+                    <!-- Quick Stats -->
+                    <div class="flex gap-4 mt-6">
+                        <div class="text-center">
+                            <div class="text-2xl font-bold">{{ calculateAvg(player1) }}</div>
+                            <div class="text-xs text-slate-500 uppercase">OVR</div>
+                        </div>
+                    </div>
+                </div>
+
+            </section>
+
+
+            <!-- CENTER (VS) -->
+            <div class="absolute inset-0 flex items-center justify-center pointer-events-none z-30">
+                <div class="relative">
+                    <h1
+                        class="font-display text-9xl italic text-transparent bg-clip-text bg-gradient-to-b from-red-500 to-red-900 vs-text skew-x-[-10deg] scale-150 relative z-10">
+                        VS</h1>
+                    <!-- Lightning/Effect -->
+                </div>
+            </div>
+
+
+            <!-- PLAYER 2 SIDE (Defender) -->
+            <section
+                class="flex-1 flex flex-col items-center justify-center relative bg-gradient-to-l from-red-900/20 to-transparent border-l border-white/5">
+
+                <!-- Selector -->
+                <div v-if="!player2" class="text-center">
+                    <button @click="openSelector(2)"
+                        class="w-24 h-24 rounded-full border-2 border-dashed border-red-500/50 flex items-center justify-center text-red-400 hover:bg-red-500/20 transition-all group">
+                        <span class="text-4xl group-hover:scale-110 transition-transform">+</span>
+                    </button>
+                    <p class="mt-4 text-red-400 font-bold tracking-widest uppercase">Select Player 2</p>
+                </div>
+
+                <!-- Active Character -->
+                <div v-else class="flex flex-col items-center w-full max-w-sm relative z-10">
+                    <div class="relative w-64 h-64 mb-6 group cursor-pointer" @click="openSelector(2)">
+                        <div
+                            class="absolute inset-0 bg-red-500/20 rounded-full blur-2xl group-hover:bg-red-500/30 transition-all">
+                        </div>
+                        <img :src="player2.avatar"
+                            class="w-full h-full object-cover rounded-full border-4 border-red-500 glow-red grayscale group-hover:grayscale-0 transition-all duration-500">
+                        <div
+                            class="absolute -bottom-4 left-1/2 -translate-x-1/2 bg-red-600 px-4 py-1 rounded-sm text-xs font-bold uppercase tracking-widest skew-x-[-10deg]">
+                            Defender</div>
+                    </div>
+
+                    <h2 class="font-display text-4xl text-white mb-1">{{ player2.name }}</h2>
+                    <p class="text-red-400 font-bold text-xl uppercase tracking-widest">{{ player2.role }}</p>
+
+                    <div class="flex gap-4 mt-6">
+                        <div class="text-center">
+                            <div class="text-2xl font-bold">{{ calculateAvg(player2) }}</div>
+                            <div class="text-xs text-slate-500 uppercase">OVR</div>
+                        </div>
+                    </div>
+                </div>
+
+            </section>
+
+        </main>
+
+        <!-- Stats Comparison Deck (Bottom) -->
+        <footer class="h-64 bg-slate-900 border-t border-white/10 z-20 flex flex-col">
+            <div class="bg-black/40 py-2 text-center text-xs font-bold uppercase tracking-[0.2em] text-slate-500">
+                Parameter Comparison</div>
+
+            <div class="flex-1 overflow-y-auto px-12 py-6 flex items-center justify-center">
+
+                <div v-if="player1 && player2" class="w-full max-w-4xl space-y-4">
+                    <div v-for="(val, stat) in player1.stats" :key="stat" class="flex items-center gap-4">
+
+                        <!-- P1 Value -->
+                        <div class="w-12 text-right font-bold text-blue-400 text-lg">{{ val }}</div>
+
+                        <!-- P1 Bar -->
+                        <div class="flex-1 h-8 bg-slate-800 rounded-l-sm relative overflow-hidden flex justify-end">
+                            <div class="h-full bg-blue-600 stat-bar-l skew-x-[-20deg] mr-[-4px]"
+                                :style="{ width: val + '%' }"></div>
+                            <!-- Win Indicator -->
+                            <div v-if="val > player2.stats[stat]"
+                                class="absolute left-2 top-1/2 -translate-y-1/2 text-[10px] font-black uppercase text-blue-400 tracking-wider">
+                                WIN</div>
+                        </div>
+
+                        <!-- Label -->
+                        <div class="w-32 text-center font-display text-slate-400 uppercase tracking-wider text-sm">{{
+                            stat }}</div>
+
+                        <!-- P2 Bar -->
+                        <div class="flex-1 h-8 bg-slate-800 rounded-r-sm relative overflow-hidden flex justify-start">
+                            <div class="h-full bg-red-600 stat-bar-r skew-x-[-20deg] ml-[-4px]"
+                                :style="{ width: player2.stats[stat] + '%' }"></div>
+                            <!-- Win Indicator -->
+                            <div v-if="player2.stats[stat] > val"
+                                class="absolute right-2 top-1/2 -translate-y-1/2 text-[10px] font-black uppercase text-red-400 tracking-wider">
+                                WIN</div>
+                        </div>
+
+                        <!-- P2 Value -->
+                        <div class="w-12 text-left font-bold text-red-400 text-lg">{{ player2.stats[stat] }}</div>
+
+                    </div>
+                </div>
+
+                <div v-else class="text-slate-600 font-display text-2xl uppercase tracking-widest animate-pulse">
+                    Waiting for Challengers...
+                </div>
+
+            </div>
+        </footer>
+
+        <!-- Character Selector Modal -->
+        <div v-if="showSelector"
+            class="absolute inset-0 z-50 bg-black/90 backdrop-blur-xl flex items-center justify-center p-12">
+            <div class="w-full max-w-6xl h-full flex flex-col">
+                <div class="flex justify-between items-center mb-8">
+                    <h2 class="font-display text-3xl text-white uppercase">Select Player {{ activeSlot }}</h2>
+                    <button @click="showSelector = false"
+                        class="text-slate-400 hover:text-white uppercase font-bold tracking-widest">Close [X]</button>
+                </div>
+
+                <div class="grid grid-cols-5 gap-6 overflow-y-auto pb-4">
+                    <div v-for="cand in candidates" :key="cand.id" @click="selectPlayer(cand)"
+                        class="group relative aspect-[3/4] bg-slate-800 border border-white/10 hover:border-white/50 cursor-pointer overflow-hidden transition-all hover:-translate-y-2 card-slant">
+
+                        <img :src="cand.avatar"
+                            class="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-opacity grayscale group-hover:grayscale-0">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
+
+                        <div class="absolute bottom-0 left-0 right-0 p-4">
+                            <div class="font-display text-xl text-white uppercase leading-none mb-1">{{ cand.name }}
+                            </div>
+                            <div class="text-xs text-slate-400 font-bold tracking-widest">{{ cand.role }}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        const { createApp, ref } = Vue;
+
+        createApp({
+            setup() {
+                const player1 = ref(null);
+                const player2 = ref(null);
+
+                const showSelector = ref(false);
+                const activeSlot = ref(1);
+
+                const candidates = ref([
+                    { id: 1, name: "Sarah Chen", role: "Product Design", avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80", stats: { Experience: 92, Leadership: 78, Innovation: 88, Education: 85, Certification: 80 } },
+                    { id: 2, name: "Michael Torres", role: "Engineering", avatar: "https://images.unsplash.com/photo-1519244703995-f4e0f30006d5?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80", stats: { Experience: 75, Leadership: 65, Innovation: 70, Education: 88, Certification: 95 } },
+                    { id: 3, name: "Emma Wilson", role: "Marketing", avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80", stats: { Experience: 88, Leadership: 96, Innovation: 85, Education: 82, Certification: 70 } },
+                    { id: 4, name: "David Kim", role: "Data Science", avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80", stats: { Experience: 85, Leadership: 70, Innovation: 92, Education: 98, Certification: 88 } },
+                    { id: 5, name: "Olivia James", role: "Research", avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80", stats: { Experience: 80, Leadership: 75, Innovation: 65, Education: 85, Certification: 70 } },
+                    { id: 6, name: "James Liu", role: "Backend Dev", avatar: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80", stats: { Experience: 65, Leadership: 50, Innovation: 75, Education: 70, Certification: 85 } },
+                    { id: 7, name: "Sophia Miller", role: "Sales Lead", avatar: "https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80", stats: { Experience: 95, Leadership: 90, Innovation: 40, Education: 60, Certification: 50 } },
+                    { id: 8, name: "Lucas Brown", role: "DevOps", avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80", stats: { Experience: 78, Leadership: 60, Innovation: 68, Education: 80, Certification: 98 } },
+                    { id: 9, name: "Ava Taylor", role: "Product Manager", avatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80", stats: { Experience: 82, Leadership: 88, Innovation: 82, Education: 85, Certification: 75 } },
+                    { id: 10, name: "Ethan Hunt", role: "Security", avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80", stats: { Experience: 88, Leadership: 70, Innovation: 60, Education: 75, Certification: 100 } },
+                    { id: 12, name: "Mason Clark", role: "Accountant", avatar: "https://images.unsplash.com/photo-1599566150163-29194dcaad36?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80", stats: { Experience: 70, Leadership: 55, Innovation: 40, Education: 90, Certification: 95 } },
+                    { id: 13, name: "Mia Davis", role: "HR Manager", avatar: "https://images.unsplash.com/photo-1491349174775-aaafddd81942?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80", stats: { Experience: 85, Leadership: 92, Innovation: 75, Education: 80, Certification: 85 } },
+                    { id: 14, name: "Kevin White", role: "Junior Intern", avatar: "https://images.unsplash.com/photo-1595152772835-219674b2a8a6?ixlib=rb-4.0.3&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80", stats: { Experience: 20, Leadership: 15, Innovation: 25, Education: 40, Certification: 10 } },
+                    { id: 15, name: "Liam Harris", role: "Support", avatar: "https://images.unsplash.com/photo-1502452213786-a5bc0a67e963?ixlib=rb-4.0.3&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80", stats: { Experience: 35, Leadership: 25, Innovation: 15, Education: 30, Certification: 20 } },
+                    { id: 18, name: "Chris Green", role: "Analyst", avatar: "https://images.unsplash.com/photo-1504257432389-52343af06ae3?ixlib=rb-4.0.3&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80", stats: { Experience: 45, Leadership: 30, Innovation: 45, Education: 40, Certification: 40 } }
+                ]);
+
+                const openSelector = (slot) => {
+                    activeSlot.value = slot;
+                    showSelector.value = true;
+                };
+
+                const selectPlayer = (cand) => {
+                    if (activeSlot.value === 1) player1.value = cand;
+                    else player2.value = cand;
+                    showSelector.value = false;
+                };
+
+                const calculateAvg = (p) => {
+                    if (!p) return 0;
+                    return Math.round(Object.values(p.stats).reduce((a, b) => a + b, 0) / 5);
+                };
+
+                return {
+                    player1,
+                    player2,
+                    showSelector,
+                    activeSlot,
+                    candidates,
+                    openSelector,
+                    selectPlayer,
+                    calculateAvg
+                };
+            }
+        }).mount('#app');
+    </script>
+</body>
+
+</html>
